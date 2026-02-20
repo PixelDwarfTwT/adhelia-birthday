@@ -2,7 +2,6 @@
 <html>
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>Happy Birthday Adhelia 🎂</title>
 
 <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
@@ -19,21 +18,58 @@ font-family:Arial;
 overflow:hidden;
 }
 
-.container{
-text-align:center;
-color:white;
-background:rgba(255,255,255,0.4);
-padding:25px;
-border-radius:20px;
+/* Envelope */
+#envelope{
+width:200px;
+height:140px;
+background:#fff;
+position:relative;
+cursor:pointer;
+border-radius:10px;
+box-shadow:0 4px 10px rgba(0,0,0,0.2);
+transition:1s;
 }
 
+#envelope:before{
+content:'';
+position:absolute;
+top:0;
+left:0;
+width:0;
+height:0;
+border-left:100px solid transparent;
+border-right:100px solid transparent;
+border-bottom:70px solid #ddd;
+transition:1s;
+}
+
+#envelope.open{
+transform:scale(0);
+}
+
+/* Card */
+.container{
+display:none;
+text-align:center;
+color:#333;
+background:rgba(255,255,255,0.6);
+padding:25px;
+border-radius:20px;
+animation:fadeIn 1s;
+}
+
+@keyframes fadeIn{
+from{opacity:0;transform:translateY(20px);}
+to{opacity:1;transform:translateY(0);}
+}
+
+/* Photo */
 .photo{
-width:200px;
-height:200px;
+width:180px;
+height:180px;
 border-radius:50%;
 overflow:hidden;
 margin:auto;
-box-shadow:0 0 20px #a7c7e7;
 }
 
 .photo img{
@@ -42,14 +78,25 @@ height:100%;
 object-fit:cover;
 }
 
-#secret{
-margin-top:20px;
+/* Floating Hearts */
+.heart{
+position:fixed;
+bottom:0;
 font-size:20px;
+animation:floatUp 5s linear infinite;
+opacity:0.7;
+}
+
+@keyframes floatUp{
+0%{transform:translateY(0);}
+100%{transform:translateY(-100vh);}
 }
 </style>
 </head>
 
-<body onclick="playMusic()">
+<body>
+
+<div id="envelope" onclick="openCard()"></div>
 
 <div class="container">
 
@@ -59,23 +106,30 @@ font-size:20px;
 <img src="photo.jpg">
 </div>
 
-<div id="secret">
-💖 I hope today brings you happiness,
-smiles, and everything you wished for.
+<p>
+💙 I hope today brings you happiness,<br>
+smiles, and everything you wished for.<br>
 Enjoy your special day ✨
-</div>
+</p>
 
-<audio id="music"
-src="metal.mp3">
-</audio>
+<audio id="music" src="metal.mp3"></audio>
 
 </div>
 
 <script>
 
-function playMusic(){
+function openCard(){
+
+document.getElementById("envelope").classList.add("open");
+
+setTimeout(()=>{
+document.getElementById("envelope").style.display="none";
+document.querySelector(".container").style.display="block";
 document.getElementById("music").play();
 startConfetti();
+startHearts();
+},800);
+
 }
 
 function startConfetti(){
@@ -93,6 +147,26 @@ spread:60,
 origin:{y:0.5}
 });
 },500);
+
+}
+
+function startHearts(){
+
+setInterval(()=>{
+
+let heart=document.createElement("div");
+heart.className="heart";
+heart.innerHTML="💙";
+heart.style.left=Math.random()*100+"vw";
+heart.style.fontSize=(Math.random()*20+10)+"px";
+
+document.body.appendChild(heart);
+
+setTimeout(()=>{
+heart.remove();
+},5000);
+
+},800);
 
 }
 
