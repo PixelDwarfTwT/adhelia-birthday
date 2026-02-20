@@ -120,18 +120,22 @@ startHearts();
 
 function startConfetti(){
 
+let count = 0;
+
+let confettiInterval = setInterval(()=>{
+
 confetti({
-particleCount:60,
+particleCount:40,
 spread:70,
 origin:{y:0.6}
 });
 
-setTimeout(()=>{
-confetti({
-particleCount:40,
-spread:60,
-origin:{y:0.5}
-});
+count++;
+
+if(count >= 10){
+clearInterval(confettiInterval);
+}
+
 },500);
 
 }
