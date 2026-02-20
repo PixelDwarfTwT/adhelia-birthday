@@ -88,7 +88,7 @@ opacity:0.7;
 
 <h1>🎉 Happy Birthday Adhelia 🎂</h1>
 
-<div class="photo">
+<div class="photo" onclick="startConfetti()">
 <img src="photo.jpg">
 </div>
 
@@ -125,14 +125,14 @@ let count = 0;
 let confettiInterval = setInterval(()=>{
 
 confetti({
-particleCount:40,
+particleCount:80,
 spread:70,
 origin:{y:0.6}
 });
 
 count++;
 
-if(count >= 10){
+if(count >= 25){
 clearInterval(confettiInterval);
 }
 
