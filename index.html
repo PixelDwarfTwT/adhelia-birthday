@@ -79,13 +79,21 @@ startConfetti();
 }
 
 function startConfetti(){
-setInterval(()=>{
+
 confetti({
-particleCount:150,
-spread:90,
+particleCount:60,
+spread:70,
 origin:{y:0.6}
 });
-},1000);
+
+setTimeout(()=>{
+confetti({
+particleCount:40,
+spread:60,
+origin:{y:0.5}
+});
+},500);
+
 }
 
 </script>
