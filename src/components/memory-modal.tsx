@@ -12,6 +12,7 @@ interface MemoryModalProps {
 }
 
 export function MemoryModal({ memory, onClose, onVideoActiveChange }: MemoryModalProps) {
+  const dialogRef = useRef<HTMLElement>(null);
   const closeButtonRef = useRef<HTMLButtonElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const lastTap = useRef(0);
@@ -25,7 +26,28 @@ export function MemoryModal({ memory, onClose, onVideoActiveChange }: MemoryModa
     const originalOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
     function handleKeyDown(event: KeyboardEvent) {
-      if (event.key === "Escape") onClose();
+      if (event.key === "Escape") {
+        onClose();
+        return;
+      }
+      if (event.key !== "Tab") return;
+
+      const dialog = dialogRef.current;
+      if (!dialog) return;
+      const focusableElements = Array.from(dialog.querySelectorAll<HTMLElement>(
+        'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), video[controls], [tabindex]:not([tabindex="-1"])',
+      )).filter((element) => element.tabIndex >= 0);
+      const firstElement = focusableElements[0];
+      const lastElement = focusableElements.at(-1);
+      const focusIsOutside = !dialog.contains(document.activeElement);
+
+      if (event.shiftKey && (document.activeElement === firstElement || focusIsOutside)) {
+        event.preventDefault();
+        lastElement?.focus();
+      } else if (!event.shiftKey && (document.activeElement === lastElement || focusIsOutside)) {
+        event.preventDefault();
+        firstElement?.focus();
+      }
     }
     window.addEventListener("keydown", handleKeyDown);
     return () => {
@@ -60,7 +82,7 @@ export function MemoryModal({ memory, onClose, onVideoActiveChange }: MemoryModa
         if (event.target === event.currentTarget) close();
       }}
     >
-      <section className="memory-modal__panel" role="dialog" aria-modal="true" aria-labelledby="memory-modal-title">
+      <section className="memory-modal__panel" ref={dialogRef} role="dialog" aria-modal="true" aria-labelledby="memory-modal-title">
         <header className="memory-modal__header">
           <div>
             <p className="eyebrow">A little memory note</p>

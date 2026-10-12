@@ -46,6 +46,19 @@ describe("memory chapter", () => {
     expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
   });
 
+  it("keepsKeyboardFocusInsideMemoryModal", () => {
+    render(<MemoryModal memory={photoMemory} onClose={vi.fn()} onVideoActiveChange={vi.fn()} />);
+    const closeButton = screen.getByRole("button", { name: "Close memory" });
+    const zoomButton = screen.getByRole("button", { name: "Zoom in photo" });
+
+    expect(document.activeElement).toBe(closeButton);
+    fireEvent.keyDown(closeButton, { key: "Tab", shiftKey: true });
+    expect(document.activeElement).toBe(zoomButton);
+
+    fireEvent.keyDown(zoomButton, { key: "Tab" });
+    expect(document.activeElement).toBe(closeButton);
+  });
+
   it("opensPhotoPreviewOnDoubleTap", () => {
     render(<MemoriesSection onVideoActiveChange={vi.fn()} />);
     fireEvent.doubleClick(screen.getByRole("button", { name: "Open memory: A birthday moment" }));

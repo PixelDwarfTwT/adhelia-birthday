@@ -32,7 +32,19 @@ export function CelebrationCanvas({ active, reducedMotion }: CelebrationCanvasPr
     let width = 0;
     let height = 0;
     let frame = 0;
-    const limit = getParticleLimit(window.innerWidth, reducedMotion);
+    const particles: Particle[] = [];
+
+    function createParticle(): Particle {
+      return {
+        x: Math.random() * width,
+        y: Math.random() * height,
+        radius: 1 + Math.random() * 2.2,
+        speed: .25 + Math.random() * .9,
+        sway: Math.random() * .7,
+        phase: Math.random() * Math.PI * 2,
+        alpha: .25 + Math.random() * .7,
+      };
+    }
 
     function resize() {
       const rect = canvas.getBoundingClientRect();
@@ -42,18 +54,16 @@ export function CelebrationCanvas({ active, reducedMotion }: CelebrationCanvasPr
       canvas.width = width * ratio;
       canvas.height = height * ratio;
       context?.setTransform(ratio, 0, 0, ratio, 0, 0);
+      const limit = getParticleLimit(window.innerWidth, reducedMotion);
+      while (particles.length > limit) particles.pop();
+      while (particles.length < limit) particles.push(createParticle());
+      for (const particle of particles) {
+        particle.x = Math.min(particle.x, width);
+        particle.y = Math.min(particle.y, height);
+      }
     }
 
     resize();
-    const particles: Particle[] = Array.from({ length: limit }, () => ({
-      x: Math.random() * width,
-      y: Math.random() * height,
-      radius: 1 + Math.random() * 2.2,
-      speed: .25 + Math.random() * .9,
-      sway: Math.random() * .7,
-      phase: Math.random() * Math.PI * 2,
-      alpha: .25 + Math.random() * .7,
-    }));
 
     function draw() {
       if (!context) return;
