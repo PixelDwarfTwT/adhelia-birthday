@@ -8,6 +8,9 @@ describe("birthday access and opening journey", () => {
     window.localStorage.clear();
     window.sessionStorage.clear();
     vi.stubGlobal("crypto", webcrypto as unknown as Crypto);
+    vi.spyOn(HTMLMediaElement.prototype, "play").mockResolvedValue();
+    vi.spyOn(HTMLMediaElement.prototype, "pause").mockImplementation(() => undefined);
+    vi.spyOn(HTMLMediaElement.prototype, "load").mockImplementation(() => undefined);
   });
 
   afterEach(() => {

@@ -13,7 +13,7 @@ export function OpeningScene({ onOpen }: OpeningSceneProps) {
   function open() {
     if (isOpening) return;
     setIsOpening(true);
-    window.setTimeout(onOpen, 420);
+    onOpen();
   }
 
   function handleKeyDown(event: KeyboardEvent<HTMLButtonElement>) {

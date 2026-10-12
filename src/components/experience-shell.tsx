@@ -5,6 +5,7 @@ import { birthdayContent } from "@/data/content";
 import { hasLocalAccess, rememberLocalAccess } from "@/lib/access-code";
 import { EMPTY_PROGRESS, readProgress, writeProgress } from "@/lib/progress";
 import type { ExperienceProgress } from "@/data/types";
+import { AudioPlayer, type AudioPlayerHandle } from "./audio-player";
 import { ChapterNavigation, type Chapter } from "./chapter-navigation";
 import { OpeningScene } from "./opening-scene";
 import { PasscodeGate } from "./passcode-gate";
@@ -69,6 +70,7 @@ export function ExperienceShell() {
     return readProgress(storage);
   }, [progressSnapshot]);
   const titleRef = useRef<HTMLHeadingElement>(null);
+  const audioPlayerRef = useRef<AudioPlayerHandle>(null);
 
   function saveProgress(nextProgress: ExperienceProgress) {
     try {
@@ -101,32 +103,41 @@ export function ExperienceShell() {
   }
 
   if (!hasAccess) return <PasscodeGate onUnlock={unlock} />;
-  if (!experienceStarted) return <OpeningScene onOpen={() => setExperienceStarted(true)} />;
 
   return (
-    <main className="scrapbook" aria-labelledby="scrapbook-title" data-progress-stickers={progress.stickerIds.length} data-constellation-complete={progress.constellationComplete}>
-      <header className="scrapbook__header">
-        <p className="eyebrow">The Magical Scrapbook in the Stars</p>
-        <h1 id="scrapbook-title" ref={titleRef} tabIndex={-1}>For {birthdayContent.recipientName}</h1>
-        <p>{birthdayContent.introduction}</p>
-      </header>
-      <ChapterNavigation chapters={chapters} currentChapter={currentChapter} onNavigate={navigateTo} />
-      <div className="chapter-stack">
-        <section className="chapter-section" id="chapter-1" aria-labelledby="chapter-1-title">
-          <p className="chapter-section__number">Chapter 01 · Curiosity</p>
-          <h2 id="chapter-1-title">A little story written in blue</h2>
-          <p>{birthdayContent.openingCopy}</p>
-        </section>
-        {chapters.slice(1).map((chapter, index) => (
-          <section className="chapter-section" id={chapter.id} key={chapter.id} aria-labelledby={`${chapter.id}-title`}>
-            <p className="chapter-section__number">Chapter {String(index + 2).padStart(2, "0")}</p>
-            <h2 id={`${chapter.id}-title`}>{chapter.label}</h2>
-            <p className="placeholder-note">A little corner of Adhelia&apos;s birthday scrapbook.</p>
-          </section>
-        ))}
-      </div>
-      <footer className="scrapbook__footer">Made with care, one little star at a time.</footer>
-    </main>
+    <>
+      <AudioPlayer ref={audioPlayerRef} track={birthdayContent.audio.primary} />
+      {!experienceStarted ? (
+        <OpeningScene onOpen={() => {
+          void audioPlayerRef.current?.startFromGesture();
+          window.setTimeout(() => setExperienceStarted(true), 420);
+        }} />
+      ) : (
+        <main className="scrapbook" aria-labelledby="scrapbook-title" data-progress-stickers={progress.stickerIds.length} data-constellation-complete={progress.constellationComplete}>
+          <header className="scrapbook__header">
+            <p className="eyebrow">The Magical Scrapbook in the Stars</p>
+            <h1 id="scrapbook-title" ref={titleRef} tabIndex={-1}>For {birthdayContent.recipientName}</h1>
+            <p>{birthdayContent.introduction}</p>
+          </header>
+          <ChapterNavigation chapters={chapters} currentChapter={currentChapter} onNavigate={navigateTo} />
+          <div className="chapter-stack">
+            <section className="chapter-section" id="chapter-1" aria-labelledby="chapter-1-title">
+              <p className="chapter-section__number">Chapter 01 · Curiosity</p>
+              <h2 id="chapter-1-title">A little story written in blue</h2>
+              <p>{birthdayContent.openingCopy}</p>
+            </section>
+            {chapters.slice(1).map((chapter, index) => (
+              <section className="chapter-section" id={chapter.id} key={chapter.id} aria-labelledby={`${chapter.id}-title`}>
+                <p className="chapter-section__number">Chapter {String(index + 2).padStart(2, "0")}</p>
+                <h2 id={`${chapter.id}-title`}>{chapter.label}</h2>
+                <p className="placeholder-note">A little corner of Adhelia&apos;s birthday scrapbook.</p>
+              </section>
+            ))}
+          </div>
+          <footer className="scrapbook__footer">Made with care, one little star at a time.</footer>
+        </main>
+      )}
+    </>
   );
 }
 
