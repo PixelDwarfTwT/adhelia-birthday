@@ -73,7 +73,7 @@
 
 **Files:** Create `src/components/experience-shell.tsx`, `passcode-gate.tsx`, `opening-scene.tsx`, `chapter-navigation.tsx`, and their colocated tests; connect them from `src/app/page.tsx`.
 
-**Interfaces:** `PasscodeGate({ onUnlock }: { onUnlock(): void })`; `OpeningScene({ onOpen }: { onOpen(): void })`; `ExperienceShell` owns `gateOpen`, `experienceStarted`, and current chapter state. Chapter section IDs are `chapter-1` through `chapter-6`.
+**Interfaces:** `PasscodeGate({ onUnlock }: { onUnlock(): void })`; `OpeningScene({ onOpen }: { onOpen(): void })`; `ExperienceShell` owns `gateOpen`, `experienceStarted`, current chapter state, and `progress: ExperienceProgress`. It restores `progress` with `readProgress(sessionStorage)` and persists updates with `writeProgress(sessionStorage, nextProgress)`, passing sticker/progress callbacks to sections. Chapter section IDs are `chapter-1` through `chapter-6`.
 
 - [ ] **Step 1: Write tests** `keepsMainContentHiddenUntilPasscodeMatches`, `showsFriendlyCryptoFailure`, `opensEnvelopeFromKeyboardOrTap`, and `chapterNavigationScrollsToSelectedSection`. Assert no chapter content is available before gate success and opening text is “A special delivery for Adhelia...”.
 - [ ] **Step 2: Run the targeted component tests.** Expected: FAIL for missing gate/shell behavior.
@@ -121,7 +121,7 @@
 
 **Files:** Create `src/components/sections/constellation-section.tsx`, `src/components/celebration-canvas.tsx`, `src/lib/particle-settings.ts`, and tests; connect saved progress and final content.
 
-**Interfaces:** The constellation receives `completed: boolean` and `onComplete(): void`; it renders seven ordered accessible star buttons for `A`, `D`, `H`, `E`, `L`, `I`, `A`. Export `getParticleLimit(viewportWidth: number, reducedMotion: boolean): number`; Canvas receives `active: boolean` and `reducedMotion: boolean` and uses this helper.
+**Interfaces:** The constellation receives `completed: boolean` from `progress.constellationComplete` and `onComplete(): void` that updates shell progress; it renders seven ordered accessible star buttons for `A`, `D`, `H`, `E`, `L`, `I`, `A`. Export `getParticleLimit(viewportWidth: number, reducedMotion: boolean): number`; Canvas receives `active: boolean` and `reducedMotion: boolean` and uses this helper.
 
 - [ ] **Step 1: Write tests** `connectsStarsInOrderToSpellAdhelia`, `ignoresOutOfOrderStarAndKeepsProgressClear`, `restoresCompletedConstellationFromSession`, `showsFinalMessageAfterCompletion`, `capsMobileParticlesAtSixty`, and `returnsZeroParticlesForReducedMotion`. Assert the final exact copy from the approved spec.
 - [ ] **Step 2: Run the targeted tests.** Expected: FAIL for missing constellation behavior.
