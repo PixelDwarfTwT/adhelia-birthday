@@ -1,0 +1,108 @@
+@import "tailwindcss";
+
+@theme inline {
+  --color-powder: #e0f2fe;
+  --color-navy: #0f172a;
+  --color-azure: #0284c7;
+  --color-sky: #38bdf8;
+  --color-cream: #fffdfa;
+  --color-lavender: #f3e8ff;
+  --color-gold: #fde047;
+  --color-ink: #1e293b;
+  --font-serif: var(--font-display);
+  --font-ui: var(--font-sans);
+  --font-script: var(--font-handwritten);
+}
+
+:root {
+  color-scheme: light;
+  background: #eff8ff;
+  color: #1e293b;
+  font-family: var(--font-sans), sans-serif;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-optical-sizing: auto;
+  scroll-behavior: smooth;
+}
+
+* { box-sizing: border-box; }
+body { margin: 0; min-height: 100vh; }
+button, input { font: inherit; }
+button { color: inherit; }
+button:focus-visible, a:focus-visible, input:focus-visible {
+  outline: 3px solid #0284c7;
+  outline-offset: 4px;
+}
+
+.loading-screen {
+  position: relative;
+  display: grid;
+  min-height: 100svh;
+  place-content: center;
+  justify-items: center;
+  overflow: hidden;
+  padding: 2rem;
+  text-align: center;
+  background:
+    radial-gradient(ellipse at 20% 12%, rgb(255 255 255 / 80%), transparent 35%),
+    radial-gradient(ellipse at 85% 88%, rgb(191 219 254 / 55%), transparent 42%),
+    linear-gradient(145deg, #eff8ff, #dbeafe 55%, #f3e8ff);
+}
+
+.loading-screen::before {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  content: "";
+  opacity: .2;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.12'/%3E%3C/svg%3E");
+}
+
+.loading-screen__star {
+  margin-bottom: 1.2rem;
+  color: #0284c7;
+  font-size: 2.5rem;
+  animation: star-breathe 2.6s ease-in-out infinite;
+}
+
+.eyebrow {
+  margin: 0 0 .5rem;
+  color: #0369a1;
+  font-size: .75rem;
+  font-weight: 700;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+}
+
+.loading-screen h1 {
+  max-width: 18ch;
+  margin: 0;
+  color: #0f172a;
+  font-family: var(--font-display), Georgia, serif;
+  font-size: clamp(2.7rem, 9vw, 5.5rem);
+  font-weight: 500;
+  line-height: .98;
+}
+
+.loading-screen__note {
+  margin: 1rem 0 0;
+  color: #475569;
+  font-family: var(--font-handwritten), cursive;
+  font-size: 1.5rem;
+}
+
+@keyframes star-breathe {
+  50% { opacity: .55; transform: scale(.86) rotate(14deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: .01ms !important;
+  }
+}

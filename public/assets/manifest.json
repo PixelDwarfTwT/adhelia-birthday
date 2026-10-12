@@ -1,0 +1,10 @@
+{
+  "images": [
+    { "path": "/assets/photo.jpg", "alt": "Adhelia holding a birthday cake" }
+  ],
+  "audio": [
+    { "path": "/assets/metal.mp3", "role": "primary soundtrack" },
+    { "path": "/assets/happy.mp3", "role": "alternate soundtrack" }
+  ],
+  "video": []
+}
