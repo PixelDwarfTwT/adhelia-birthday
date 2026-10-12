@@ -13,6 +13,7 @@ import { FavoritesSection } from "./sections/favorites-section";
 import { LetterSection } from "./sections/letter-section";
 import { MemoriesSection } from "./sections/memories-section";
 import { PlayfulSection } from "./sections/playful-section";
+import { ConstellationSection } from "./sections/constellation-section";
 
 const chapters: Chapter[] = [
   { id: "chapter-1", label: "Rasa ingin tahu" },
@@ -117,6 +118,11 @@ export function ExperienceShell() {
     });
   }
 
+  function completeConstellation() {
+    if (progress.constellationComplete) return;
+    saveProgress({ ...progress, constellationComplete: true });
+  }
+
   if (!hasAccess) return <PasscodeGate onUnlock={unlock} />;
 
   return (
@@ -145,13 +151,7 @@ export function ExperienceShell() {
             <FavoritesSection />
             <MemoriesSection onVideoActiveChange={handleVideoActiveChange} />
             <LetterSection />
-            {chapters.slice(5).map((chapter, index) => (
-              <section className="chapter-section" id={chapter.id} key={chapter.id} aria-labelledby={`${chapter.id}-title`}>
-                <p className="chapter-section__number">Chapter {String(index + 2).padStart(2, "0")}</p>
-                <h2 id={`${chapter.id}-title`}>{chapter.label}</h2>
-                <p className="placeholder-note">A little corner of Adhelia&apos;s birthday scrapbook.</p>
-              </section>
-            ))}
+            <ConstellationSection completed={progress.constellationComplete} onComplete={completeConstellation} />
           </div>
           <footer className="scrapbook__footer">Made with care, one little star at a time.</footer>
         </main>

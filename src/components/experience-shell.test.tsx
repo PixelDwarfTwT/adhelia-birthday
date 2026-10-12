@@ -75,4 +75,16 @@ describe("birthday access and opening journey", () => {
     await waitFor(() => expect(scrollIntoView).toHaveBeenCalled());
     expect(screen.getByRole("button", { name: "Bab 3: Hal-hal favorit" })).toHaveAttribute("aria-current", "location");
   });
+
+  it("restoresCompletedConstellationFromSession", async () => {
+    window.localStorage.setItem("adhelia-birthday-access", "unlocked");
+    window.sessionStorage.setItem("adhelia-birthday-progress", JSON.stringify({ stickerIds: ["sparkle"], constellationComplete: true }));
+    vi.spyOn(HTMLCanvasElement.prototype, "getContext").mockReturnValue(null);
+    render(<ExperienceShell />);
+
+    fireEvent.click(await screen.findByRole("button", { name: "Buka scrapbook" }));
+
+    expect(await screen.findByText("ADHELIA")).toBeInTheDocument();
+    expect(screen.getByText("May your year ahead be as bright and beautiful as you are.")).toBeInTheDocument();
+  });
 });
