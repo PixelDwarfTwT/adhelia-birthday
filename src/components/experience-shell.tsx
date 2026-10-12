@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState, useSyncExternalStore } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState, useSyncExternalStore } from "react";
 import { birthdayContent } from "@/data/content";
 import { hasLocalAccess, rememberLocalAccess } from "@/lib/access-code";
 import { EMPTY_PROGRESS, readProgress, writeProgress } from "@/lib/progress";
@@ -10,6 +10,8 @@ import { ChapterNavigation, type Chapter } from "./chapter-navigation";
 import { OpeningScene } from "./opening-scene";
 import { PasscodeGate } from "./passcode-gate";
 import { FavoritesSection } from "./sections/favorites-section";
+import { LetterSection } from "./sections/letter-section";
+import { MemoriesSection } from "./sections/memories-section";
 import { PlayfulSection } from "./sections/playful-section";
 
 const chapters: Chapter[] = [
@@ -73,6 +75,9 @@ export function ExperienceShell() {
   }, [progressSnapshot]);
   const titleRef = useRef<HTMLHeadingElement>(null);
   const audioPlayerRef = useRef<AudioPlayerHandle>(null);
+  const handleVideoActiveChange = useCallback((active: boolean) => {
+    audioPlayerRef.current?.setDucked(active);
+  }, []);
 
   function saveProgress(nextProgress: ExperienceProgress) {
     try {
@@ -138,7 +143,9 @@ export function ExperienceShell() {
             </section>
             <PlayfulSection collectedStickerIds={progress.stickerIds} onCollectSticker={collectSticker} />
             <FavoritesSection />
-            {chapters.slice(3).map((chapter, index) => (
+            <MemoriesSection onVideoActiveChange={handleVideoActiveChange} />
+            <LetterSection />
+            {chapters.slice(5).map((chapter, index) => (
               <section className="chapter-section" id={chapter.id} key={chapter.id} aria-labelledby={`${chapter.id}-title`}>
                 <p className="chapter-section__number">Chapter {String(index + 2).padStart(2, "0")}</p>
                 <h2 id={`${chapter.id}-title`}>{chapter.label}</h2>
