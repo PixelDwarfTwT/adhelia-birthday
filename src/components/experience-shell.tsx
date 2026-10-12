@@ -9,6 +9,8 @@ import { AudioPlayer, type AudioPlayerHandle } from "./audio-player";
 import { ChapterNavigation, type Chapter } from "./chapter-navigation";
 import { OpeningScene } from "./opening-scene";
 import { PasscodeGate } from "./passcode-gate";
+import { FavoritesSection } from "./sections/favorites-section";
+import { PlayfulSection } from "./sections/playful-section";
 
 const chapters: Chapter[] = [
   { id: "chapter-1", label: "Rasa ingin tahu" },
@@ -102,6 +104,14 @@ export function ExperienceShell() {
     target?.scrollIntoView?.({ behavior: reducedMotion ? "auto" : "smooth", block: "start" });
   }
 
+  function collectSticker(stickerId: string) {
+    if (progress.stickerIds.includes(stickerId)) return;
+    saveProgress({
+      ...progress,
+      stickerIds: [...progress.stickerIds, stickerId],
+    });
+  }
+
   if (!hasAccess) return <PasscodeGate onUnlock={unlock} />;
 
   return (
@@ -126,7 +136,9 @@ export function ExperienceShell() {
               <h2 id="chapter-1-title">A little story written in blue</h2>
               <p>{birthdayContent.openingCopy}</p>
             </section>
-            {chapters.slice(1).map((chapter, index) => (
+            <PlayfulSection collectedStickerIds={progress.stickerIds} onCollectSticker={collectSticker} />
+            <FavoritesSection />
+            {chapters.slice(3).map((chapter, index) => (
               <section className="chapter-section" id={chapter.id} key={chapter.id} aria-labelledby={`${chapter.id}-title`}>
                 <p className="chapter-section__number">Chapter {String(index + 2).padStart(2, "0")}</p>
                 <h2 id={`${chapter.id}-title`}>{chapter.label}</h2>
