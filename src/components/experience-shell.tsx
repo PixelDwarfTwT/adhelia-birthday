@@ -123,16 +123,23 @@ export function ExperienceShell() {
     saveProgress({ ...progress, constellationComplete: true });
   }
 
+  function openExperience() {
+    void audioPlayerRef.current?.startFromGesture();
+    const reducedMotion = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+    if (reducedMotion) {
+      setExperienceStarted(true);
+    } else {
+      window.setTimeout(() => setExperienceStarted(true), 420);
+    }
+  }
+
   if (!hasAccess) return <PasscodeGate onUnlock={unlock} />;
 
   return (
     <>
       <AudioPlayer ref={audioPlayerRef} track={birthdayContent.audio.primary} />
       {!experienceStarted ? (
-        <OpeningScene onOpen={() => {
-          void audioPlayerRef.current?.startFromGesture();
-          window.setTimeout(() => setExperienceStarted(true), 420);
-        }} />
+        <OpeningScene onOpen={openExperience} />
       ) : (
         <main className="scrapbook" aria-labelledby="scrapbook-title" data-progress-stickers={progress.stickerIds.length} data-constellation-complete={progress.constellationComplete}>
           <header className="scrapbook__header">

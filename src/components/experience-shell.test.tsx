@@ -87,4 +87,56 @@ describe("birthday access and opening journey", () => {
     expect(await screen.findByText("ADHELIA")).toBeInTheDocument();
     expect(screen.getByText("May your year ahead be as bright and beautiful as you are.")).toBeInTheDocument();
   });
+
+  it("allSixChaptersHaveKeyboardReachableNavigation", async () => {
+    window.localStorage.setItem("adhelia-birthday-access", "unlocked");
+    render(<ExperienceShell />);
+    const openingButton = await screen.findByRole("button", { name: "Buka scrapbook" });
+    openingButton.focus();
+    expect(document.activeElement).toBe(openingButton);
+    fireEvent.click(openingButton);
+    await screen.findByRole("navigation", { name: "Navigasi bab" });
+
+    const labels = [
+      "Bab 1: Rasa ingin tahu",
+      "Bab 2: Playfulness",
+      "Bab 3: Hal-hal favorit",
+      "Bab 4: Kenangan",
+      "Bab 5: Surat",
+      "Bab 6: Konstelasi",
+    ];
+    expect(document.querySelectorAll("#chapter-1, #chapter-2, #chapter-3, #chapter-4, #chapter-5, #chapter-6")).toHaveLength(6);
+    for (const label of labels) {
+      const button = screen.getByRole("button", { name: label });
+      expect(button.tagName).toBe("BUTTON");
+      button.focus();
+      expect(document.activeElement).toBe(button);
+    }
+  });
+
+  it("audioFailureDoesNotBlankThePage", async () => {
+    window.localStorage.setItem("adhelia-birthday-access", "unlocked");
+    vi.spyOn(HTMLMediaElement.prototype, "play").mockRejectedValueOnce(new Error("audio unavailable"));
+    render(<ExperienceShell />);
+    fireEvent.click(await screen.findByRole("button", { name: "Buka scrapbook" }));
+
+    expect(await screen.findByRole("heading", { name: "For Adhelia" })).toBeInTheDocument();
+    expect(await screen.findByRole("alert")).toHaveTextContent(/music note got lost/i);
+    expect(document.getElementById("chapter-6")).toBeInTheDocument();
+  });
+
+  it("progressSurvivesSectionNavigation", async () => {
+    window.localStorage.setItem("adhelia-birthday-access", "unlocked");
+    render(<ExperienceShell />);
+    fireEvent.click(await screen.findByRole("button", { name: "Buka scrapbook" }));
+    await screen.findByRole("navigation", { name: "Navigasi bab" });
+    fireEvent.click(screen.getByRole("button", { name: "Collect sticker: sparkle" }));
+
+    expect(document.querySelector(".scrapbook")).toHaveAttribute("data-progress-stickers", "1");
+    fireEvent.click(screen.getByRole("button", { name: "Bab 3: Hal-hal favorit" }));
+    fireEvent.click(screen.getByRole("button", { name: "Bab 2: Playfulness" }));
+
+    expect(document.querySelector(".scrapbook")).toHaveAttribute("data-progress-stickers", "1");
+    expect(JSON.parse(window.sessionStorage.getItem("adhelia-birthday-progress") ?? "{}").stickerIds).toEqual(["sparkle"]);
+  });
 });

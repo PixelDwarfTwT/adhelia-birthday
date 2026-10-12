@@ -70,6 +70,14 @@ describe("memory chapter", () => {
     expect(screen.getByText("A wonderful memory is hiding somewhere..." )).toBeInTheDocument();
   });
 
+  it("imageFailureDoesNotBlankThePage", () => {
+    render(<MemoriesSection memories={[photoMemory, nextMemory]} onVideoActiveChange={vi.fn()} />);
+    fireEvent.error(screen.getByAltText(photoMemory.alt));
+
+    expect(screen.getByRole("button", { name: "Open memory: A birthday moment" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Next memory" })).toBeInTheDocument();
+  });
+
   it("startsOptionalMutedVideoOnlyWhileVisible", () => {
     let revealVideo: (() => void) | undefined;
     class TestIntersectionObserver {
