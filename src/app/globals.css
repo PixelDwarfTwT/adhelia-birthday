@@ -744,8 +744,8 @@ body:has(.scrapbook--paged) {
   overflow: hidden;
   background:
     linear-gradient(90deg, transparent 0 2.45rem, rgb(69 123 145 / 13%) 2.45rem calc(2.45rem + 1px), transparent calc(2.45rem + 1px)),
-    linear-gradient(90deg, rgb(255 255 255 / 24%) 1px, transparent 1px),
-    linear-gradient(rgb(255 255 255 / 24%) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(255 255 255 / 18%) 1px, transparent 1px),
+    linear-gradient(rgb(255 255 255 / 18%) 1px, transparent 1px),
     linear-gradient(145deg, #e4f1f4, #d6e8ed);
   background-size: auto, 24px 24px, 24px 24px, auto;
 }
@@ -809,9 +809,8 @@ body:has(.scrapbook--paged) {
   border-radius: .32rem .85rem .85rem .32rem;
   background-color: #fffdf7;
   background-image:
-    radial-gradient(circle at 20% 24%, rgb(54 73 79 / 3%) 0 .45px, transparent .7px),
-    radial-gradient(circle at 70% 78%, rgb(54 73 79 / 2.5%) 0 .45px, transparent .7px);
-  background-size: 7px 7px, 9px 9px;
+    radial-gradient(ellipse at 83% 16%, rgb(165 202 211 / 10%), transparent 31%),
+    radial-gradient(ellipse at 14% 88%, rgb(207 184 142 / 7%), transparent 30%);
   box-shadow: 0 18px 42px rgb(31 70 91 / 13%), inset 0 0 0 1px rgb(255 255 255 / 62%);
 }
 
@@ -839,35 +838,49 @@ body:has(.scrapbook--paged) {
 }
 
 .story-page h2 {
-  max-width: 12ch;
+  max-width: 11ch;
   margin: 0;
   color: #132f46;
   font-family: var(--font-display), Georgia, serif;
-  font-size: clamp(2.55rem, 6.4vw, 5.2rem);
+  font-size: clamp(2.4rem, 5.25vw, 4.35rem);
   font-weight: 500;
   letter-spacing: -.04em;
   line-height: .93;
 }
 
 .story-page p:not(.page-kicker) { color: #476174; line-height: 1.65; }
-.page-kicker { margin: 0 0 .85rem; color: #087ca6; font-size: .68rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; }
-
-.cake-section {
-  grid-template-columns: 1fr 1fr;
-  align-items: center;
-  background:
-    radial-gradient(ellipse at 79% 44%, rgb(255 255 255 / 34%), transparent 38%),
-    linear-gradient(104deg, #fffaf0 0 51.7%, #dcecf1 52.1% 100%);
+.page-kicker {
+  display: inline-block;
+  margin: 0 0 .9rem;
+  padding: .28rem .46rem .24rem;
+  border: 1px dashed #b78b62;
+  color: #8d5e42;
+  background: rgb(255 250 239 / 84%);
+  box-shadow: 1px 2px 0 rgb(91 66 43 / 8%);
+  font-size: .64rem;
+  font-weight: 700;
+  letter-spacing: .09em;
+  text-transform: uppercase;
+  transform: rotate(-1deg);
 }
 
-.cake-section__copy { position: relative; z-index: 2; max-width: 35rem; padding: clamp(1rem, 5vw, 5rem); }
-.cake-section__copy > p:not(.page-kicker) { max-width: 28rem; margin: 1.1rem 0 0; font-size: clamp(.95rem, 1.5vw, 1.12rem); }
-.cake-section__button { margin-top: 1.3rem; border-radius: .22rem; box-shadow: 3px 3px 0 rgb(14 77 104 / 16%); }
+.cake-section {
+  grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr);
+  align-items: center;
+  gap: clamp(.25rem, 1.25vw, 1.25rem);
+  background:
+    radial-gradient(ellipse at 76% 52%, rgb(190 220 228 / 35%), transparent 34%),
+    #fffaf0;
+}
+
+.cake-section__copy { position: relative; z-index: 2; max-width: 32rem; padding: clamp(1rem, 3.2vw, 3.25rem); }
+.cake-section__copy > p:not(.page-kicker) { max-width: 25rem; margin: .85rem 0 0; font-size: clamp(.95rem, 1.4vw, 1.08rem); }
+.cake-section__button { margin-top: 1rem; border-radius: .22rem; box-shadow: 3px 3px 0 rgb(14 77 104 / 16%); }
 .cake-section__wish { min-height: 1.6rem; margin: .6rem 0 0; color: #087ca6 !important; font-family: var(--font-handwritten), cursive; font-size: 1.35rem; }
 .birthday-cake {
   position: relative;
   isolation: isolate;
-  width: min(88%, 34rem);
+  width: min(88%, 31rem);
   height: auto;
   /* Match the illustration's 1312 × 1199 canvas so overlays share its coordinates. */
   aspect-ratio: 1312 / 1199;
@@ -964,24 +977,25 @@ body:has(.scrapbook--paged) {
   grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr);
   grid-template-rows: minmax(0, 1fr);
   align-items: center;
-  gap: clamp(1.5rem, 5vw, 5rem);
-  padding: clamp(1.5rem, 6vw, 5rem);
-  background-color: #f8f1df;
+  gap: clamp(.5rem, 1.8vw, 1.75rem);
+  padding: clamp(1rem, 3.25vw, 3.25rem);
+  background-color: #fffaf0;
   background-image:
-    linear-gradient(90deg, transparent 0 2.6rem, rgb(173 115 102 / 13%) 2.6rem calc(2.6rem + 1px), transparent calc(2.6rem + 1px)),
-    repeating-linear-gradient(0deg, transparent 0 2.5rem, rgb(143 166 157 / 8%) 2.5rem calc(2.5rem + 1px));
+    radial-gradient(ellipse at 75% 48%, rgb(190 220 228 / 34%), transparent 37%),
+    repeating-linear-gradient(0deg, transparent 0 2.7rem, rgb(143 166 157 / 6%) 2.7rem calc(2.7rem + 1px));
 }
-.letter-section::after { position: absolute; z-index: 4; inset: .85rem; border: 1px solid rgb(147 122 79 / 26%); content: ""; pointer-events: none; }
-.letter-section__intro { position: relative; z-index: 2; grid-column: 1; max-width: 28rem; justify-self: center; text-align: left; }
-.letter-section__intro h2 { max-width: 9ch; font-size: clamp(2.5rem, 5.2vw, 4.5rem); line-height: 1; }
-.letter-section__closed { position: relative; z-index: 2; display: grid; grid-column: 2; align-content: center; justify-items: center; gap: 1.25rem; width: 100%; min-height: 0; }
+.letter-section::after { position: absolute; z-index: 4; inset: .55rem; border: 1px solid rgb(147 122 79 / 26%); content: ""; pointer-events: none; }
+.letter-section__intro { position: relative; z-index: 2; grid-column: 1; max-width: 29rem; justify-self: center; text-align: left; }
+.letter-section__intro h2 { max-width: 10ch; font-size: clamp(2.4rem, 5.1vw, 4.25rem); line-height: .98; }
+.letter-section__intro .page-kicker { margin-bottom: .85rem; }
+.letter-section__closed { position: relative; z-index: 2; display: grid; grid-column: 2; align-content: center; justify-items: center; gap: .95rem; width: 100%; min-height: 0; }
 .letter-section--open { grid-template-columns: minmax(0, 1fr); grid-template-rows: auto minmax(0, 1fr); justify-items: center; gap: clamp(.6rem, 1.5vh, 1rem); text-align: center; }
 .letter-section--open .letter-section__intro { grid-column: 1; grid-row: 1; max-width: none; text-align: center; }
 .letter-section--open .letter-section__intro h2 { max-width: none; font-size: clamp(2.1rem, 4.8vw, 3.8rem); }
 .letter-section--open .letter-paper { grid-column: 1; grid-row: 2; }
 .letter-envelope {
-  width: min(100%, 27rem);
-  height: clamp(10rem, 28vh, 15rem);
+  width: min(100%, 29rem);
+  height: clamp(11rem, 30vh, 15rem);
   overflow: hidden;
   isolation: isolate;
   border: 1px solid #abcbd4;
@@ -1172,7 +1186,7 @@ body:has(.scrapbook--paged) {
   .audio-player__timeline span { display: none; }
   .story-page { border-radius: .3rem .85rem .85rem .3rem; }
   .story-page h2 { font-size: clamp(2.2rem, 10vw, 3.7rem); }
-  .cake-section { grid-template-columns: 1fr; grid-template-rows: auto minmax(0, 1fr); align-items: center; background: linear-gradient(180deg, #fffdf7 0 44%, #dfedf5 44% 100%); }
+  .cake-section { grid-template-columns: 1fr; grid-template-rows: auto minmax(0, 1fr); align-items: center; gap: 0; background: radial-gradient(ellipse at 50% 78%, rgb(190 220 228 / 45%), transparent 42%), #fffaf0; }
   .cake-section__copy { max-width: 32rem; padding: 1rem clamp(1.2rem, 6vw, 2rem) 0; text-align: center; }
   .cake-section__copy > p:not(.page-kicker) { margin: .7rem auto 0; }
   .cake-section__button { margin-top: .8rem; }
@@ -1185,7 +1199,7 @@ body:has(.scrapbook--paged) {
   .gift-note { width: min(100%, 25rem); padding: .9rem 1.2rem; }
   .letter-section { grid-template-columns: minmax(0, 1fr); grid-template-rows: auto minmax(0, 1fr); gap: .45rem; padding: .8rem; text-align: center; }
   .letter-section__intro { grid-column: 1; grid-row: 1; max-width: none; text-align: center; }
-  .letter-section__intro h2 { font-size: clamp(2.1rem, 9vw, 3.2rem); }
+  .letter-section__intro h2 { max-width: 14ch; margin-inline: auto; font-size: clamp(2.05rem, 8vw, 3.15rem); }
   .letter-section::after { inset: .55rem; }
   .letter-section__closed { grid-column: 1; grid-row: 2; }
   .letter-section--open { grid-template-rows: auto minmax(0, 1fr); }

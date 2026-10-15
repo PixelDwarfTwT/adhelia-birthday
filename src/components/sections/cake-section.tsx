@@ -2,7 +2,6 @@
 
 import Image from "next/image";
 import { useState } from "react";
-import { birthdayContent } from "@/data/content";
 
 export function CakeSection() {
   const [candlesOut, setCandlesOut] = useState(false);

@@ -10,6 +10,7 @@ export function LetterSection() {
   return (
     <section className={`story-page letter-section${letterOpen ? " letter-section--open" : ""}`} aria-labelledby="letter-title" tabIndex={-1}>
       <div className="letter-section__intro">
+        <p className="page-kicker">Sebuah catatan kecil</p>
         <h2 id="letter-title">Sepucuk surat untukmu.</h2>
       </div>
       {!letterOpen ? (
