@@ -8,7 +8,7 @@ export function LetterSection() {
   const [letterOpen, setLetterOpen] = useState(false);
 
   return (
-    <section className="story-page letter-section" aria-labelledby="letter-title" tabIndex={-1}>
+    <section className={`story-page letter-section${letterOpen ? " letter-section--open" : ""}`} aria-labelledby="letter-title" tabIndex={-1}>
       <div className="letter-section__intro">
         <h2 id="letter-title">Sepucuk surat untukmu.</h2>
       </div>

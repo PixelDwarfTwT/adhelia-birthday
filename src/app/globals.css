@@ -743,9 +743,11 @@ body:has(.scrapbook--paged) {
   padding: max(.75rem, env(safe-area-inset-top)) clamp(.75rem, 4vw, 3rem) max(.65rem, env(safe-area-inset-bottom));
   overflow: hidden;
   background:
-    linear-gradient(90deg, rgb(255 255 255 / 28%) 1px, transparent 1px),
-    linear-gradient(#e6f2f8, #d9eaf3);
-  background-size: 22px 22px, auto;
+    linear-gradient(90deg, transparent 0 2.45rem, rgb(69 123 145 / 13%) 2.45rem calc(2.45rem + 1px), transparent calc(2.45rem + 1px)),
+    linear-gradient(90deg, rgb(255 255 255 / 24%) 1px, transparent 1px),
+    linear-gradient(rgb(255 255 255 / 24%) 1px, transparent 1px),
+    linear-gradient(145deg, #e4f1f4, #d6e8ed);
+  background-size: auto, 24px 24px, 24px 24px, auto;
 }
 
 .scrapbook__topbar {
@@ -768,6 +770,14 @@ body:has(.scrapbook--paged) {
   font-weight: 600;
   line-height: 1;
   white-space: nowrap;
+}
+.book-brand span {
+  display: inline-block;
+  padding: .3rem .5rem .24rem;
+  border: 1px solid rgb(93 143 160 / 36%);
+  background: rgb(255 253 247 / 72%);
+  box-shadow: 2px 2px 0 rgb(35 76 95 / 10%);
+  transform: rotate(-1deg);
 }
 .book-brand:focus { outline: none; }
 
@@ -795,10 +805,14 @@ body:has(.scrapbook--paged) {
   min-width: 0;
   min-height: 0;
   overflow: hidden;
-  border: 1px solid rgb(255 255 255 / 84%);
-  border-radius: .4rem 1.15rem 1.15rem .4rem;
-  background: #fffdf7;
-  box-shadow: 0 22px 56px rgb(31 70 91 / 14%), inset 0 0 0 1px rgb(16 45 69 / 4%);
+  border: 1px solid #d7d0bf;
+  border-radius: .32rem .85rem .85rem .32rem;
+  background-color: #fffdf7;
+  background-image:
+    radial-gradient(circle at 20% 24%, rgb(54 73 79 / 3%) 0 .45px, transparent .7px),
+    radial-gradient(circle at 70% 78%, rgb(54 73 79 / 2.5%) 0 .45px, transparent .7px);
+  background-size: 7px 7px, 9px 9px;
+  box-shadow: 0 18px 42px rgb(31 70 91 / 13%), inset 0 0 0 1px rgb(255 255 255 / 62%);
 }
 
 .story-page::before {
@@ -807,9 +821,20 @@ body:has(.scrapbook--paged) {
   top: 0;
   bottom: 0;
   left: 0;
-  width: .55rem;
+  width: .9rem;
   content: "";
-  background: linear-gradient(90deg, rgb(16 45 69 / 10%), rgb(255 255 255 / 72%));
+  background:
+    radial-gradient(circle at 50% 1.5rem, #b8ccd0 0 .2rem, #edf0e9 .22rem .28rem, transparent .3rem) 0 0 / 100% 3.3rem repeat-y,
+    linear-gradient(90deg, #b8cbd0, #f6f0e3 72%, rgb(255 255 255 / 46%));
+  pointer-events: none;
+}
+
+.story-page::after {
+  position: absolute;
+  z-index: 4;
+  inset: .55rem;
+  border: 1px solid rgb(131 150 145 / 13%);
+  content: "";
   pointer-events: none;
 }
 
@@ -830,15 +855,18 @@ body:has(.scrapbook--paged) {
 .cake-section {
   grid-template-columns: 1fr 1fr;
   align-items: center;
-  background: linear-gradient(104deg, #fffdf7 0 52%, #dfedf5 52% 100%);
+  background:
+    radial-gradient(ellipse at 79% 44%, rgb(255 255 255 / 34%), transparent 38%),
+    linear-gradient(104deg, #fffaf0 0 51.7%, #dcecf1 52.1% 100%);
 }
 
 .cake-section__copy { position: relative; z-index: 2; max-width: 35rem; padding: clamp(1rem, 5vw, 5rem); }
 .cake-section__copy > p:not(.page-kicker) { max-width: 28rem; margin: 1.1rem 0 0; font-size: clamp(.95rem, 1.5vw, 1.12rem); }
-.cake-section__button { margin-top: 1.3rem; }
+.cake-section__button { margin-top: 1.3rem; border-radius: .22rem; box-shadow: 3px 3px 0 rgb(14 77 104 / 16%); }
 .cake-section__wish { min-height: 1.6rem; margin: .6rem 0 0; color: #087ca6 !important; font-family: var(--font-handwritten), cursive; font-size: 1.35rem; }
 .birthday-cake {
   position: relative;
+  isolation: isolate;
   width: min(88%, 34rem);
   height: auto;
   /* Match the illustration's 1312 × 1199 canvas so overlays share its coordinates. */
@@ -847,10 +875,32 @@ body:has(.scrapbook--paged) {
   margin: 0;
   transform: rotate(1.5deg);
 }
-.birthday-cake__art { object-fit: contain; }
+.birthday-cake::before {
+  position: absolute;
+  z-index: 0;
+  inset: 7% 4% 5%;
+  border: 1px solid #d8d0c0;
+  background: #fffdf7;
+  box-shadow: 0 12px 24px rgb(30 55 68 / 13%);
+  content: "";
+  transform: rotate(-2.6deg);
+}
+.birthday-cake::after {
+  position: absolute;
+  z-index: 3;
+  top: 1%;
+  left: 12%;
+  width: 3.9rem;
+  height: .85rem;
+  background: rgb(135 190 204 / 82%);
+  box-shadow: 0 1px 2px rgb(37 73 88 / 9%);
+  content: "";
+  transform: rotate(-2deg);
+}
+.birthday-cake__art { z-index: 1; object-fit: contain; }
 .birthday-cake__flame {
   position: absolute;
-  z-index: 2;
+  z-index: 4;
   /* Coordinates follow each wick tip in the source illustration, including its transparent margin. */
   width: .72rem;
   height: 1rem;
@@ -911,26 +961,34 @@ body:has(.scrapbook--paged) {
 @keyframes note-arrive { from { transform: translateY(.65rem) rotate(-1deg); opacity: 0; } to { transform: translateY(0) rotate(-1deg); opacity: 1; } }
 
 .letter-section {
-  grid-template-rows: auto minmax(0, 1fr);
-  align-content: center;
-  justify-items: center;
-  gap: clamp(.7rem, 2vh, 1.5rem);
-  padding: clamp(1rem, 4vw, 3rem);
-  text-align: center;
-  background: #f8f3e6;
+  grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr);
+  grid-template-rows: minmax(0, 1fr);
+  align-items: center;
+  gap: clamp(1.5rem, 5vw, 5rem);
+  padding: clamp(1.5rem, 6vw, 5rem);
+  background-color: #f8f1df;
+  background-image:
+    linear-gradient(90deg, transparent 0 2.6rem, rgb(173 115 102 / 13%) 2.6rem calc(2.6rem + 1px), transparent calc(2.6rem + 1px)),
+    repeating-linear-gradient(0deg, transparent 0 2.5rem, rgb(143 166 157 / 8%) 2.5rem calc(2.5rem + 1px));
 }
-.letter-section::after { position: absolute; inset: 1rem; content: ""; border: 1px solid rgb(173 145 94 / 24%); pointer-events: none; }
-.letter-section__intro { position: relative; z-index: 2; }
-.letter-section__intro h2 { max-width: none; font-size: clamp(2.1rem, 5vw, 3.8rem); }
-.letter-section__closed { position: relative; z-index: 2; display: grid; align-content: center; justify-items: center; gap: 1rem; width: 100%; min-height: 0; }
+.letter-section::after { position: absolute; z-index: 4; inset: .85rem; border: 1px solid rgb(147 122 79 / 26%); content: ""; pointer-events: none; }
+.letter-section__intro { position: relative; z-index: 2; grid-column: 1; max-width: 28rem; justify-self: center; text-align: left; }
+.letter-section__intro h2 { max-width: 9ch; font-size: clamp(2.5rem, 5.2vw, 4.5rem); line-height: 1; }
+.letter-section__closed { position: relative; z-index: 2; display: grid; grid-column: 2; align-content: center; justify-items: center; gap: 1.25rem; width: 100%; min-height: 0; }
+.letter-section--open { grid-template-columns: minmax(0, 1fr); grid-template-rows: auto minmax(0, 1fr); justify-items: center; gap: clamp(.6rem, 1.5vh, 1rem); text-align: center; }
+.letter-section--open .letter-section__intro { grid-column: 1; grid-row: 1; max-width: none; text-align: center; }
+.letter-section--open .letter-section__intro h2 { max-width: none; font-size: clamp(2.1rem, 4.8vw, 3.8rem); }
+.letter-section--open .letter-paper { grid-column: 1; grid-row: 2; }
 .letter-envelope {
-  width: min(68vw, 21rem);
-  height: clamp(8rem, 23vh, 12rem);
+  width: min(100%, 27rem);
+  height: clamp(10rem, 28vh, 15rem);
   overflow: hidden;
   isolation: isolate;
-  border-radius: .25rem;
+  border: 1px solid #abcbd4;
+  border-radius: .18rem;
   background: linear-gradient(150deg, #d8eaf0, #a3cbd9);
-  box-shadow: 0 16px 34px rgb(33 65 81 / 15%);
+  box-shadow: 5px 6px 0 #e4d9be, 0 17px 30px rgb(33 65 81 / 14%);
+  transform: rotate(1deg);
 }
 .letter-envelope::before {
   inset: 0;
@@ -967,18 +1025,24 @@ body:has(.scrapbook--paged) {
   font-style: normal;
 }
 .button--outline { color: #145d7b; background: #fffdf7; border: 1px solid #a9cbd9; box-shadow: 0 6px 18px rgb(34 64 78 / 8%); }
+.letter-reveal__button { border-radius: .2rem; box-shadow: 2px 2px 0 rgb(45 82 97 / 12%); }
 .letter-paper {
   position: relative;
   z-index: 2;
-  width: min(100%, 40rem);
+  grid-column: 1 / -1;
+  grid-row: 1;
+  justify-self: center;
+  width: min(100%, 48rem);
   max-height: 100%;
   overflow: auto;
   margin: 0;
-  padding: clamp(1.2rem, 4vw, 2.7rem);
-  border: 1px solid #e5ddc9;
-  border-radius: .15rem;
+  padding: clamp(1.5rem, 4vw, 2.7rem) clamp(1.5rem, 5vw, 3.3rem) clamp(1.5rem, 4vw, 2.7rem) clamp(2.7rem, 6vw, 4rem);
+  border: 1px solid #ddd2ba;
+  border-radius: .12rem;
   color: #314c5c;
-  background: repeating-linear-gradient(0deg, #fffdf5 0 2rem, #eee7d8 2.03rem 2.07rem);
+  background:
+    linear-gradient(90deg, transparent 0 1.7rem, rgb(174 106 98 / 22%) 1.7rem calc(1.7rem + 1px), transparent calc(1.7rem + 1px)),
+    repeating-linear-gradient(0deg, #fffdf5 0 2rem, #e9e1d1 2.03rem 2.07rem);
   box-shadow: 0 15px 34px rgb(34 64 78 / 12%);
   font-size: clamp(1rem, 2vw, 1.25rem);
   text-align: left;
@@ -1026,17 +1090,18 @@ body:has(.scrapbook--paged) {
   gap: .45rem;
   padding: .55rem .9rem;
   border: 1px solid #aacbd9;
-  border-radius: .45rem;
+  border-radius: .2rem;
   color: #1b5e7a;
   background: #fffdf7;
   cursor: pointer;
   font-size: .82rem;
   font-weight: 700;
   transition: transform .18s ease, background-color .18s ease;
+  box-shadow: 2px 2px 0 rgb(45 82 97 / 12%);
 }
 .page-controls__button:hover { transform: translateY(-2px); background: #fff; }
 .page-controls__button svg { width: 1rem; height: 1rem; }
-.page-controls__button--next { justify-self: end; border-color: #155f7c; color: #fff; background: #155f7c; }
+.page-controls__button--next { justify-self: end; border-color: #155f7c; color: #fff; background: #155f7c; box-shadow: 2px 2px 0 #0e4d68; }
 .page-controls__button--next:hover { background: #0e4d68; }
 .page-controls__status { display: grid; justify-items: center; gap: .12rem; margin: 0; color: #506b7a; font-size: .65rem; line-height: 1.2; }
 .page-controls__status strong { color: #163b52; font-family: var(--font-display), Georgia, serif; font-size: 1.05rem; font-weight: 600; }
@@ -1053,11 +1118,11 @@ body:has(.scrapbook--paged) {
   gap: .4rem;
   margin: 0;
   padding: .35rem;
-  border-color: rgb(255 255 255 / 92%);
-  border-radius: .7rem;
-  background: rgb(255 253 247 / 96%);
-  box-shadow: 0 7px 20px rgb(24 59 78 / 12%);
-  backdrop-filter: blur(10px);
+  border-color: #b7d0d8;
+  border-radius: .25rem;
+  background: #fffaf0;
+  box-shadow: 3px 3px 0 rgb(47 84 101 / 12%);
+  backdrop-filter: none;
 }
 .audio-player__identity { display: flex; min-width: 0; flex: 0 1 5.3rem; gap: .35rem; }
 .audio-player__star { width: 1.7rem; height: 1.7rem; flex: 0 0 auto; }
@@ -1094,7 +1159,8 @@ body:has(.scrapbook--paged) {
 @media (max-width: 700px) {
   .scrapbook--paged { grid-template-rows: 3.1rem minmax(0, 1fr) 3.5rem; gap: .35rem; padding-inline: .55rem; }
   .scrapbook__topbar { padding-right: min(15rem, calc(100vw - 8rem)); }
-  .book-brand { font-size: clamp(.72rem, 3.4vw, .9rem); }
+  .book-brand { font-size: clamp(.64rem, 2.6vw, .72rem); white-space: normal; }
+  .book-brand span { max-width: 100%; padding: .18rem .28rem .14rem; line-height: 1.05; }
   .audio-player { top: max(.55rem, env(safe-area-inset-top)); right: .55rem; width: min(15rem, calc(100vw - 8rem)); min-width: 0; gap: .2rem; padding: .25rem; }
   .audio-player--error { width: min(15rem, calc(100vw - 8rem)); }
   .audio-player__identity { flex: 0 0 1.7rem; }
@@ -1117,11 +1183,14 @@ body:has(.scrapbook--paged) {
   .gift-section__reveal { padding: .15rem .8rem .65rem; gap: .35rem; }
   .birthday-gift { width: min(53vw, 14rem); height: clamp(8rem, 22vh, 11rem); }
   .gift-note { width: min(100%, 25rem); padding: .9rem 1.2rem; }
-  .letter-section { grid-template-rows: auto minmax(0, 1fr); padding: .8rem; }
+  .letter-section { grid-template-columns: minmax(0, 1fr); grid-template-rows: auto minmax(0, 1fr); gap: .45rem; padding: .8rem; text-align: center; }
+  .letter-section__intro { grid-column: 1; grid-row: 1; max-width: none; text-align: center; }
   .letter-section__intro h2 { font-size: clamp(2.1rem, 9vw, 3.2rem); }
   .letter-section::after { inset: .55rem; }
-  .letter-envelope { width: min(72vw, 18rem); }
-  .letter-paper { width: min(100%, 34rem); padding: 1.1rem 1.25rem; font-size: 1rem; }
+  .letter-section__closed { grid-column: 1; grid-row: 2; }
+  .letter-section--open { grid-template-rows: auto minmax(0, 1fr); }
+  .letter-paper { grid-column: 1; grid-row: 2; width: min(100%, 34rem); padding: 1.1rem 1.1rem 1.1rem 2.35rem; font-size: 1rem; }
+  .letter-envelope { width: min(76vw, 23rem); height: clamp(9rem, 24vh, 12rem); }
   .gallery-section { grid-template-columns: 1fr; grid-template-rows: auto minmax(0, 1fr); gap: .25rem; padding: 1rem; background: linear-gradient(180deg, #e6f1f6 0 31%, #fffdf7 31% 100%); }
   .gallery-section__intro { padding: .65rem .8rem .3rem; text-align: center; }
   .gallery-section__intro h2 { max-width: 13ch; margin-inline: auto; font-size: clamp(2.15rem, 8.5vw, 3.2rem); }
