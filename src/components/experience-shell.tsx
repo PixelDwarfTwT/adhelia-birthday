@@ -8,11 +8,9 @@ import { AudioPlayer, type AudioPlayerHandle } from "./audio-player";
 import { OpeningScene } from "./opening-scene";
 import { PasscodeGate } from "./passcode-gate";
 import { CakeSection } from "./sections/cake-section";
-import { GiftSection } from "./sections/gift-section";
 import { LetterSection } from "./sections/letter-section";
-import { MemoriesSection } from "./sections/memories-section";
 
-const pages = ["Kue", "Kado", "Surat", "Foto"] as const;
+const pages = ["Kue", "Surat"] as const;
 
 function subscribeToAccess(onChange: () => void) {
   window.addEventListener("storage", onChange);
@@ -78,21 +76,7 @@ export function ExperienceShell() {
   }
 
   function renderPage() {
-    switch (pageIndex) {
-      case 0:
-        return <CakeSection />;
-      case 1:
-        return <GiftSection />;
-      case 2:
-        return <LetterSection />;
-      default:
-        return (
-          <MemoriesSection
-            memories={birthdayContent.memories.filter((memory) => Boolean(memory.imageSrc || memory.videoSrc))}
-            onVideoActiveChange={(active) => audioPlayerRef.current?.setDucked(active)}
-          />
-        );
-    }
+    return pageIndex === 0 ? <CakeSection /> : <LetterSection />;
   }
 
   if (!hasAccess) return <PasscodeGate onUnlock={unlock} />;
@@ -106,8 +90,7 @@ export function ExperienceShell() {
         <main className="scrapbook scrapbook--paged" aria-labelledby="scrapbook-title">
           <header className="scrapbook__topbar">
             <h1 className="book-brand" id="scrapbook-title" ref={titleRef} tabIndex={-1}>
-              <span>{birthdayContent.recipientName}</span>
-              <small>buku ulang tahun</small>
+              <span>Happy Birthday Adhelia</span>
             </h1>
           </header>
           <div className="page-stage">

@@ -39,32 +39,30 @@ describe("birthday book journey", () => {
     expect(window.localStorage.getItem("adhelia-birthday-access")).toBe("unlocked");
   });
 
-  it("shows the four remaining pages without the removed chapters", async () => {
+  it("shows only the cake and letter pages", async () => {
     window.localStorage.setItem("adhelia-birthday-access", "unlocked");
     render(<ExperienceShell />);
     await openBook();
 
     expect(screen.getByRole("navigation", { name: "Navigasi halaman" })).toBeInTheDocument();
     expect(document.querySelectorAll(".story-page")).toHaveLength(1);
-    expect(screen.getByText("01 / 04")).toBeInTheDocument();
-    expect(screen.queryByText(/momen seru/i)).not.toBeInTheDocument();
-    expect(screen.queryByText(/bintang-bintang untukmu/i)).not.toBeInTheDocument();
+    expect(screen.getByText("01 / 02")).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "Happy Birthday Adhelia" })).toBeInTheDocument();
+    expect(screen.queryByText("Sebuah kado kecil.")).not.toBeInTheDocument();
+    expect(screen.queryByText("Hari yang ingin disimpan.")).not.toBeInTheDocument();
 
     fireEvent.click(screen.getByRole("button", { name: "Halaman berikutnya" }));
-    expect(await screen.findByRole("heading", { name: "Sebuah kado kecil." })).toBeInTheDocument();
-    expect(screen.getByText("02 / 04")).toBeInTheDocument();
+    expect(await screen.findByRole("heading", { name: "Sepucuk surat untukmu." })).toBeInTheDocument();
+    expect(screen.getByText("02 / 02")).toBeInTheDocument();
     expect(screen.queryByText(/Tambahkan favorit/)).not.toBeInTheDocument();
+    expect(screen.queryByText("Hari yang ingin disimpan.")).not.toBeInTheDocument();
     expect(document.querySelectorAll(".story-page")).toHaveLength(1);
   });
 
-  it("opens the gift, preserves the letter placeholder, and shows the real photo", async () => {
+  it("opens the letter placeholder and cycles between the two remaining pages", async () => {
     window.localStorage.setItem("adhelia-birthday-access", "unlocked");
     render(<ExperienceShell />);
     await openBook();
-
-    fireEvent.click(screen.getByRole("button", { name: "Halaman berikutnya" }));
-    fireEvent.click(await screen.findByRole("button", { name: "Buka kado" }));
-    expect(screen.getByText(/Semoga hari ini terasa hangat/)).toBeInTheDocument();
 
     fireEvent.click(screen.getByRole("button", { name: "Halaman berikutnya" }));
     expect(await screen.findByRole("heading", { name: "Sepucuk surat untukmu." })).toBeInTheDocument();
@@ -73,9 +71,9 @@ describe("birthday book journey", () => {
     expect(screen.queryByText(/Aku selalu ingat/)).not.toBeInTheDocument();
 
     fireEvent.click(screen.getByRole("button", { name: "Halaman berikutnya" }));
-    expect(await screen.findByRole("heading", { name: "Hari yang ingin disimpan." })).toBeInTheDocument();
-    expect(screen.getByRole("img", { name: "Adhelia memegang kue kecil dengan lilin menyala." })).toBeInTheDocument();
-    expect(screen.queryByText("Tambahkan kenangan")).not.toBeInTheDocument();
+    expect(await screen.findByRole("heading", { name: "Buat satu permohonan kecil." })).toBeInTheDocument();
+    expect(screen.queryByRole("heading", { name: "Sebuah kado kecil." })).not.toBeInTheDocument();
+    expect(screen.queryByRole("heading", { name: "Hari yang ingin disimpan." })).not.toBeInTheDocument();
   });
 
   it("keeps the pages usable when audio cannot start", async () => {

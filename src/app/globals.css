@@ -764,20 +764,12 @@ body:has(.scrapbook--paged) {
   margin: 0;
   color: #102d45;
   font-family: var(--font-display), Georgia, serif;
-  font-size: clamp(1.45rem, 3vw, 2rem);
+  font-size: clamp(1.15rem, 2.2vw, 1.55rem);
   font-weight: 600;
   line-height: 1;
+  white-space: nowrap;
 }
 .book-brand:focus { outline: none; }
-
-.book-brand small {
-  color: #416c85;
-  font-family: var(--font-sans), sans-serif;
-  font-size: .64rem;
-  font-weight: 700;
-  letter-spacing: .12em;
-  text-transform: uppercase;
-}
 
 .page-stage { min-width: 0; min-height: 0; }
 .page-scene { width: 100%; height: 100%; min-width: 0; min-height: 0; }
@@ -858,7 +850,8 @@ body:has(.scrapbook--paged) {
 .birthday-cake__flame {
   position: absolute;
   z-index: 2;
-  top: 4%;
+  /* The artwork has three wick heights; these anchors keep each flame base on its wick. */
+  top: calc(7.4% - .82rem);
   width: .72rem;
   height: 1rem;
   transform: translate(-50%, 0);
@@ -869,9 +862,9 @@ body:has(.scrapbook--paged) {
   animation: page-flame .7s ease-in-out infinite alternate;
   transition: opacity .25s ease, transform .25s ease;
 }
-.birthday-cake__flame--one { left: 41.3%; }
+.birthday-cake__flame--one { top: calc(8.46% - .82rem); left: 41.3%; }
 .birthday-cake__flame--two { left: 51%; }
-.birthday-cake__flame--three { left: 61%; }
+.birthday-cake__flame--three { top: calc(8.73% - .82rem); left: 61%; }
 .birthday-cake--wished .birthday-cake__flame { transform: translate(-50%, -1rem) scale(.35); opacity: 0; }
 @keyframes page-flame { to { scale: .9 1.1; rotate: 4deg; } }
 
@@ -1101,8 +1094,7 @@ body:has(.scrapbook--paged) {
 @media (max-width: 700px) {
   .scrapbook--paged { grid-template-rows: 3.1rem minmax(0, 1fr) 3.5rem; gap: .35rem; padding-inline: .55rem; }
   .scrapbook__topbar { padding-right: min(15rem, calc(100vw - 8rem)); }
-  .book-brand { font-size: 1.55rem; }
-  .book-brand small { display: none; }
+  .book-brand { font-size: clamp(.72rem, 3.4vw, .9rem); }
   .audio-player { top: max(.55rem, env(safe-area-inset-top)); right: .55rem; width: min(15rem, calc(100vw - 8rem)); min-width: 0; gap: .2rem; padding: .25rem; }
   .audio-player--error { width: min(15rem, calc(100vw - 8rem)); }
   .audio-player__identity { flex: 0 0 1.7rem; }
