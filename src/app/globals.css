@@ -862,9 +862,9 @@ body:has(.scrapbook--paged) {
   animation: page-flame .7s ease-in-out infinite alternate;
   transition: opacity .25s ease, transform .25s ease;
 }
-.birthday-cake__flame--one { top: calc(5.05% - .78rem); left: 40.4%; }
-.birthday-cake__flame--two { top: calc(4% - .78rem); left: 49.7%; }
-.birthday-cake__flame--three { top: calc(5.5% - .78rem); left: 60.3%; }
+.birthday-cake__flame--one { top: calc(5.05% - .55rem); left: 40.4%; }
+.birthday-cake__flame--two { top: calc(4% - .55rem); left: 49.7%; }
+.birthday-cake__flame--three { top: calc(5.5% - .55rem); left: 60.3%; }
 .birthday-cake--wished .birthday-cake__flame { transform: translate(-50%, -1rem) scale(.35); opacity: 0; }
 @keyframes page-flame { to { scale: .9 1.1; rotate: 4deg; } }
 
