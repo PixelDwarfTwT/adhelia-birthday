@@ -888,28 +888,6 @@ body:has(.scrapbook--paged) {
   margin: 0;
   transform: rotate(1.5deg);
 }
-.birthday-cake::before {
-  position: absolute;
-  z-index: 0;
-  inset: 7% 4% 5%;
-  border: 1px solid #d8d0c0;
-  background: #fffdf7;
-  box-shadow: 0 12px 24px rgb(30 55 68 / 13%);
-  content: "";
-  transform: rotate(-2.6deg);
-}
-.birthday-cake::after {
-  position: absolute;
-  z-index: 3;
-  top: 1%;
-  left: 12%;
-  width: 3.9rem;
-  height: .85rem;
-  background: rgb(135 190 204 / 82%);
-  box-shadow: 0 1px 2px rgb(37 73 88 / 9%);
-  content: "";
-  transform: rotate(-2deg);
-}
 .birthday-cake__art { z-index: 1; object-fit: contain; }
 .birthday-cake__flame {
   position: absolute;
