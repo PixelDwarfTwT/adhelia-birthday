@@ -841,7 +841,8 @@ body:has(.scrapbook--paged) {
   position: relative;
   width: min(88%, 34rem);
   height: auto;
-  aspect-ratio: 1.02 / 1;
+  /* Match the illustration's 1312 × 1199 canvas so overlays share its coordinates. */
+  aspect-ratio: 1312 / 1199;
   justify-self: center;
   margin: 0;
   transform: rotate(1.5deg);
@@ -850,8 +851,7 @@ body:has(.scrapbook--paged) {
 .birthday-cake__flame {
   position: absolute;
   z-index: 2;
-  /* The artwork has three wick heights; these anchors keep each flame base on its wick. */
-  top: calc(7.4% - .82rem);
+  /* Coordinates follow each wick tip in the source illustration, including its transparent margin. */
   width: .72rem;
   height: 1rem;
   transform: translate(-50%, 0);
@@ -862,9 +862,9 @@ body:has(.scrapbook--paged) {
   animation: page-flame .7s ease-in-out infinite alternate;
   transition: opacity .25s ease, transform .25s ease;
 }
-.birthday-cake__flame--one { top: calc(8.46% - .82rem); left: 41.3%; }
-.birthday-cake__flame--two { left: 51%; }
-.birthday-cake__flame--three { top: calc(8.73% - .82rem); left: 61%; }
+.birthday-cake__flame--one { top: calc(5.05% - .78rem); left: 40.4%; }
+.birthday-cake__flame--two { top: calc(4% - .78rem); left: 49.7%; }
+.birthday-cake__flame--three { top: calc(5.5% - .78rem); left: 60.3%; }
 .birthday-cake--wished .birthday-cake__flame { transform: translate(-50%, -1rem) scale(.35); opacity: 0; }
 @keyframes page-flame { to { scale: .9 1.1; rotate: 4deg; } }
 
@@ -1138,7 +1138,7 @@ body:has(.scrapbook--paged) {
   .scrapbook--paged { grid-template-rows: 2.75rem minmax(0, 1fr) 3.2rem; gap: .35rem; padding-block: .45rem; }
   .story-page h2 { font-size: clamp(2rem, 5vh, 3.3rem); }
   .cake-section__copy { padding-block: 1rem; }
-  .birthday-cake { width: auto; height: min(100%, 28rem); aspect-ratio: 1.02 / 1; }
+  .birthday-cake { width: auto; height: min(100%, 28rem); aspect-ratio: 1312 / 1199; }
   .gift-section__reveal { transform: scale(.84); }
   .gallery-section__intro h2 { font-size: clamp(2rem, 5vh, 3.2rem); }
   .memory-card__image { max-height: 52vh; }
