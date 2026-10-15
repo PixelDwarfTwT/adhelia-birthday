@@ -31,12 +31,29 @@ export interface ExperienceProgress {
   constellationComplete: boolean;
 }
 
+export interface BirthdayCopy {
+  recipientName: string;
+  openingCopy: string;
+  introduction: string;
+  cakeTitle: string;
+  cakeInstruction: string;
+  letterTitle: string;
+  letter: {
+    greeting: string;
+    paragraphs: string[];
+    signOff: string;
+  };
+}
+
 export interface BirthdayContent {
   recipientName: string;
   openingCopy: string;
   passcodePrompt: string;
   passcodeHash: string;
   introduction: string;
+  cakeTitle: string;
+  cakeInstruction: string;
+  letterTitle: string;
   giftMessage: string;
   audio: {
     primary: string;

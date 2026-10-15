@@ -1,22 +1,23 @@
 "use client";
 
 import { useState } from "react";
-import { birthdayContent } from "@/data/content";
+import { defaultBirthdayCopy } from "@/data/content";
+import type { BirthdayCopy } from "@/data/types";
 
-export function LetterSection() {
-  const { letter } = birthdayContent;
+export function LetterSection({ copy = defaultBirthdayCopy }: { copy?: BirthdayCopy }) {
+  const { letter } = copy;
   const [letterOpen, setLetterOpen] = useState(false);
 
   return (
     <section className={`story-page letter-section${letterOpen ? " letter-section--open" : ""}`} aria-labelledby="letter-title" tabIndex={-1}>
       <div className="letter-section__intro">
         <p className="page-kicker">Sebuah catatan kecil</p>
-        <h2 id="letter-title">Sepucuk surat untukmu.</h2>
+        <h2 id="letter-title">{copy.letterTitle}</h2>
       </div>
       {!letterOpen ? (
         <div className="letter-section__closed">
           <div className="letter-envelope" aria-hidden="true">
-            <span>Untuk {birthdayContent.recipientName}</span>
+            <span>Untuk {copy.recipientName}</span>
             <i>✦</i>
           </div>
           <button
@@ -29,7 +30,7 @@ export function LetterSection() {
           </button>
         </div>
       ) : (
-        <article className="letter-paper" aria-label={`Surat ulang tahun untuk ${birthdayContent.recipientName}`}>
+        <article className="letter-paper" aria-label={`Surat ulang tahun untuk ${copy.recipientName}`}>
           <span aria-hidden="true" className="letter-paper__tape" />
           <p className="letter-paper__greeting">{letter.greeting}</p>
           {letter.paragraphs.length > 0 ? (
@@ -37,7 +38,7 @@ export function LetterSection() {
           ) : (
             <div className="letter-paper__empty">
               <p>Pesan pribadimu akan ditulis di sini.</p>
-              <small>Isi <code>letter.paragraphs</code> di <code>src/data/content.ts</code>.</small>
+              <small>Tulis isi surat lewat panel admin saat sudah siap.</small>
             </div>
           )}
           <p className="letter-paper__signoff">{letter.signOff}</p>

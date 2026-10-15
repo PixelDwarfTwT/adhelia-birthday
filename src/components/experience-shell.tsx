@@ -2,8 +2,11 @@
 
 import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 import { ArrowLeft, ArrowRight } from "lucide-react";
-import { birthdayContent } from "@/data/content";
+import { birthdayContent, defaultBirthdayCopy } from "@/data/content";
+import type { BirthdayCopy } from "@/data/types";
 import { hasLocalAccess, rememberLocalAccess } from "@/lib/access-code";
+import { parseBirthdayCopy } from "@/lib/birthday-copy";
+import { createSupabaseBrowserClient } from "@/lib/supabase/client";
 import { AudioPlayer, type AudioPlayerHandle } from "./audio-player";
 import { OpeningScene } from "./opening-scene";
 import { PasscodeGate } from "./passcode-gate";
@@ -34,6 +37,7 @@ export function ExperienceShell() {
   const [sessionAccess, setSessionAccess] = useState(false);
   const hasAccess = storedAccess || sessionAccess;
   const [experienceStarted, setExperienceStarted] = useState(false);
+  const [copy, setCopy] = useState<BirthdayCopy>(defaultBirthdayCopy);
   const [pageIndex, setPageIndex] = useState(0);
   const [pageDirection, setPageDirection] = useState<"next" | "previous">("next");
   const titleRef = useRef<HTMLHeadingElement>(null);
@@ -47,6 +51,31 @@ export function ExperienceShell() {
   useEffect(() => {
     if (experienceStarted && pageIndex > 0) pageRef.current?.focus({ preventScroll: true });
   }, [experienceStarted, pageIndex]);
+
+  useEffect(() => {
+    const supabase = createSupabaseBrowserClient();
+    if (!supabase) return;
+
+    let active = true;
+    void (async () => {
+      try {
+        const { data, error } = await supabase
+          .from("birthday_content")
+          .select("content")
+          .eq("id", "published")
+          .maybeSingle();
+        if (!active || error || !data) return;
+        const publishedCopy = parseBirthdayCopy(data.content);
+        if (publishedCopy) setCopy(publishedCopy);
+      } catch {
+        // The locally bundled copy remains available when Supabase is unreachable.
+      }
+    })();
+
+    return () => {
+      active = false;
+    };
+  }, []);
 
   function unlock() {
     setSessionAccess(true);
@@ -76,7 +105,7 @@ export function ExperienceShell() {
   }
 
   function renderPage() {
-    return pageIndex === 0 ? <CakeSection /> : <LetterSection />;
+    return pageIndex === 0 ? <CakeSection copy={copy} /> : <LetterSection copy={copy} />;
   }
 
   if (!hasAccess) return <PasscodeGate onUnlock={unlock} />;
@@ -85,12 +114,12 @@ export function ExperienceShell() {
     <>
       <AudioPlayer ref={audioPlayerRef} track={birthdayContent.audio.primary} />
       {!experienceStarted ? (
-        <OpeningScene onOpen={openExperience} />
+        <OpeningScene copy={copy} onOpen={openExperience} />
       ) : (
         <main className="scrapbook scrapbook--paged" aria-labelledby="scrapbook-title">
           <header className="scrapbook__topbar">
             <h1 className="book-brand" id="scrapbook-title" ref={titleRef} tabIndex={-1}>
-              <span>Happy Birthday Adhelia</span>
+              <span>Happy Birthday {copy.recipientName}</span>
             </h1>
           </header>
           <div className="page-stage">

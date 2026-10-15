@@ -1,15 +1,17 @@
 "use client";
 
 import { useState } from "react";
-import { birthdayContent } from "@/data/content";
+import { defaultBirthdayCopy } from "@/data/content";
+import type { BirthdayCopy } from "@/data/types";
 
 interface OpeningSceneProps {
   onOpen(): void;
+  copy?: BirthdayCopy;
 }
 
 const balloons = ["sky", "lavender", "blue", "gold", "pink"] as const;
 
-export function OpeningScene({ onOpen }: OpeningSceneProps) {
+export function OpeningScene({ onOpen, copy = defaultBirthdayCopy }: OpeningSceneProps) {
   const [isOpening, setIsOpening] = useState(false);
   const [poppedBalloons, setPoppedBalloons] = useState<string[]>([]);
 
@@ -28,8 +30,8 @@ export function OpeningScene({ onOpen }: OpeningSceneProps) {
       <div className="opening-screen__glow" aria-hidden="true" />
       <div className="opening-screen__stars" aria-hidden="true"><span>✦</span><span>✧</span><span>✦</span><span>·</span></div>
       <p className="eyebrow">Ada hadiah kecil untukmu</p>
-      <h1 id="opening-title">{birthdayContent.openingCopy},<br /><em>{birthdayContent.recipientName}!</em></h1>
-      <p className="opening-screen__note">{birthdayContent.introduction}</p>
+      <h1 id="opening-title">{copy.openingCopy},<br /><em>{copy.recipientName}!</em></h1>
+      <p className="opening-screen__note">{copy.introduction}</p>
 
       <div className="birthday-balloons" role="group" aria-label="Balon ulang tahun. Sentuh untuk meletuskannya.">
         {balloons.map((color, index) => (
@@ -50,7 +52,7 @@ export function OpeningScene({ onOpen }: OpeningSceneProps) {
       </p>
 
       <div className={`envelope ${isOpening ? "envelope--opening" : ""}`} aria-hidden="true">
-        <div className="envelope__letter"><span>Untuk {birthdayContent.recipientName}</span><i>✦</i></div>
+        <div className="envelope__letter"><span>Untuk {copy.recipientName}</span><i>✦</i></div>
         <div className="envelope__back" />
         <div className="envelope__flap" />
         <div className="envelope__seal">✦</div>

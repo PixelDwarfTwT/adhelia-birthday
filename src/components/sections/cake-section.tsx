@@ -2,16 +2,18 @@
 
 import Image from "next/image";
 import { useState } from "react";
+import { defaultBirthdayCopy } from "@/data/content";
+import type { BirthdayCopy } from "@/data/types";
 
-export function CakeSection() {
+export function CakeSection({ copy = defaultBirthdayCopy }: { copy?: BirthdayCopy }) {
   const [candlesOut, setCandlesOut] = useState(false);
 
   return (
     <section className="story-page cake-section" aria-labelledby="cake-title" tabIndex={-1}>
       <div className="cake-section__copy">
         <p className="page-kicker">Sebelum membuka halaman lain</p>
-        <h2 id="cake-title">Buat satu permohonan kecil.</h2>
-        <p>Pejamkan mata sebentar, lalu tiup lilinnya.</p>
+        <h2 id="cake-title">{copy.cakeTitle}</h2>
+        <p>{copy.cakeInstruction}</p>
         <button
           className="button button--primary cake-section__button"
           onClick={() => setCandlesOut((out) => !out)}

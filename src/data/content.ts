@@ -1,4 +1,4 @@
-import type { BirthdayContent } from "./types";
+import type { BirthdayContent, BirthdayCopy } from "./types";
 
 export const birthdayContent: BirthdayContent = {
   recipientName: "Adhelia",
@@ -8,6 +8,9 @@ export const birthdayContent: BirthdayContent = {
   passcodeHash: "16477688c0e00699c6cfa4497a3612d7e83c532062b64b250fed8908128ed548",
   introduction:
     "Semoga hari ini penuh senyum, tawa, dan hal-hal baik yang kamu harapkan. Selamat menikmati hari spesialmu!",
+  cakeTitle: "Buat satu permohonan kecil.",
+  cakeInstruction: "Pejamkan mata sebentar, lalu tiup lilinnya.",
+  letterTitle: "Sepucuk surat untukmu.",
   giftMessage:
     "Semoga hari ini terasa hangat, ringan, dan penuh hal yang membuatmu tersenyum. Selamat menikmati setiap momennya, Adhelia.",
   audio: {
@@ -71,3 +74,21 @@ export const birthdayContent: BirthdayContent = {
   finalMessage: "Semoga tahun barumu dipenuhi hal-hal baik, tawa, dan banyak alasan untuk bahagia.",
   finalGreeting: "Selamat ulang tahun, Adhelia!",
 };
+
+export function toBirthdayCopy(content: BirthdayContent): BirthdayCopy {
+  return {
+    recipientName: content.recipientName,
+    openingCopy: content.openingCopy,
+    introduction: content.introduction,
+    cakeTitle: content.cakeTitle,
+    cakeInstruction: content.cakeInstruction,
+    letterTitle: content.letterTitle,
+    letter: {
+      greeting: content.letter.greeting,
+      paragraphs: [...content.letter.paragraphs],
+      signOff: content.letter.signOff,
+    },
+  };
+}
+
+export const defaultBirthdayCopy = toBirthdayCopy(birthdayContent);

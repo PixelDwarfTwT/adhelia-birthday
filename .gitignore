@@ -5,3 +5,5 @@ next-env.d.ts
 out/
 coverage/
 *.tsbuildinfo
+.env*
+!.env.example
