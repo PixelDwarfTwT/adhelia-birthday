@@ -20,7 +20,9 @@ export function PasscodeGate({ onUnlock }: PasscodeGateProps) {
 
     try {
       const subtle = typeof globalThis.crypto === "undefined" ? undefined : globalThis.crypto.subtle;
-      const matches = await verifyPasscode(answer, birthdayContent.passcodeHash, subtle);
+      const normalizedAnswer = answer.trim().toLocaleLowerCase("id-ID");
+      const passcodeCandidate = normalizedAnswer === "biru" ? "blue" : answer;
+      const matches = await verifyPasscode(passcodeCandidate, birthdayContent.passcodeHash, subtle);
       if (!matches) {
         setMessage(subtle ? "Belum tepat. Coba ingat lagi warna favorit Adhelia." : "Gerbang kecil ini tidak dapat memeriksa passcode di browser ini. Coba buka dengan browser yang mendukung Web Crypto.");
         return;
@@ -40,9 +42,9 @@ export function PasscodeGate({ onUnlock }: PasscodeGateProps) {
         <span>✦</span><span>✧</span><span>✦</span><span>✧</span>
       </div>
       <section className="gate-card">
-        <p className="eyebrow">A little birthday surprise</p>
+      <p className="eyebrow">Kejutan ulang tahun kecil</p>
         <span className="gate-card__seal" aria-hidden="true">✦</span>
-        <h1 id="gate-title">A tiny secret before the stars</h1>
+        <h1 id="gate-title">Satu pertanyaan kecil sebelum perayaan</h1>
         <p className="gate-card__prompt">{birthdayContent.passcodePrompt}</p>
         <form className="gate-form" onSubmit={handleSubmit}>
           <label htmlFor="passcode-answer">Jawaban</label>
@@ -61,7 +63,7 @@ export function PasscodeGate({ onUnlock }: PasscodeGateProps) {
           </button>
         </form>
         {message && <p className="gate-message" id="gate-message" role="alert">{message}</p>}
-        <p className="gate-card__footnote">A small key for a small surprise.</p>
+        <p className="gate-card__footnote">Satu kunci kecil untuk kejutan kecil.</p>
       </section>
     </main>
   );

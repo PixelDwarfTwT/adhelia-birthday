@@ -16,7 +16,7 @@ describe("final constellation", () => {
     render(<ConstellationSection completed={false} onComplete={onComplete} />);
 
     letters.forEach((letter, index) => {
-      fireEvent.click(screen.getByRole("button", { name: `Star ${index + 1}: ${letter}` }));
+      fireEvent.click(screen.getByRole("button", { name: `Bintang ${index + 1}: ${letter}` }));
     });
 
     expect(screen.getByText("ADHELIA")).toBeInTheDocument();
@@ -25,10 +25,10 @@ describe("final constellation", () => {
 
   it("ignoresOutOfOrderStarAndKeepsProgressClear", () => {
     render(<ConstellationSection completed={false} onComplete={vi.fn()} />);
-    fireEvent.click(screen.getByRole("button", { name: "Star 3: H" }));
+    fireEvent.click(screen.getByRole("button", { name: "Bintang 3: H" }));
 
-    expect(screen.getByRole("status")).toHaveTextContent(/star 1 of 7 is waiting/i);
-    expect(screen.getByText("0 of 7 stars connected")).toBeInTheDocument();
+    expect(screen.getByRole("status")).toHaveTextContent(/bintang ke-1 menunggu/i);
+    expect(screen.getByText("0 dari 7 bintang terhubung")).toBeInTheDocument();
   });
 
   it("showsFinalMessageAfterCompletion", () => {

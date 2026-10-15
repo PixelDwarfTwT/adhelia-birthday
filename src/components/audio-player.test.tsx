@@ -33,19 +33,33 @@ describe("AudioPlayer", () => {
     expect(HTMLMediaElement.prototype.play).toHaveBeenCalledTimes(1);
   });
 
+  it("doesNotReloadTheTrackAfterTheOpeningGesture", async () => {
+    const player = createRef<AudioPlayerHandle>();
+    render(<AudioPlayer ref={player} track="/assets/metal.mp3" />);
+    const audio = document.querySelector("audio")!;
+    const setAttribute = vi.spyOn(audio, "setAttribute");
+
+    await act(async () => {
+      await player.current!.startFromGesture();
+    });
+
+    const sourceWrites = setAttribute.mock.calls.filter(([name]) => name.toLowerCase() === "src");
+    expect(sourceWrites).toHaveLength(1);
+  });
+
   it("togglesMuteAndPlayPause", async () => {
     const player = createRef<AudioPlayerHandle>();
     render(<AudioPlayer ref={player} track="/assets/metal.mp3" />);
     await act(async () => { await player.current!.startFromGesture(); });
     const audio = document.querySelector("audio")!;
 
-    fireEvent.click(screen.getByRole("button", { name: "Mute music" }));
+    fireEvent.click(screen.getByRole("button", { name: "Bisukan musik" }));
     expect(audio.muted).toBe(true);
-    fireEvent.click(screen.getByRole("button", { name: "Unmute music" }));
+    fireEvent.click(screen.getByRole("button", { name: "Nyalakan musik" }));
     expect(audio.muted).toBe(false);
-    fireEvent.click(screen.getByRole("button", { name: "Pause music" }));
-    expect(screen.getByRole("button", { name: "Play music" })).toBeInTheDocument();
-    fireEvent.click(screen.getByRole("button", { name: "Play music" }));
+    fireEvent.click(screen.getByRole("button", { name: "Jeda musik" }));
+    expect(screen.getByRole("button", { name: "Putar musik" })).toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: "Putar musik" }));
     await waitFor(() => expect(HTMLMediaElement.prototype.play).toHaveBeenCalledTimes(2));
   });
 
@@ -59,7 +73,7 @@ describe("AudioPlayer", () => {
     fireEvent.loadedMetadata(audio);
     fireEvent.timeUpdate(audio);
 
-    expect(screen.getByRole("slider", { name: "Music progress" })).toHaveValue("30");
+    expect(screen.getByRole("slider", { name: "Posisi musik" })).toHaveValue("30");
   });
 
   it("showsRetryAfterPlaybackFailure", async () => {
@@ -68,9 +82,9 @@ describe("AudioPlayer", () => {
     render(<AudioPlayer ref={player} track="/assets/metal.mp3" />);
 
     await act(async () => { await player.current!.startFromGesture(); });
-    expect(await screen.findByRole("alert")).toHaveTextContent(/music note got lost/i);
-    fireEvent.click(screen.getByRole("button", { name: "Retry music" }));
-    expect(await screen.findByRole("button", { name: "Pause music" })).toBeInTheDocument();
+    expect(await screen.findByRole("status", { name: /nada musiknya tersendat/i })).toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: "Coba putar musik lagi" }));
+    expect(await screen.findByRole("button", { name: "Jeda musik" })).toBeInTheDocument();
   });
 
   it("ducksToFifteenPercentForVideo", async () => {

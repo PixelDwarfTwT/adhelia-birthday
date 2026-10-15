@@ -1,14 +1,17 @@
 "use client";
 
-import { useState, type KeyboardEvent } from "react";
+import { useState } from "react";
 import { birthdayContent } from "@/data/content";
 
 interface OpeningSceneProps {
   onOpen(): void;
 }
 
+const balloons = ["sky", "lavender", "blue", "gold", "pink"] as const;
+
 export function OpeningScene({ onOpen }: OpeningSceneProps) {
   const [isOpening, setIsOpening] = useState(false);
+  const [poppedBalloons, setPoppedBalloons] = useState<string[]>([]);
 
   function open() {
     if (isOpening) return;
@@ -16,21 +19,38 @@ export function OpeningScene({ onOpen }: OpeningSceneProps) {
     onOpen();
   }
 
-  function handleKeyDown(event: KeyboardEvent<HTMLButtonElement>) {
-    if (event.key === "Enter" || event.key === " ") {
-      event.preventDefault();
-      open();
-    }
+  function popBalloon(color: string) {
+    setPoppedBalloons((popped) => popped.includes(color) ? popped : [...popped, color]);
   }
 
   return (
     <main className="opening-screen" aria-labelledby="opening-title">
       <div className="opening-screen__glow" aria-hidden="true" />
-      <p className="eyebrow">A note from the night sky</p>
-      <h1 id="opening-title">{birthdayContent.openingCopy}</h1>
-      <p className="opening-screen__note">A little keepsake, tucked between the stars.</p>
+      <div className="opening-screen__stars" aria-hidden="true"><span>✦</span><span>✧</span><span>✦</span><span>·</span></div>
+      <p className="eyebrow">Ada hadiah kecil untukmu</p>
+      <h1 id="opening-title">{birthdayContent.openingCopy},<br /><em>{birthdayContent.recipientName}!</em></h1>
+      <p className="opening-screen__note">{birthdayContent.introduction}</p>
+
+      <div className="birthday-balloons" role="group" aria-label="Balon ulang tahun. Sentuh untuk meletuskannya.">
+        {balloons.map((color, index) => (
+          <button
+            aria-label={poppedBalloons.includes(color) ? `Balon ${index + 1} sudah meletus` : `Letuskan balon ${index + 1}`}
+            className={`birthday-balloon birthday-balloon--${color}${poppedBalloons.includes(color) ? " birthday-balloon--popped" : ""}`}
+            disabled={poppedBalloons.includes(color)}
+            key={color}
+            onClick={() => popBalloon(color)}
+            type="button"
+          >
+            <span aria-hidden="true" />
+          </button>
+        ))}
+      </div>
+      <p className="opening-screen__balloon-hint" aria-live="polite">
+        {poppedBalloons.length === 0 ? "Sentuh balonnya kalau mau ✨" : poppedBalloons.length === balloons.length ? "Yeay, pestanya dimulai! ✨" : `${poppedBalloons.length} balon sudah meletus!`}
+      </p>
+
       <div className={`envelope ${isOpening ? "envelope--opening" : ""}`} aria-hidden="true">
-        <div className="envelope__letter"><span>For Adhelia</span><i>✦</i></div>
+        <div className="envelope__letter"><span>Untuk {birthdayContent.recipientName}</span><i>✦</i></div>
         <div className="envelope__back" />
         <div className="envelope__flap" />
         <div className="envelope__seal">✦</div>
@@ -39,12 +59,11 @@ export function OpeningScene({ onOpen }: OpeningSceneProps) {
         className="button button--primary opening-screen__button"
         type="button"
         onClick={open}
-        onKeyDown={handleKeyDown}
         disabled={isOpening}
       >
-        {isOpening ? "Opening your scrapbook..." : "Buka scrapbook"}
+        {isOpening ? "Menyiapkan perayaan..." : "Buka hadiah ulang tahun"}
       </button>
-      <p className="opening-screen__hint">Tap, or press Enter, to untie the ribbon.</p>
+      <p className="opening-screen__hint">Musik baru dimulai setelah tombol ini disentuh.</p>
     </main>
   );
 }

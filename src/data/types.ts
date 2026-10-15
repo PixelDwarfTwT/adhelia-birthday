@@ -37,6 +37,7 @@ export interface BirthdayContent {
   passcodePrompt: string;
   passcodeHash: string;
   introduction: string;
+  giftMessage: string;
   audio: {
     primary: string;
     alternate: string;

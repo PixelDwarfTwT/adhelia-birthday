@@ -34,7 +34,7 @@ export function KeepsakeCard({ item, collected, onCollect }: KeepsakeCardProps) 
   return (
     <article className={`keepsake-card ${flipped ? "keepsake-card--flipped" : ""}`}>
       <span aria-hidden="true" className="keepsake-card__tape" />
-      <p className="keepsake-card__label">A little achievement</p>
+      <p className="keepsake-card__label">Pencapaian kecil</p>
       <h3>{item.title}</h3>
       <button
         aria-label={`Flip card: ${item.title}`}
@@ -46,9 +46,9 @@ export function KeepsakeCard({ item, collected, onCollect }: KeepsakeCardProps) 
       >
         <span aria-hidden="true" className="keepsake-card__sparkle">✦</span>
         <span>{flipped ? item.story : item.stat}</span>
-        <span className="keepsake-card__hint">{flipped ? "Tap to turn back" : "Tap to turn this card"}</span>
+        <span className="keepsake-card__hint">{flipped ? "Ketuk untuk membalik kembali" : "Ketuk untuk membalik kartu"}</span>
       </button>
-      {item.placeholder && <p className="placeholder-label">Placeholder · add real details in src/data/content.ts</p>}
+      {item.placeholder && <p className="placeholder-label">Belum diisi · tambahkan isi nyata di src/data/content.ts</p>}
       <button
         aria-label={hasCollected ? `Sticker collected: ${item.stickerId}` : `Collect sticker: ${item.stickerId}`}
         className="keepsake-card__collect"
@@ -57,7 +57,7 @@ export function KeepsakeCard({ item, collected, onCollect }: KeepsakeCardProps) 
         type="button"
       >
         <span aria-hidden="true">{hasCollected ? "✦" : "✧"}</span>
-        {hasCollected ? "Collected" : "Collect a sticker"}
+        {hasCollected ? "Sudah dikumpulkan" : "Ambil stiker"}
       </button>
     </article>
   );

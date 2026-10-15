@@ -38,8 +38,8 @@ describe("memory chapter", () => {
   afterEach(() => vi.unstubAllGlobals());
 
   it("opensMemoryModalAndClosesWithEscape", () => {
-    render(<MemoriesSection onVideoActiveChange={vi.fn()} />);
-    fireEvent.click(screen.getByRole("button", { name: "Open memory: A birthday moment" }));
+    render(<MemoriesSection memories={[photoMemory]} onVideoActiveChange={vi.fn()} />);
+    fireEvent.click(screen.getByRole("button", { name: "Buka kenangan: A birthday moment" }));
     expect(screen.getByRole("dialog", { name: "A birthday moment" })).toBeInTheDocument();
 
     fireEvent.keyDown(window, { key: "Escape", code: "Escape" });
@@ -48,8 +48,8 @@ describe("memory chapter", () => {
 
   it("keepsKeyboardFocusInsideMemoryModal", () => {
     render(<MemoryModal memory={photoMemory} onClose={vi.fn()} onVideoActiveChange={vi.fn()} />);
-    const closeButton = screen.getByRole("button", { name: "Close memory" });
-    const zoomButton = screen.getByRole("button", { name: "Zoom in photo" });
+    const closeButton = screen.getByRole("button", { name: "Tutup kenangan" });
+    const zoomButton = screen.getByRole("button", { name: "Perbesar foto" });
 
     expect(document.activeElement).toBe(closeButton);
     fireEvent.keyDown(closeButton, { key: "Tab", shiftKey: true });
@@ -60,35 +60,35 @@ describe("memory chapter", () => {
   });
 
   it("opensPhotoPreviewOnDoubleTap", () => {
-    render(<MemoriesSection onVideoActiveChange={vi.fn()} />);
-    fireEvent.doubleClick(screen.getByRole("button", { name: "Open memory: A birthday moment" }));
+    render(<MemoriesSection memories={[photoMemory]} onVideoActiveChange={vi.fn()} />);
+    fireEvent.doubleClick(screen.getByRole("button", { name: "Buka kenangan: A birthday moment" }));
 
     expect(screen.getByRole("dialog", { name: "A birthday moment" })).toBeInTheDocument();
   });
 
   it("movesMemoryWithTouchControls", () => {
     render(<MemoriesSection memories={[photoMemory, nextMemory]} onVideoActiveChange={vi.fn()} />);
-    const card = screen.getByRole("group", { name: "Memory 1 of 2" });
+    const card = screen.getByRole("group", { name: "Foto 1 dari 2" });
     fireEvent.touchStart(card, { touches: [{ clientX: 250 }] });
     fireEvent.touchEnd(card, { changedTouches: [{ clientX: 80 }] });
 
     expect(screen.getByText("A memory to add")).toBeInTheDocument();
-    expect(screen.getByRole("group", { name: "Memory 2 of 2" })).toBeInTheDocument();
+    expect(screen.getByRole("group", { name: "Foto 2 dari 2" })).toBeInTheDocument();
   });
 
   it("showsFriendlyImageFallback", () => {
     render(<MemoriesSection memories={[photoMemory]} onVideoActiveChange={vi.fn()} />);
     fireEvent.error(screen.getByAltText(photoMemory.alt));
 
-    expect(screen.getByText("A wonderful memory is hiding somewhere..." )).toBeInTheDocument();
+    expect(screen.getByText("Kenangan manisnya sedang bersembunyi sebentar…")).toBeInTheDocument();
   });
 
   it("imageFailureDoesNotBlankThePage", () => {
     render(<MemoriesSection memories={[photoMemory, nextMemory]} onVideoActiveChange={vi.fn()} />);
     fireEvent.error(screen.getByAltText(photoMemory.alt));
 
-    expect(screen.getByRole("button", { name: "Open memory: A birthday moment" })).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: "Next memory" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Buka kenangan: A birthday moment" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Foto berikutnya" })).toBeInTheDocument();
   });
 
   it("startsOptionalMutedVideoOnlyWhileVisible", () => {
@@ -119,11 +119,11 @@ describe("memory chapter", () => {
   it("playsOptionalVideoInlineAndDucksMusic", () => {
     const onVideoActiveChange = vi.fn();
     render(<MemoryModal memory={videoMemory} onClose={vi.fn()} onVideoActiveChange={onVideoActiveChange} />);
-    const video = screen.getByLabelText("Memory video: A little moving memory") as HTMLVideoElement;
+    const video = screen.getByLabelText("Video kenangan: A little moving memory") as HTMLVideoElement;
     expect(video.playsInline).toBe(true);
     fireEvent.play(video);
     expect(onVideoActiveChange).toHaveBeenCalledWith(true);
-    fireEvent.click(screen.getByRole("button", { name: "Close memory" }));
+    fireEvent.click(screen.getByRole("button", { name: "Tutup kenangan" }));
     expect(onVideoActiveChange).toHaveBeenLastCalledWith(false);
   });
 });

@@ -56,7 +56,7 @@ export const AudioPlayer = forwardRef<AudioPlayerHandle, AudioPlayerProps>(funct
       return true;
     } catch {
       setPlaying(false);
-      setError("A little music note got lost. Tap retry, or keep exploring without music.");
+      setError("Nada musiknya tersendat. Coba putar lagi, atau lanjutkan tanpa musik.");
       return false;
     }
   }, [ducked, muted, track]);
@@ -93,7 +93,7 @@ export const AudioPlayer = forwardRef<AudioPlayerHandle, AudioPlayerProps>(funct
       setPlaying(true);
     } catch {
       setPlaying(false);
-      setError("A little music note got lost. Tap retry, or keep exploring without music.");
+      setError("Nada musiknya tersendat. Coba putar lagi, atau lanjutkan tanpa musik.");
     }
   }
 
@@ -115,33 +115,38 @@ export const AudioPlayer = forwardRef<AudioPlayerHandle, AudioPlayerProps>(funct
       <audio
         aria-hidden="true"
         ref={audioRef}
-        src={started ? track : undefined}
         preload="none"
         onLoadedMetadata={(event) => setDuration(Number.isFinite(event.currentTarget.duration) ? event.currentTarget.duration : 0)}
         onTimeUpdate={(event) => setCurrentTime(event.currentTarget.currentTime)}
         onEnded={() => setPlaying(false)}
         onError={() => {
           setPlaying(false);
-          setError("A little music note got lost. You can retry, or keep exploring without music.");
+          setError("Nada musiknya tersendat. Kamu bisa mencoba lagi atau lanjut tanpa musik.");
         }}
       />
       {started && (
-        <aside className="audio-player" aria-label="Birthday music controls">
+        <aside
+          className={`audio-player${error ? " audio-player--error" : ""}`}
+          aria-label={error ? `Kontrol musik. ${error}` : "Kontrol musik ulang tahun"}
+        >
           <div className="audio-player__identity">
             <span aria-hidden="true" className="audio-player__star">✦</span>
-            <div><strong>A little soundtrack</strong><span>{error ? "The song is resting for a moment" : "For this little birthday world"}</span></div>
+            <div>
+              <strong>{error ? "Musik perlu diputar lagi" : "Musik ulang tahun"}</strong>
+              <span>{error ? "Ketuk tombol putar untuk mencoba" : "Untuk menemani perjalanan ini"}</span>
+            </div>
           </div>
           <div className="audio-player__controls">
-            <button className="audio-player__icon" type="button" aria-label={muted ? "Unmute music" : "Mute music"} onClick={toggleMute}>
+            <button className="audio-player__icon" type="button" aria-label={muted ? "Nyalakan musik" : "Bisukan musik"} onClick={toggleMute}>
               {muted ? <VolumeX aria-hidden="true" /> : <Volume2 aria-hidden="true" />}
             </button>
-            <button className="audio-player__play" type="button" aria-label={playing ? "Pause music" : "Play music"} onClick={() => void togglePlayback()}>
+            <button className="audio-player__play" type="button" aria-label={playing ? "Jeda musik" : error ? "Coba putar musik lagi" : "Putar musik"} onClick={() => void togglePlayback()}>
               {playing ? <Pause aria-hidden="true" /> : <Play aria-hidden="true" />}
             </button>
             <div className="audio-player__timeline">
               <span>{formatTime(currentTime)}</span>
               <input
-                aria-label="Music progress"
+                aria-label="Posisi musik"
                 type="range"
                 min="0"
                 max={duration || 1}
@@ -152,12 +157,7 @@ export const AudioPlayer = forwardRef<AudioPlayerHandle, AudioPlayerProps>(funct
               <span>{formatTime(duration)}</span>
             </div>
           </div>
-          {error && (
-            <div className="audio-player__error" role="alert">
-              <p>{error}</p>
-              <button type="button" onClick={() => void startFromGesture()}>Retry music</button>
-            </div>
-          )}
+          {error && <span className="audio-player__error-indicator" role="status" aria-label={error} title={error} />}
         </aside>
       )}
     </>

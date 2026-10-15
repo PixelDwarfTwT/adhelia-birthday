@@ -26,14 +26,14 @@ export function ConstellationSection({ completed, onComplete }: ConstellationSec
   const reducedMotion = useReducedMotion() ?? false;
   const [connectedCount, setConnectedCount] = useState(completed ? letters.length : 0);
   const [finished, setFinished] = useState(false);
-  const [feedback, setFeedback] = useState("Star 1 of 7 is waiting. Start with A.");
+  const [feedback, setFeedback] = useState("Bintang pertama menunggu. Mulai dari A.");
   const isComplete = completed || finished;
   const visibleCount = isComplete ? letters.length : connectedCount;
 
   function connectStar(index: number) {
     if (isComplete) return;
     if (index !== connectedCount) {
-      setFeedback(`Star ${connectedCount + 1} of 7 is waiting. Connect ${letters[connectedCount]} next.`);
+      setFeedback(`Bintang ke-${connectedCount + 1} menunggu. Lanjutkan dengan huruf ${letters[connectedCount]}.`);
       return;
     }
 
@@ -41,11 +41,11 @@ export function ConstellationSection({ completed, onComplete }: ConstellationSec
     setConnectedCount(nextCount);
     if (nextCount === letters.length) {
       setFinished(true);
-      setFeedback("All seven stars are connected.");
+      setFeedback("Semua bintang sudah terhubung.");
       onComplete();
       return;
     }
-    setFeedback(`Star ${nextCount} of 7 connected. Connect ${letters[nextCount]} next.`);
+    setFeedback(`Bintang ke-${nextCount} terhubung. Selanjutnya huruf ${letters[nextCount]}.`);
   }
 
   return (
@@ -53,16 +53,17 @@ export function ConstellationSection({ completed, onComplete }: ConstellationSec
       className="chapter-section constellation-section"
       id="chapter-6"
       aria-labelledby="chapter-6-title"
+      tabIndex={-1}
       initial={reducedMotion ? false : { opacity: 0, y: 18 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: reducedMotion ? 0 : .55, ease: "easeOut" }}
     >
       <CelebrationCanvas active={isComplete} reducedMotion={reducedMotion} />
       <div className="constellation-section__content">
-        <p className="chapter-section__number">Chapter 06 · The final constellation</p>
-        <h2 id="chapter-6-title">A little constellation for you</h2>
-        {!isComplete && <p className="constellation-section__guide">Connect the seven stars in their gentle zigzag to reveal a name.</p>}
-        <div className="constellation-board" role="group" aria-label="Seven stars to connect">
+        <p className="chapter-section__number">Bab 06 · Konstelasi terakhir</p>
+        <h2 id="chapter-6-title">Bintang-bintang untukmu</h2>
+        {!isComplete && <p className="constellation-section__guide">Hubungkan tujuh bintang mengikuti garisnya untuk menemukan sebuah nama.</p>}
+        <div className="constellation-board" role="group" aria-label="Tujuh bintang untuk dihubungkan">
           <svg aria-hidden="true" className="constellation-board__lines" viewBox="0 0 1000 300" preserveAspectRatio="none">
             {visibleCount > 1 && (
               <polyline
@@ -78,7 +79,7 @@ export function ConstellationSection({ completed, onComplete }: ConstellationSec
             const connected = index < visibleCount;
             return (
               <button
-                aria-label={`Star ${index + 1}: ${letters[index]}`}
+                aria-label={`Bintang ${index + 1}: ${letters[index]}`}
                 aria-pressed={connected}
                 className={`constellation-star ${connected ? "constellation-star--connected" : ""}`}
                 key={`${letters[index]}-${index}`}
@@ -92,7 +93,7 @@ export function ConstellationSection({ completed, onComplete }: ConstellationSec
             );
           })}
         </div>
-        <p className="constellation-section__progress">{visibleCount} of 7 stars connected</p>
+        <p className="constellation-section__progress">{visibleCount} dari 7 bintang terhubung</p>
         {!isComplete && <p className="constellation-section__feedback" role="status" aria-live="polite">{feedback}</p>}
         {isComplete && (
           <div className="constellation-reveal" aria-live="polite">

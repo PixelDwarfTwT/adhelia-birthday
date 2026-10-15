@@ -1,23 +1,48 @@
+"use client";
+
+import { useState } from "react";
 import { birthdayContent } from "@/data/content";
 
 export function LetterSection() {
   const { letter } = birthdayContent;
+  const [letterOpen, setLetterOpen] = useState(false);
 
   return (
-    <section className="chapter-section letter-section" id="chapter-5" aria-labelledby="chapter-5-title">
-      <p className="chapter-section__number">Chapter 05 · A personal note</p>
-      <h2 id="chapter-5-title">A small note, from the heart</h2>
-      <article className="letter-paper" aria-label="Personal birthday letter">
-        <span aria-hidden="true" className="letter-paper__tape" />
-        <p className="letter-paper__greeting">{letter.greeting}</p>
-        {letter.paragraphs.length > 0 ? (
-          letter.paragraphs.map((paragraph, index) => <p key={`${index}-${paragraph}`}>{paragraph}</p>)
-        ) : (
-          <p className="letter-paper__placeholder">[Add your personal message in src/data/content.ts.]</p>
-        )}
-        <p className="letter-paper__signoff">{letter.signOff}</p>
-        <span aria-hidden="true" className="letter-paper__doodle">✦</span>
-      </article>
+    <section className="story-page letter-section" aria-labelledby="letter-title" tabIndex={-1}>
+      <div className="letter-section__intro">
+        <h2 id="letter-title">Sepucuk surat untukmu.</h2>
+      </div>
+      {!letterOpen ? (
+        <div className="letter-section__closed">
+          <div className="letter-envelope" aria-hidden="true">
+            <span>Untuk {birthdayContent.recipientName}</span>
+            <i>✦</i>
+          </div>
+          <button
+            aria-expanded={false}
+            className="button button--outline letter-reveal__button"
+            onClick={() => setLetterOpen(true)}
+            type="button"
+          >
+            Buka surat
+          </button>
+        </div>
+      ) : (
+        <article className="letter-paper" aria-label={`Surat ulang tahun untuk ${birthdayContent.recipientName}`}>
+          <span aria-hidden="true" className="letter-paper__tape" />
+          <p className="letter-paper__greeting">{letter.greeting}</p>
+          {letter.paragraphs.length > 0 ? (
+            letter.paragraphs.map((paragraph, index) => <p key={`${index}-${paragraph}`}>{paragraph}</p>)
+          ) : (
+            <div className="letter-paper__empty">
+              <p>Pesan pribadimu akan ditulis di sini.</p>
+              <small>Isi <code>letter.paragraphs</code> di <code>src/data/content.ts</code>.</small>
+            </div>
+          )}
+          <p className="letter-paper__signoff">{letter.signOff}</p>
+          <button className="letter-paper__close" onClick={() => setLetterOpen(false)} type="button">Lipat kembali</button>
+        </article>
+      )}
     </section>
   );
 }

@@ -24,8 +24,8 @@ const handwritten = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "Adhelia — The Magical Scrapbook in the Stars",
-  description: "A little birthday world, made with care for Adhelia.",
+  title: "Selamat Ulang Tahun, Adhelia!",
+  description: "Scrapbook ulang tahun kecil yang dibuat dengan penuh perhatian untuk Adhelia.",
   robots: {
     index: false,
     follow: false,
@@ -35,7 +35,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en">
+    <html lang="id">
       <body className={`${display.variable} ${sans.variable} ${handwritten.variable}`}>
         {children}
       </body>

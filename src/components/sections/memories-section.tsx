@@ -74,7 +74,7 @@ function MemoryCard({ memory, index, count, onOpen, onSwipe }: MemoryCardProps) 
 
   return (
     <article
-      aria-label={`Memory ${index + 1} of ${count}`}
+      aria-label={`Foto ${index + 1} dari ${count}`}
       className="memory-card"
       role="group"
       onTouchStart={onTouchStart}
@@ -85,7 +85,7 @@ function MemoryCard({ memory, index, count, onOpen, onSwipe }: MemoryCardProps) 
       <span aria-hidden="true" className="memory-card__tape" />
       {memory.imageSrc && !imageFailed ? (
         <button
-          aria-label={`Open memory: ${memory.caption}`}
+          aria-label={`Buka kenangan: ${memory.caption}`}
           className="memory-card__image-button"
           onClick={(event) => onOpen(memory, event.currentTarget)}
           onDoubleClick={(event) => onOpen(memory, event.currentTarget)}
@@ -103,17 +103,17 @@ function MemoryCard({ memory, index, count, onOpen, onSwipe }: MemoryCardProps) 
           <span className="memory-card__caption">{memory.caption}</span>
         </button>
       ) : (
-        <button aria-label={`Open memory: ${memory.caption}`} className="memory-card__image-button" onClick={(event) => onOpen(memory, event.currentTarget)} type="button">
+        <button aria-label={`Buka kenangan: ${memory.caption}`} className="memory-card__image-button" onClick={(event) => onOpen(memory, event.currentTarget)} type="button">
           <div className="memory-fallback memory-card__fallback">
             <span aria-hidden="true">✦</span>
-            <p>A wonderful memory is hiding somewhere...</p>
+            <p>Kenangan manisnya sedang bersembunyi sebentar…</p>
           </div>
           <span className="memory-card__caption">{memory.caption}</span>
         </button>
       )}
       {memory.videoSrc && !previewFailed && (
         <video
-          aria-label={`Muted preview: ${memory.caption}`}
+            aria-label={`Pratinjau tanpa suara: ${memory.caption}`}
           className="memory-card__video-preview"
           muted
           playsInline
@@ -124,8 +124,7 @@ function MemoryCard({ memory, index, count, onOpen, onSwipe }: MemoryCardProps) 
           onError={() => setPreviewFailed(true)}
         />
       )}
-      {memory.videoSrc && previewFailed && <p className="memory-card__video-error">A wonderful memory is hiding somewhere...</p>}
-      {memory.placeholder && <p className="placeholder-label">Memory note placeholder · add real copy in src/data/content.ts</p>}
+      {memory.videoSrc && previewFailed && <p className="memory-card__video-error">Kenangan manisnya sedang bersembunyi sebentar…</p>}
     </article>
   );
 }
@@ -157,10 +156,12 @@ export function MemoriesSection({ memories = birthdayContent.memories, onVideoAc
 
   return (
     <>
-      <section className="chapter-section memories-section" id="chapter-4" aria-labelledby="chapter-4-title">
-        <p className="chapter-section__number">Chapter 04 · Memories</p>
-        <h2 id="chapter-4-title">Little moments, kept close</h2>
-        <p>Swipe or drag through this small stack, then open a card to read its note.</p>
+      <section className="story-page gallery-section" aria-labelledby="gallery-title" tabIndex={-1}>
+        <div className="gallery-section__intro">
+          <p className="page-kicker">Satu momen yang nyata</p>
+          <h2 id="gallery-title">Hari yang ingin disimpan.</h2>
+          <p>Ketuk fotonya untuk melihat lebih dekat.</p>
+        </div>
         <div className="memory-viewer">
           <MemoryCard
             count={memories.length}
@@ -170,15 +171,17 @@ export function MemoriesSection({ memories = birthdayContent.memories, onVideoAc
             onOpen={openMemory}
             onSwipe={move}
           />
-          <div className="memory-controls">
-            <button aria-label="Previous memory" className="memory-controls__button" onClick={() => move("previous")} type="button">
-              <ArrowLeft aria-hidden="true" /> <span>Previous</span>
-            </button>
-            <p aria-live="polite" className="memory-controls__count">Memory {activeIndex + 1} of {memories.length}</p>
-            <button aria-label="Next memory" className="memory-controls__button" onClick={() => move("next")} type="button">
-              <span>Next</span> <ArrowRight aria-hidden="true" />
-            </button>
-          </div>
+          {memories.length > 1 && (
+            <div className="memory-controls">
+              <button aria-label="Foto sebelumnya" className="memory-controls__button" onClick={() => move("previous")} type="button">
+                <ArrowLeft aria-hidden="true" /> <span>Sebelumnya</span>
+              </button>
+              <p aria-live="polite" className="memory-controls__count">Foto {activeIndex + 1} dari {memories.length}</p>
+              <button aria-label="Foto berikutnya" className="memory-controls__button" onClick={() => move("next")} type="button">
+                <span>Berikutnya</span> <ArrowRight aria-hidden="true" />
+              </button>
+            </div>
+          )}
         </div>
       </section>
       {selectedMemory && (

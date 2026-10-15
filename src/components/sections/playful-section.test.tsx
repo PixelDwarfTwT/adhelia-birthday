@@ -5,12 +5,12 @@ import { PlayfulSection } from "./playful-section";
 describe("playful chapter", () => {
   it("flipsAchievementByButtonAndKeyboard", () => {
     render(<PlayfulSection collectedStickerIds={[]} onCollectSticker={vi.fn()} />);
-    const card = screen.getByRole("button", { name: "Flip card: A little space to brag" });
+    const card = screen.getByRole("button", { name: "Flip card: Papan prestasi" });
     card.focus();
     fireEvent.keyDown(card, { key: "Enter", code: "Enter" });
 
     expect(card).toHaveAttribute("aria-pressed", "true");
-    expect(screen.getByText("[Add a real Adhelia achievement or funny stat here.]" )).toBeInTheDocument();
+    expect(screen.getByText("[Tambahkan cerita nyata atau pencapaian Adhelia di sini.]" )).toBeInTheDocument();
   });
 
   it("collectsStickerOnce", () => {
@@ -27,13 +27,13 @@ describe("playful chapter", () => {
   it("rendersClearlyMarkedMissingContent", () => {
     render(<PlayfulSection collectedStickerIds={[]} onCollectSticker={vi.fn()} />);
 
-    expect(screen.getAllByText(/placeholder/i).length).toBeGreaterThan(0);
-    expect(screen.getByText("[Add a funny stat]")).toBeInTheDocument();
+    expect(screen.getAllByText(/belum diisi/i).length).toBeGreaterThan(0);
+    expect(screen.getByText("[Tulis statistik lucu]")).toBeInTheDocument();
   });
 
   it("revealsSurpriseOnTap", () => {
     render(<PlayfulSection collectedStickerIds={[]} onCollectSticker={vi.fn()} />);
-    fireEvent.click(screen.getByRole("button", { name: "Find a tiny surprise" }));
-    expect(screen.getByRole("status")).toHaveTextContent("You found a little extra sparkle, just because.");
+    fireEvent.click(screen.getByRole("button", { name: /cari kejutan kecil/i }));
+    expect(screen.getByRole("status")).toHaveTextContent("Kamu menemukan sedikit kilau tambahan, khusus untukmu");
   });
 });

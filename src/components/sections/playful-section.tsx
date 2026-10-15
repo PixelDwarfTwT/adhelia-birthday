@@ -13,10 +13,10 @@ export function PlayfulSection({ collectedStickerIds, onCollectSticker }: Playfu
   const [surpriseVisible, setSurpriseVisible] = useState(false);
 
   return (
-    <section className="chapter-section playful-section" id="chapter-2" aria-labelledby="chapter-2-title">
-      <p className="chapter-section__number">Chapter 02 · Playfulness</p>
-      <h2 id="chapter-2-title">A page for little victories</h2>
-      <p>Turn a card over to see its note, and collect a tiny sticker for the scrapbook.</p>
+    <section className="chapter-section playful-section" id="chapter-2" aria-labelledby="chapter-2-title" tabIndex={-1}>
+      <p className="chapter-section__number">Bab 02 · Momen seru</p>
+      <h2 id="chapter-2-title">Hal-hal kecil yang patut dirayakan</h2>
+      <p>Balik kartunya untuk membaca catatan, lalu kumpulkan stiker kecil untuk scrapbook.</p>
       <div className="playful-grid">
         {birthdayContent.achievements.map((item) => (
           <KeepsakeCard
@@ -29,9 +29,9 @@ export function PlayfulSection({ collectedStickerIds, onCollectSticker }: Playfu
       </div>
       <div className="surprise-note">
         <button className="button button--soft" onClick={() => setSurpriseVisible(true)} type="button">
-          <span aria-hidden="true">✧</span> Find a tiny surprise
+          <span aria-hidden="true">✧</span> Cari kejutan kecil
         </button>
-        {surpriseVisible && <p className="surprise-note__message" role="status">You found a little extra sparkle, just because.</p>}
+        {surpriseVisible && <p className="surprise-note__message" role="status">Kamu menemukan sedikit kilau tambahan, khusus untukmu ✨</p>}
       </div>
     </section>
   );

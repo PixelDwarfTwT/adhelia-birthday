@@ -2,12 +2,14 @@ import type { BirthdayContent } from "./types";
 
 export const birthdayContent: BirthdayContent = {
   recipientName: "Adhelia",
-  openingCopy: "A special delivery for Adhelia...",
+  openingCopy: "Selamat Ulang Tahun",
   passcodePrompt: "Apa warna favorit Adhelia?",
   // SHA-256 for the initial passcode. Replace this digest if the answer changes.
   passcodeHash: "16477688c0e00699c6cfa4497a3612d7e83c532062b64b250fed8908128ed548",
   introduction:
-    "I hope today brings you happiness, smiles, and everything you wished for. Enjoy your special day.",
+    "Semoga hari ini penuh senyum, tawa, dan hal-hal baik yang kamu harapkan. Selamat menikmati hari spesialmu!",
+  giftMessage:
+    "Semoga hari ini terasa hangat, ringan, dan penuh hal yang membuatmu tersenyum. Selamat menikmati setiap momennya, Adhelia.",
   audio: {
     primary: "/assets/metal.mp3",
     alternate: "/assets/happy.mp3",
@@ -15,17 +17,17 @@ export const birthdayContent: BirthdayContent = {
   achievements: [
     {
       id: "achievement-placeholder",
-      title: "A little space to brag",
-      stat: "Your real win goes here",
-      story: "[Add a real Adhelia achievement or funny stat here.]",
+      title: "Papan prestasi",
+      stat: "[Tulis pencapaian Adhelia]",
+      story: "[Tambahkan cerita nyata atau pencapaian Adhelia di sini.]",
       stickerId: "sparkle",
       placeholder: true,
     },
     {
       id: "funny-stat-placeholder",
-      title: "Highly official statistic",
-      stat: "[Add a funny stat]",
-      story: "[Add an inside joke or playful detail here.]",
+      title: "Statistik sangat resmi",
+      stat: "[Tulis statistik lucu]",
+      story: "[Tambahkan lelucon internal atau detail lucu di sini.]",
       stickerId: "tiny-trophy",
       placeholder: true,
     },
@@ -33,39 +35,39 @@ export const birthdayContent: BirthdayContent = {
   favoriteThings: [
     {
       id: "color",
-      category: "Color",
-      label: "Blue",
-      detail: "A little piece of the sky woven through this birthday scrapbook.",
+      category: "Warna",
+      label: "Biru",
+      detail: "Sedikit warna langit yang ikut menghiasi scrapbook ulang tahun ini.",
       placeholder: false,
     },
-    { id: "music", category: "Music", label: "Add a favorite", detail: "[Add a favorite song or artist.]", placeholder: true },
-    { id: "games", category: "Games", label: "Add a favorite", detail: "[Add a favorite game.]", placeholder: true },
-    { id: "food", category: "Food", label: "Add a favorite", detail: "[Add a favorite food.]", placeholder: true },
-    { id: "characters", category: "Characters", label: "Add a favorite", detail: "[Add a favorite character.]", placeholder: true },
-    { id: "hobbies", category: "Hobbies", label: "Add an interest", detail: "[Add an interest or hobby.]", placeholder: true },
+    { id: "music", category: "Musik", label: "[Tambahkan favorit]", detail: "[Tambahkan lagu atau artis favorit.]", placeholder: true },
+    { id: "games", category: "Game", label: "[Tambahkan favorit]", detail: "[Tambahkan game favorit.]", placeholder: true },
+    { id: "food", category: "Makanan", label: "[Tambahkan favorit]", detail: "[Tambahkan makanan favorit.]", placeholder: true },
+    { id: "characters", category: "Karakter", label: "[Tambahkan favorit]", detail: "[Tambahkan karakter favorit.]", placeholder: true },
+    { id: "hobbies", category: "Hobi", label: "[Tambahkan minat]", detail: "[Tambahkan minat atau hobi.]", placeholder: true },
   ],
   memories: [
     {
       id: "birthday-photo",
-      caption: "A birthday moment",
-      alt: "Adhelia holding a small cake topped with lit candles.",
-      note: "[Add the story behind this photo.]",
+      caption: "Momen ulang tahun",
+      alt: "Adhelia memegang kue kecil dengan lilin menyala.",
+      note: "[Tambahkan cerita di balik foto ini.]",
       placeholder: true,
       imageSrc: "/assets/photo.jpg",
     },
     {
       id: "memory-placeholder",
-      caption: "A memory to add",
-      alt: "An illustrated placeholder card for a birthday memory.",
-      note: "[Add a real memory or a favorite quote here.]",
+      caption: "Tambahkan kenangan",
+      alt: "Kartu placeholder untuk foto kenangan ulang tahun.",
+      note: "[Tambahkan kenangan nyata atau kutipan favorit di sini.]",
       placeholder: true,
     },
   ],
   letter: {
-    greeting: "Dear Adhelia,",
+    greeting: "Untuk Adhelia,",
     paragraphs: [],
-    signOff: "[Add your name]",
+    signOff: "[Tulis namamu]",
   },
-  finalMessage: "May your year ahead be as bright and beautiful as you are.",
-  finalGreeting: "Happy Birthday, Adhelia!",
+  finalMessage: "Semoga tahun barumu dipenuhi hal-hal baik, tawa, dan banyak alasan untuk bahagia.",
+  finalGreeting: "Selamat ulang tahun, Adhelia!",
 };

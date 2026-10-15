@@ -85,10 +85,10 @@ export function MemoryModal({ memory, onClose, onVideoActiveChange }: MemoryModa
       <section className="memory-modal__panel" ref={dialogRef} role="dialog" aria-modal="true" aria-labelledby="memory-modal-title">
         <header className="memory-modal__header">
           <div>
-            <p className="eyebrow">A little memory note</p>
+            <p className="eyebrow">Catatan kenangan</p>
             <h2 id="memory-modal-title">{memory.caption}</h2>
           </div>
-          <button aria-label="Close memory" className="memory-modal__close" onClick={close} ref={closeButtonRef} type="button">
+          <button aria-label="Tutup kenangan" className="memory-modal__close" onClick={close} ref={closeButtonRef} type="button">
             <X aria-hidden="true" />
           </button>
         </header>
@@ -102,15 +102,15 @@ export function MemoryModal({ memory, onClose, onVideoActiveChange }: MemoryModa
               src={memory.imageSrc}
               onError={() => setImageFailed(true)}
             />
-            <button className="memory-modal__zoom" onClick={toggleZoom} type="button" aria-label={zoomed ? "Zoom out photo" : "Zoom in photo"}>
-              {zoomed ? "Zoom out" : "Double tap to zoom"}
+            <button className="memory-modal__zoom" onClick={toggleZoom} type="button" aria-label={zoomed ? "Perkecil foto" : "Perbesar foto"}>
+              {zoomed ? "Perkecil" : "Ketuk dua kali untuk memperbesar"}
             </button>
           </div>
         )}
         {memory.imageSrc && imageFailed && <MemoryFallback />}
         {memory.videoSrc && !videoFailed && (
           <video
-            aria-label={`Memory video: ${memory.caption}`}
+            aria-label={`Video kenangan: ${memory.caption}`}
             className="memory-modal__video"
             controls
             playsInline
@@ -129,7 +129,7 @@ export function MemoryModal({ memory, onClose, onVideoActiveChange }: MemoryModa
         )}
         {memory.videoSrc && videoFailed && <MemoryFallback />}
         <div className="memory-modal__note">
-          {memory.placeholder && <p className="placeholder-label">A note to personalize in src/data/content.ts</p>}
+          {memory.placeholder && <p className="placeholder-label">Catatan ini bisa kamu ubah di src/data/content.ts</p>}
           <p>{memory.note}</p>
         </div>
       </section>
@@ -141,7 +141,7 @@ function MemoryFallback() {
   return (
     <div className="memory-fallback" role="status">
       <span aria-hidden="true">✦</span>
-      <p>A wonderful memory is hiding somewhere...</p>
+      <p>Kenangan manisnya sedang bersembunyi sebentar…</p>
     </div>
   );
 }
