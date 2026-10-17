@@ -26,13 +26,13 @@ describe("birthday book journey", () => {
   it("keeps the birthday book behind the passcode gate", async () => {
     render(<ExperienceShell />);
 
-    expect(await screen.findByText("Apa warna favorit Adhelia?")).toBeInTheDocument();
-    fireEvent.change(screen.getByLabelText("Jawaban"), { target: { value: "violet" } });
+    expect(await screen.findByText("Berapa umur Adhelia sekarang?")).toBeInTheDocument();
+    fireEvent.change(screen.getByLabelText("Jawaban"), { target: { value: "20" } });
     fireEvent.click(screen.getByRole("button", { name: "Buka amplop" }));
     expect(await screen.findByRole("alert")).toHaveTextContent(/belum tepat/i);
     expect(screen.queryByRole("button", { name: "Buka hadiah ulang tahun" })).not.toBeInTheDocument();
 
-    fireEvent.change(screen.getByLabelText("Jawaban"), { target: { value: "biru" } });
+    fireEvent.change(screen.getByLabelText("Jawaban"), { target: { value: "19" } });
     fireEvent.click(screen.getByRole("button", { name: "Buka amplop" }));
 
     expect(await screen.findByRole("heading", { name: /Selamat Ulang Tahun/ })).toBeInTheDocument();

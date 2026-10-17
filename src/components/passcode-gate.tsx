@@ -21,10 +21,10 @@ export function PasscodeGate({ onUnlock }: PasscodeGateProps) {
     try {
       const subtle = typeof globalThis.crypto === "undefined" ? undefined : globalThis.crypto.subtle;
       const normalizedAnswer = answer.trim().toLocaleLowerCase("id-ID");
-      const passcodeCandidate = normalizedAnswer === "biru" ? "blue" : answer;
+      const passcodeCandidate = normalizedAnswer === "sembilan belas" ? "19" : normalizedAnswer;
       const matches = await verifyPasscode(passcodeCandidate, birthdayContent.passcodeHash, subtle);
       if (!matches) {
-        setMessage(subtle ? "Belum tepat. Coba ingat lagi warna favorit Adhelia." : "Gerbang kecil ini tidak dapat memeriksa passcode di browser ini. Coba buka dengan browser yang mendukung Web Crypto.");
+        setMessage(subtle ? "Belum tepat. Coba masukkan umur Adhelia sekarang." : "Gerbang kecil ini tidak dapat memeriksa passcode di browser ini. Coba buka dengan browser yang mendukung Web Crypto.");
         return;
       }
 
@@ -44,8 +44,7 @@ export function PasscodeGate({ onUnlock }: PasscodeGateProps) {
       <section className="gate-card">
       <p className="eyebrow">Kejutan ulang tahun kecil</p>
         <span className="gate-card__seal" aria-hidden="true">✦</span>
-        <h1 id="gate-title">Satu pertanyaan kecil sebelum perayaan</h1>
-        <p className="gate-card__prompt">{birthdayContent.passcodePrompt}</p>
+        <h1 id="gate-title">{birthdayContent.passcodePrompt}</h1>
         <form className="gate-form" onSubmit={handleSubmit}>
           <label htmlFor="passcode-answer">Jawaban</label>
           <input

@@ -4,9 +4,9 @@ import { assetPath } from "@/lib/asset-path";
 export const birthdayContent: BirthdayContent = {
   recipientName: "Adhelia",
   openingCopy: "Selamat Ulang Tahun",
-  passcodePrompt: "Apa warna favorit Adhelia?",
-  // SHA-256 for the initial passcode. Replace this digest if the answer changes.
-  passcodeHash: "16477688c0e00699c6cfa4497a3612d7e83c532062b64b250fed8908128ed548",
+  passcodePrompt: "Berapa umur Adhelia sekarang?",
+  // SHA-256 for "19"
+  passcodeHash: "9400f1b21cb527d7fa3d3eabba93557a18ebe7a2ca4e471cfe5e4c5b4ca7f767",
   introduction:
     "Semoga hari ini penuh senyum, tawa, dan hal-hal baik yang kamu harapkan. Selamat menikmati hari spesialmu!",
   cakeTitle: "Buat satu permohonan kecil.",
