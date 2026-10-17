@@ -1,0 +1,11 @@
+{
+  "images": [
+    { "path": "/assets/photo.jpg", "alt": "Adhelia holding a birthday cake" },
+    { "path": "/assets/cake-illustration.png", "alt": "Hand-painted birthday cake illustration with three candles" }
+  ],
+  "audio": [
+    { "path": "/assets/metal.mp3", "role": "primary soundtrack" },
+    { "path": "/assets/happy.mp3", "role": "alternate soundtrack" }
+  ],
+  "video": []
+}
