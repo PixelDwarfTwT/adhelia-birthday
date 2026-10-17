@@ -39,7 +39,7 @@ create policy "Admins can read birthday drafts"
   on public.birthday_content
   for select
   to authenticated
-  using (id = 'draft' and (select auth.jwt() -> 'app_metadata' ->> 'role') = 'admin');
+  using (id = 'draft' and (select public.is_admin()));
 
 create policy "Admins can create birthday copy"
   on public.birthday_content
@@ -47,15 +47,15 @@ create policy "Admins can create birthday copy"
   to authenticated
   with check (
     id in ('draft', 'published')
-    and (select auth.jwt() -> 'app_metadata' ->> 'role') = 'admin'
+    and (select public.is_admin())
   );
 
 create policy "Admins can update birthday copy"
   on public.birthday_content
   for update
   to authenticated
-  using ((select auth.jwt() -> 'app_metadata' ->> 'role') = 'admin')
+  using ((select public.is_admin()))
   with check (
     id in ('draft', 'published')
-    and (select auth.jwt() -> 'app_metadata' ->> 'role') = 'admin'
+    and (select public.is_admin())
   );

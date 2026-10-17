@@ -2,6 +2,7 @@
 
 import { useState, type ChangeEvent } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import type { BirthdayCopy } from "@/data/types";
 import { normalizeBirthdayCopy } from "@/lib/birthday-copy";
 import { createSupabaseBrowserClient } from "@/lib/supabase/client";
@@ -151,7 +152,7 @@ export function AdminEditor({ initialCopy, initialPublishedRecord, loadError }: 
       <header className="admin-topbar">
         <AdminBrand />
         <div className="admin-topbar__actions">
-          <a className="admin-back-link" href="/" target="_blank" rel="noreferrer">Pratinjau buku</a>
+          <Link className="admin-back-link" href="/" target="_blank" rel="noreferrer">Pratinjau buku</Link>
           <button className="admin-quiet-button" disabled={busy !== null} onClick={signOut} type="button">
             {busy === "logout" ? "Keluar…" : "Keluar"}
           </button>

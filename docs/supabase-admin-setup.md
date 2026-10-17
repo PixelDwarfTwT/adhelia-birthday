@@ -1,46 +1,39 @@
-# Menyiapkan panel admin Supabase
+﻿# Menyiapkan panel admin Supabase
 
-Panel admin dapat berjalan lokal tanpa Supabase, tetapi penyimpanan dan login membutuhkan project Supabase.
+Panel admin menggunakan Supabase Auth dan Row Level Security (RLS). GitHub Pages hanya menjalankan ekspor statis, jadi autentikasi dan penyimpanan data berlangsung dari browser dengan publishable key.
 
 ## 1. Isi variabel lokal
 
-Salin `.env.example` menjadi `.env.local`, lalu isi dari **Project Settings → API** di Supabase:
+Salin .env.example menjadi .env.local:
 
-```env
-NEXT_PUBLIC_SUPABASE_URL=https://<project-ref>.supabase.co
-NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=<publishable-key>
-```
+Copy-Item .env.example .env.local
 
-Publishable key memang digunakan oleh browser; jangan menaruh `service_role` atau secret key pada variabel `NEXT_PUBLIC_*`.
+Nilai pada .env.example sudah menunjuk ke proyek Adhelia dan memakai publishable key yang memang boleh digunakan browser. Jangan menaruh service_role atau secret key pada variabel NEXT_PUBLIC_*.
 
-## 2. Buat tabel dan kebijakan
+## 2. Skema dan akses
 
-Buka **SQL Editor** di project Supabase, lalu jalankan isi file:
+Tabel birthday_content menyimpan salinan draft dan terbit. Migration supabase/migrations/20261015151715_create_birthday_content.sql sudah diterapkan pada proyek Adhelia.
 
-`supabase/migrations/20261015000000_create_birthday_content.sql`
+Pengunjung anonim hanya dapat membaca salinan terbit. Draft, simpan, dan publikasi dibatasi oleh RLS melalui keanggotaan di public.admin_users. Proyek ini sudah memiliki satu keanggotaan admin.
 
-Migration memberi akses baca kolom konten terbit kepada pengunjung anonim, membatasi draft ke sesi admin, dan mengaktifkan RLS.
-Jika project memakai allowlist Data API, pastikan schema `public` juga diaktifkan pada **Project Settings → API**; SQL migration sudah memberi grant peran yang diperlukan.
+Untuk menambahkan admin lain, buat akunnya di Authentication > Users, salin UUID akun tersebut, lalu jalankan query berikut di SQL Editor:
 
-## 3. Buat akun admin
+insert into public.admin_users (user_id)
+values ('<UUID-akun-auth>')
+on conflict (user_id) do nothing;
 
-Buat pengguna email/kata sandi di **Authentication → Users**. Setelah itu, jalankan query berikut di SQL Editor dan ganti email contoh dengan email akun tersebut:
+Keanggotaan admin diperiksa oleh public.is_admin(). Jangan memakai user_metadata sebagai otorisasi.
 
-```sql
-update auth.users
-set raw_app_meta_data = coalesce(raw_app_meta_data, '{}'::jsonb) || '{"role":"admin"}'::jsonb
-where email = 'admin@example.com';
-```
+## 3. Jalankan panel lokal
 
-Pastikan query mengubah satu baris. Keluar dari sesi lama lalu masuk lagi agar JWT menerima klaim admin yang baru. Role dibaca dari `app_metadata`, bukan `user_metadata` yang bisa diubah pengguna.
+Masuk ke folder adhelia-birthday, lalu jalankan npm run dev.
 
-## 4. Jalankan panel
+Buka http://localhost:3000/admin/login. Simpan draft menyimpan perubahan tanpa mengubah halaman publik; Terbitkan perubahan memperbarui buku.
 
-```powershell
-cd adhelia-birthday
-npm run dev
-```
+Jika belum ada versi terbit, halaman publik memakai salinan lokal dari src/data/content.ts. Jika Supabase tidak dapat dijangkau, halaman tetap menampilkan salinan lokal.
 
-Buka `http://localhost:3000/admin/login`. Jika konfigurasi benar, masuk dan edit teks. **Simpan draft** menyimpan perubahan tanpa mengubah halaman publik; **Terbitkan perubahan** memperbarui buku.
+## 4. GitHub Pages
 
-Jika belum ada versi terbit, halaman publik menggunakan konten lokal dari `src/data/content.ts`. Setelah publikasi pertama, situs mengambil salinan terbit dari Supabase dan tetap memakai fallback lokal bila koneksi gagal.
+Workflow .github/workflows/deploy-pages.yml membangun dan menerbitkan ekspor statis. URL proyek dan publishable key dikirim saat build. Kunci tersebut memang publik dan akses database tetap dibatasi RLS; secret/service-role key tidak digunakan. Panel admin memakai Supabase Auth di browser karena GitHub Pages tidak menjalankan server Next.js.
+
+URL situs: https://PixelDwarfTwT.github.io/adhelia-birthday/.

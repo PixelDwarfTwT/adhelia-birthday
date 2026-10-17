@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { assetPath } from "@/lib/asset-path";
 import { useState } from "react";
 import { defaultBirthdayCopy } from "@/data/content";
 import type { BirthdayCopy } from "@/data/types";
@@ -33,7 +34,7 @@ export function CakeSection({ copy = defaultBirthdayCopy }: { copy?: BirthdayCop
           fill
           priority
           sizes="(max-width: 700px) 76vw, 42vw"
-          src="/assets/cake-illustration.png"
+          src={assetPath("/assets/cake-illustration.png")}
         />
         <span className="birthday-cake__flame birthday-cake__flame--one" aria-hidden="true" />
         <span className="birthday-cake__flame birthday-cake__flame--two" aria-hidden="true" />

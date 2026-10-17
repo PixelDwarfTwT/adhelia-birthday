@@ -70,7 +70,7 @@ describe("birthday book journey", () => {
     expect(screen.getByText("Pesan pribadimu akan ditulis di sini.")).toBeInTheDocument();
     expect(screen.queryByText(/Aku selalu ingat/)).not.toBeInTheDocument();
 
-    fireEvent.click(screen.getByRole("button", { name: "Halaman berikutnya" }));
+    fireEvent.click(screen.getByRole("button", { name: "Ulangi dari halaman kue" }));
     expect(await screen.findByRole("heading", { name: "Buat satu permohonan kecil." })).toBeInTheDocument();
     expect(screen.queryByRole("heading", { name: "Sebuah kado kecil." })).not.toBeInTheDocument();
     expect(screen.queryByRole("heading", { name: "Hari yang ingin disimpan." })).not.toBeInTheDocument();

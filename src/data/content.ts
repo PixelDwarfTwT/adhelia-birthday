@@ -1,4 +1,5 @@
 import type { BirthdayContent, BirthdayCopy } from "./types";
+import { assetPath } from "@/lib/asset-path";
 
 export const birthdayContent: BirthdayContent = {
   recipientName: "Adhelia",
@@ -14,8 +15,8 @@ export const birthdayContent: BirthdayContent = {
   giftMessage:
     "Semoga hari ini terasa hangat, ringan, dan penuh hal yang membuatmu tersenyum. Selamat menikmati setiap momennya, Adhelia.",
   audio: {
-    primary: "/assets/metal.mp3",
-    alternate: "/assets/happy.mp3",
+    primary: assetPath("/assets/metal.mp3"),
+    alternate: assetPath("/assets/happy.mp3"),
   },
   achievements: [
     {
@@ -56,7 +57,7 @@ export const birthdayContent: BirthdayContent = {
       alt: "Adhelia memegang kue kecil dengan lilin menyala.",
       note: "[Tambahkan cerita di balik foto ini.]",
       placeholder: true,
-      imageSrc: "/assets/photo.jpg",
+      imageSrc: assetPath("/assets/photo.jpg"),
     },
     {
       id: "memory-placeholder",
