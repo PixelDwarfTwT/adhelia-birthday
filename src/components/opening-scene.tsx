@@ -26,13 +26,18 @@ export function OpeningScene({ onOpen, copy = defaultBirthdayCopy }: OpeningScen
   }
 
   return (
-    <main className="opening-screen" aria-labelledby="opening-title">
+    <main className={`opening-screen${isOpening ? " opening-screen--closing" : ""}`} aria-labelledby="opening-title">
       <div className="opening-screen__glow" aria-hidden="true" />
       <div className="opening-screen__stars" aria-hidden="true"><span>✦</span><span>✧</span><span>✦</span><span>·</span></div>
-      <p className="eyebrow">Ada hadiah kecil untukmu</p>
-      <h1 id="opening-title">{copy.openingCopy},<br /><em>{copy.recipientName}!</em></h1>
-      <p className="opening-screen__note">{copy.introduction}</p>
+      <div className="opening-screen__copy">
+        <p className="eyebrow">Ada hadiah kecil untukmu</p>
+        <h1 id="opening-title">{copy.openingCopy},<br /><em>{copy.recipientName}!</em></h1>
+        <p className="opening-screen__note">{copy.introduction}</p>
+        <span className="opening-screen__scribble" aria-hidden="true">disiapkan khusus untukmu</span>
+      </div>
 
+      <div className="opening-screen__stage">
+      <span className="opening-screen__stage-label">Buka perlahan</span>
       <div className="birthday-balloons" role="group" aria-label="Balon ulang tahun. Sentuh untuk meletuskannya.">
         {balloons.map((color, index) => (
           <button
@@ -66,6 +71,7 @@ export function OpeningScene({ onOpen, copy = defaultBirthdayCopy }: OpeningScen
         {isOpening ? "Menyiapkan perayaan..." : "Buka hadiah ulang tahun"}
       </button>
       <p className="opening-screen__hint">Musik baru dimulai setelah tombol ini disentuh.</p>
+      </div>
     </main>
   );
 }

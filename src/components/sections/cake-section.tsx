@@ -22,7 +22,7 @@ export function CakeSection({ copy = defaultBirthdayCopy }: { copy?: BirthdayCop
         >
           {candlesOut ? "Nyalakan lilin lagi" : "Tiup lilin"}
         </button>
-        <p className="cake-section__wish" role="status" aria-live="polite">
+        <p className={`cake-section__wish${candlesOut ? " cake-section__wish--visible" : ""}`} role="status" aria-live="polite">
           {candlesOut ? "Permohonannya sudah meluncur. Semoga terkabul." : ""}
         </p>
       </div>

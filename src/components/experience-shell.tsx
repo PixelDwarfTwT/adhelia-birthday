@@ -40,9 +40,17 @@ export function ExperienceShell() {
   const [copy, setCopy] = useState<BirthdayCopy>(defaultBirthdayCopy);
   const [pageIndex, setPageIndex] = useState(0);
   const [pageDirection, setPageDirection] = useState<"next" | "previous">("next");
+  const [isTurningPage, setIsTurningPage] = useState(false);
   const titleRef = useRef<HTMLHeadingElement>(null);
   const pageRef = useRef<HTMLDivElement>(null);
   const audioPlayerRef = useRef<AudioPlayerHandle>(null);
+  const turnTimeoutsRef = useRef<number[]>([]);
+
+  useEffect(() => {
+    return () => {
+      turnTimeoutsRef.current.forEach((timeoutId) => window.clearTimeout(timeoutId));
+    };
+  }, []);
 
   useEffect(() => {
     if (experienceStarted) titleRef.current?.focus();
@@ -93,15 +101,27 @@ export function ExperienceShell() {
     if (reducedMotion) {
       setExperienceStarted(true);
     } else {
-      window.setTimeout(() => setExperienceStarted(true), 420);
+      window.setTimeout(() => setExperienceStarted(true), 700);
     }
   }
 
   function moveToPage(nextIndex: number) {
     const safeIndex = (nextIndex + pages.length) % pages.length;
     if (safeIndex === pageIndex) return;
+
+    const reducedMotion = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
     setPageDirection(safeIndex > pageIndex ? "next" : "previous");
-    setPageIndex(safeIndex);
+    if (reducedMotion) {
+      setPageIndex(safeIndex);
+      return;
+    }
+
+    setIsTurningPage(true);
+    turnTimeoutsRef.current.forEach((timeoutId) => window.clearTimeout(timeoutId));
+    turnTimeoutsRef.current = [
+      window.setTimeout(() => setPageIndex(safeIndex), 330),
+      window.setTimeout(() => setIsTurningPage(false), 720),
+    ];
   }
 
   function renderPage() {
@@ -125,8 +145,7 @@ export function ExperienceShell() {
           <div className="page-stage">
             <div
               aria-label={`${pages[pageIndex]}, halaman ${pageIndex + 1} dari ${pages.length}`}
-              className={`page-scene page-scene--${pageDirection}`}
-              key={pageIndex}
+              className={`page-scene page-scene--${pageDirection}${isTurningPage ? " page-scene--turning" : ""}`}
               ref={pageRef}
               tabIndex={-1}
             >
