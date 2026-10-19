@@ -253,19 +253,31 @@ button:focus-visible, a:focus-visible, input:focus-visible {
 .opening-screen--closing .opening-screen__glow { animation: opening-glow-exit .7s ease both; }
 
 .opening-screen__copy,
-.opening-screen__stage > .birthday-balloons,
+.opening-screen__stage > .opening-screen__balloons-enter,
 .opening-screen__stage > .opening-screen__balloon-hint,
-.opening-screen__stage > .envelope,
+.opening-screen__stage > .opening-screen__envelope-enter,
 .opening-screen__stage > .opening-screen__button,
 .opening-screen__stage > .opening-screen__hint {
   animation: opening-rise .65s cubic-bezier(.2, .8, .25, 1) both;
 }
 
-.opening-screen__stage > .birthday-balloons { animation-delay: .12s; }
+.opening-screen__stage > .opening-screen__balloons-enter { animation-delay: .12s; }
 .opening-screen__stage > .opening-screen__balloon-hint { animation-delay: .18s; }
-.opening-screen__stage > .envelope { animation-delay: .24s; }
+.opening-screen__stage > .opening-screen__envelope-enter { animation-delay: .24s; }
 .opening-screen__stage > .opening-screen__button { animation-delay: .3s; }
 .opening-screen__stage > .opening-screen__hint { animation-delay: .36s; }
+
+.opening-screen__copy-motion,
+.opening-screen__balloons-enter,
+.opening-screen__envelope-enter,
+.opening-screen__envelope-motion {
+  transform-style: preserve-3d;
+}
+.opening-screen__copy-motion { width: 100%; }
+.opening-screen__balloons-enter,
+.opening-screen__envelope-enter { width: 100%; }
+.opening-screen__envelope-enter { display: grid; place-items: center; }
+.opening-screen__envelope-motion { display: grid; place-items: center; }
 
 .opening-screen__copy {
   grid-area: copy;
@@ -291,6 +303,8 @@ button:focus-visible, a:focus-visible, input:focus-visible {
   background: rgb(255 253 247 / 34%);
   box-shadow: inset 0 0 0 1px rgb(255 255 255 / 34%), 0 22px 70px rgb(30 64 175 / 9%);
   transform: rotate(1deg);
+  perspective: 900px;
+  transform-style: preserve-3d;
 }
 .opening-screen__stage::before { position: absolute; inset: 8% 10%; z-index: -1; border: 1px dashed rgb(3 105 161 / 18%); border-radius: 50%; content: ""; transform: rotate(-9deg); }
 .opening-screen__stage::after { position: absolute; top: 1rem; right: 1.1rem; width: 3.5rem; height: 1.1rem; border: 1px solid rgb(183 139 98 / 28%); content: ""; background: rgb(255 250 239 / 65%); transform: rotate(4deg); }
@@ -314,7 +328,8 @@ button:focus-visible, a:focus-visible, input:focus-visible {
 }
 
 .opening-screen__note { margin: .65rem 0 1.5rem; color: #475569; }
-.envelope { position: relative; width: min(82vw, 23rem); height: 13rem; margin: 1rem auto 1.75rem; perspective: 700px; transform: rotate(-1.5deg); }
+.envelope { position: relative; width: min(82vw, 23rem); height: 13rem; margin: 1rem auto 1.75rem; perspective: 700px; transform: rotate(-1.5deg); transform-style: preserve-3d; }
+.envelope__back, .envelope__letter, .envelope__flap, .envelope__seal { backface-visibility: hidden; }
 .envelope__back { position: absolute; inset: 0; overflow: hidden; border: 1px solid rgb(255 255 255 / 72%); border-radius: .8rem 1.6rem .7rem 1.25rem; background: linear-gradient(145deg, #0e7490, #0369a1 65%, #155e75); box-shadow: 0 1.25rem 2.75rem rgb(15 23 42 / 20%), 7px 8px 0 rgb(228 217 190 / 72%); }
 .envelope__back::before {
   position: absolute;
@@ -1719,7 +1734,10 @@ body {
   border-radius: 50%;
   background: rgb(255 255 255 / 30%);
   filter: blur(22px);
+  transform: translateZ(0);
 }
+
+.opening-screen__stars { transform: translateZ(0); }
 
 .opening-screen__copy {
   width: min(100%, 31rem);
