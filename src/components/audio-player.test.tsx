@@ -62,6 +62,21 @@ describe("AudioPlayer", () => {
     await waitFor(() => expect(HTMLMediaElement.prototype.play).toHaveBeenCalledTimes(2));
   });
 
+  it("togglesTheLyricsPanel", async () => {
+    const player = createRef<AudioPlayerHandle>();
+    render(<AudioPlayer ref={player} track="/assets/metal.mp3" />);
+    await act(async () => { await player.current!.startFromGesture(); });
+
+    const lyricsButton = screen.getByRole("button", { name: "Lihat lirik" });
+    const lyricsPanel = document.getElementById("birthday-lyrics");
+    expect(lyricsPanel).toHaveAttribute("aria-hidden", "true");
+
+    fireEvent.click(lyricsButton);
+
+    expect(screen.getByRole("button", { name: "Tutup lirik" })).toBeInTheDocument();
+    expect(lyricsPanel).toHaveAttribute("aria-hidden", "false");
+  });
+
   it("updatesProgress", async () => {
     const player = createRef<AudioPlayerHandle>();
     render(<AudioPlayer ref={player} track="/assets/metal.mp3" />);

@@ -7,7 +7,7 @@ import {
   useRef,
   useState,
 } from "react";
-import { Music2, Pause, Play, Volume2, VolumeX } from "lucide-react";
+import { ListMusic, Music2, Pause, Play, Volume2, VolumeX, X } from "lucide-react";
 
 export interface AudioPlayerHandle {
   startFromGesture(): Promise<boolean>;
@@ -16,6 +16,11 @@ export interface AudioPlayerHandle {
 interface AudioPlayerProps {
   track: string;
 }
+
+const lyricPlaceholder = [
+  "Lirik lagu belum ditambahkan.",
+  "Panel ini siap diisi dengan teks lagu yang kamu pilih.",
+];
 
 function formatTime(seconds: number) {
   if (!Number.isFinite(seconds) || seconds < 0) return "0:00";
@@ -35,6 +40,7 @@ export const AudioPlayer = forwardRef<AudioPlayerHandle, AudioPlayerProps>(funct
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
   const [error, setError] = useState("");
+  const [lyricsOpen, setLyricsOpen] = useState(false);
 
   const startFromGesture = useCallback(async () => {
     const audio = audioRef.current;
@@ -130,6 +136,16 @@ export const AudioPlayer = forwardRef<AudioPlayerHandle, AudioPlayerProps>(funct
             <button className="audio-player__play" type="button" aria-label={playing ? "Jeda musik" : error ? "Coba putar musik lagi" : "Putar musik"} onClick={() => void togglePlayback()}>
               {playing ? <Pause aria-hidden="true" /> : <Play aria-hidden="true" />}
             </button>
+            <button
+              aria-controls="birthday-lyrics"
+              aria-expanded={lyricsOpen}
+              aria-label={lyricsOpen ? "Tutup lirik" : "Lihat lirik"}
+              className={`audio-player__lyrics-toggle${lyricsOpen ? " audio-player__lyrics-toggle--active" : ""}`}
+              onClick={() => setLyricsOpen((open) => !open)}
+              type="button"
+            >
+              {lyricsOpen ? <X aria-hidden="true" /> : <ListMusic aria-hidden="true" />}
+            </button>
             <div className="audio-player__timeline">
               <span>{formatTime(currentTime)}</span>
               <input
@@ -142,6 +158,15 @@ export const AudioPlayer = forwardRef<AudioPlayerHandle, AudioPlayerProps>(funct
                 onChange={(event) => seek(event.currentTarget.value)}
               />
               <span>{formatTime(duration)}</span>
+            </div>
+          </div>
+          <div className={`audio-player__lyrics${lyricsOpen ? " audio-player__lyrics--open" : ""}`} id="birthday-lyrics" aria-hidden={!lyricsOpen}>
+            <div className="audio-player__lyrics-heading">
+              <span>Lirik untuk menemani</span>
+              <small>catatan kecil</small>
+            </div>
+            <div className="audio-player__lyrics-lines">
+              {lyricPlaceholder.map((line) => <p key={line}>{line}</p>)}
             </div>
           </div>
           {error && <span className="audio-player__error-indicator" role="status" aria-label={error} title={error} />}
