@@ -1,8 +1,8 @@
 "use client";
 
 import Image from "next/image";
-import { assetPath } from "@/lib/asset-path";
 import { useState } from "react";
+import { assetPath } from "@/lib/asset-path";
 import { defaultBirthdayCopy } from "@/data/content";
 import type { BirthdayCopy } from "@/data/types";
 
@@ -10,9 +10,9 @@ export function CakeSection({ copy = defaultBirthdayCopy }: { copy?: BirthdayCop
   const [candlesOut, setCandlesOut] = useState(false);
 
   return (
-    <section className="story-page cake-section" aria-labelledby="cake-title" tabIndex={-1}>
+    <section className={`story-page cake-section${candlesOut ? " cake-section--wished" : ""}`} aria-labelledby="cake-title" tabIndex={-1}>
       <div className="cake-section__copy">
-        <p className="page-kicker">Sebelum membuka halaman lain</p>
+        <p className="page-kicker">Sebelum membaca suratnya</p>
         <h2 id="cake-title">{copy.cakeTitle}</h2>
         <p>{copy.cakeInstruction}</p>
         <button
@@ -20,7 +20,7 @@ export function CakeSection({ copy = defaultBirthdayCopy }: { copy?: BirthdayCop
           onClick={() => setCandlesOut((out) => !out)}
           type="button"
         >
-          {candlesOut ? "Nyalakan lilin lagi" : "Tiup lilin"}
+          {candlesOut ? "Nyalakan lagi" : "Tiup lilin"}
         </button>
         <p className={`cake-section__wish${candlesOut ? " cake-section__wish--visible" : ""}`} role="status" aria-live="polite">
           {candlesOut ? "Permohonannya sudah meluncur. Semoga terkabul." : ""}

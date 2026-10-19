@@ -52,7 +52,6 @@ export function AdminEditor({ initialCopy, initialPublishedRecord, loadError }: 
       nextCopy.cakeInstruction,
       nextCopy.letterTitle,
       nextCopy.letter.greeting,
-      nextCopy.letter.signOff,
     ];
     if (requiredFields.some((field) => !field)) {
       setFeedback({ text: "Lengkapi semua kolom bertanda wajib sebelum menyimpan.", error: true });
@@ -208,14 +207,13 @@ export function AdminEditor({ initialCopy, initialPublishedRecord, loadError }: 
           <section className="admin-card" aria-labelledby="admin-letter-title">
             <div className="admin-card__heading">
               <span className="admin-card__number" aria-hidden="true">03</span>
-              <div><p className="eyebrow">Halaman surat</p><h2 id="admin-letter-title">Catatan dari hati</h2></div>
+              <div><p className="eyebrow">Halaman surat</p><h2 id="admin-letter-title">Catatan untuk dibaca</h2></div>
             </div>
             <div className="admin-fields">
               <label className="admin-field"><span>Judul halaman <b aria-hidden="true">*</b></span><input maxLength={100} required value={copy.letterTitle} onChange={updateText("letterTitle")} /></label>
               <label className="admin-field"><span>Sapaan <b aria-hidden="true">*</b></span><input maxLength={100} required value={copy.letter.greeting} onChange={(event) => updateLetter("greeting", event.target.value)} /></label>
               <label className="admin-field"><span>Isi surat</span><textarea maxLength={5000} rows={9} placeholder="Tulis paragraf surat. Pisahkan setiap paragraf dengan satu baris kosong." value={paragraphText} onChange={(event) => setParagraphText(event.target.value)} /></label>
-              <p className="admin-field__hint">Pisahkan paragraf dengan satu baris kosong. Draf bawaan masih kosong dan tidak berisi cerita rekaan.</p>
-              <label className="admin-field"><span>Tanda tangan <b aria-hidden="true">*</b></span><input maxLength={100} required value={copy.letter.signOff} onChange={(event) => updateLetter("signOff", event.target.value)} /></label>
+              <p className="admin-field__hint">Pisahkan paragraf dengan satu baris kosong. Tidak perlu menambahkan nama pengirim.</p>
             </div>
           </section>
 

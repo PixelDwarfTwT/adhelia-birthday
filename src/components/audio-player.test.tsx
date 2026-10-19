@@ -87,15 +87,4 @@ describe("AudioPlayer", () => {
     expect(await screen.findByRole("button", { name: "Jeda musik" })).toBeInTheDocument();
   });
 
-  it("ducksToFifteenPercentForVideo", async () => {
-    const player = createRef<AudioPlayerHandle>();
-    render(<AudioPlayer ref={player} track="/assets/metal.mp3" />);
-    await act(async () => { await player.current!.startFromGesture(); });
-    const audio = document.querySelector("audio")!;
-
-    act(() => player.current!.setDucked(true));
-    expect(audio.volume).toBeCloseTo(0.15);
-    act(() => player.current!.setDucked(false));
-    expect(audio.volume).toBe(1);
-  });
 });

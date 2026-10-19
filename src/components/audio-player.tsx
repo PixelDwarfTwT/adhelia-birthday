@@ -11,7 +11,6 @@ import { Pause, Play, Volume2, VolumeX } from "lucide-react";
 
 export interface AudioPlayerHandle {
   startFromGesture(): Promise<boolean>;
-  setDucked(ducked: boolean): void;
 }
 
 interface AudioPlayerProps {
@@ -30,11 +29,9 @@ export const AudioPlayer = forwardRef<AudioPlayerHandle, AudioPlayerProps>(funct
   ref,
 ) {
   const audioRef = useRef<HTMLAudioElement>(null);
-  const volumeBeforeDuck = useRef<number | null>(null);
   const [started, setStarted] = useState(false);
   const [playing, setPlaying] = useState(false);
   const [muted, setMuted] = useState(false);
-  const [ducked, setDuckedState] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
   const [error, setError] = useState("");
@@ -47,7 +44,7 @@ export const AudioPlayer = forwardRef<AudioPlayerHandle, AudioPlayerProps>(funct
     setError("");
     audio.setAttribute("src", track);
     audio.muted = muted;
-    audio.volume = ducked ? (volumeBeforeDuck.current ?? 1) * 0.15 : 1;
+    audio.volume = 1;
 
     try {
       audio.load();
@@ -59,21 +56,9 @@ export const AudioPlayer = forwardRef<AudioPlayerHandle, AudioPlayerProps>(funct
       setError("Nada musiknya tersendat. Coba putar lagi, atau lanjutkan tanpa musik.");
       return false;
     }
-  }, [ducked, muted, track]);
+  }, [muted, track]);
 
-  const setDucked = useCallback((shouldDuck: boolean) => {
-    const audio = audioRef.current;
-    if (shouldDuck) {
-      if (volumeBeforeDuck.current === null) volumeBeforeDuck.current = audio?.volume ?? 1;
-      if (audio) audio.volume = volumeBeforeDuck.current * 0.15;
-    } else {
-      if (audio && volumeBeforeDuck.current !== null) audio.volume = volumeBeforeDuck.current;
-      volumeBeforeDuck.current = null;
-    }
-    setDuckedState(shouldDuck);
-  }, []);
-
-  useImperativeHandle(ref, () => ({ startFromGesture, setDucked }), [setDucked, startFromGesture]);
+  useImperativeHandle(ref, () => ({ startFromGesture }), [startFromGesture]);
 
   async function togglePlayback() {
     const audio = audioRef.current;
@@ -130,7 +115,7 @@ export const AudioPlayer = forwardRef<AudioPlayerHandle, AudioPlayerProps>(funct
           aria-label={error ? `Kontrol musik. ${error}` : "Kontrol musik ulang tahun"}
         >
           <div className="audio-player__identity">
-            <span aria-hidden="true" className="audio-player__star">✦</span>
+            <span aria-hidden="true" className="audio-player__star">???</span>
             <div>
               <strong>{error ? "Musik perlu diputar lagi" : "Musik ulang tahun"}</strong>
               <span>{error ? "Ketuk tombol putar untuk mencoba" : "Untuk menemani perjalanan ini"}</span>

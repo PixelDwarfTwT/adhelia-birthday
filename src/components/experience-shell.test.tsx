@@ -19,7 +19,7 @@ describe("birthday book journey", () => {
   });
 
   async function openBook() {
-    fireEvent.click(await screen.findByRole("button", { name: "Buka hadiah ulang tahun" }));
+    fireEvent.click(await screen.findByRole("button", { name: "Buka amplop" }));
     return screen.findByRole("heading", { name: "Buat satu permohonan kecil." });
   }
 
@@ -30,7 +30,7 @@ describe("birthday book journey", () => {
     fireEvent.change(screen.getByLabelText("Jawaban"), { target: { value: "20" } });
     fireEvent.click(screen.getByRole("button", { name: "Buka amplop" }));
     expect(await screen.findByRole("alert")).toHaveTextContent(/belum tepat/i);
-    expect(screen.queryByRole("button", { name: "Buka hadiah ulang tahun" })).not.toBeInTheDocument();
+    expect(screen.queryByRole("heading", { name: /Selamat Ulang Tahun/ })).not.toBeInTheDocument();
 
     fireEvent.change(screen.getByLabelText("Jawaban"), { target: { value: "19" } });
     fireEvent.click(screen.getByRole("button", { name: "Buka amplop" }));
@@ -44,16 +44,16 @@ describe("birthday book journey", () => {
     render(<ExperienceShell />);
     await openBook();
 
-    expect(screen.getByRole("navigation", { name: "Navigasi halaman" })).toBeInTheDocument();
+    expect(screen.getByRole("navigation", { name: "Navigasi hadiah ulang tahun" })).toBeInTheDocument();
     expect(document.querySelectorAll(".story-page")).toHaveLength(1);
-    expect(screen.getByText("01 / 02")).toBeInTheDocument();
-    expect(screen.getByRole("heading", { name: "Happy Birthday Adhelia" })).toBeInTheDocument();
+    expect(screen.getByLabelText("Halaman 1 dari 2")).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "Buat satu permohonan kecil." })).toBeInTheDocument();
     expect(screen.queryByText("Sebuah kado kecil.")).not.toBeInTheDocument();
     expect(screen.queryByText("Hari yang ingin disimpan.")).not.toBeInTheDocument();
 
-    fireEvent.click(screen.getByRole("button", { name: "Halaman berikutnya" }));
+    fireEvent.click(screen.getByRole("button", { name: "Lanjut ke halaman surat" }));
     expect(await screen.findByRole("heading", { name: "Sepucuk surat untukmu." })).toBeInTheDocument();
-    expect(screen.getByText("02 / 02")).toBeInTheDocument();
+    expect(screen.getByLabelText("Halaman 2 dari 2")).toBeInTheDocument();
     expect(screen.queryByText(/Tambahkan favorit/)).not.toBeInTheDocument();
     expect(screen.queryByText("Hari yang ingin disimpan.")).not.toBeInTheDocument();
     expect(document.querySelectorAll(".story-page")).toHaveLength(1);
@@ -64,13 +64,13 @@ describe("birthday book journey", () => {
     render(<ExperienceShell />);
     await openBook();
 
-    fireEvent.click(screen.getByRole("button", { name: "Halaman berikutnya" }));
+    fireEvent.click(screen.getByRole("button", { name: "Lanjut ke halaman surat" }));
     expect(await screen.findByRole("heading", { name: "Sepucuk surat untukmu." })).toBeInTheDocument();
     fireEvent.click(screen.getByRole("button", { name: "Buka surat" }));
-    expect(screen.getByText("Pesan pribadimu akan ditulis di sini.")).toBeInTheDocument();
+    expect(screen.getByText("Surat ini sedang menunggu kata-kata yang ingin kamu sampaikan.")).toBeInTheDocument();
     expect(screen.queryByText(/Aku selalu ingat/)).not.toBeInTheDocument();
 
-    fireEvent.click(screen.getByRole("button", { name: "Ulangi dari halaman kue" }));
+    fireEvent.click(screen.getByRole("button", { name: "Buka kembali halaman kue" }));
     expect(await screen.findByRole("heading", { name: "Buat satu permohonan kecil." })).toBeInTheDocument();
     expect(screen.queryByRole("heading", { name: "Sebuah kado kecil." })).not.toBeInTheDocument();
     expect(screen.queryByRole("heading", { name: "Hari yang ingin disimpan." })).not.toBeInTheDocument();
@@ -86,6 +86,6 @@ describe("birthday book journey", () => {
     expect(screen.getByRole("heading", { name: "Buat satu permohonan kecil." })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Coba putar musik lagi" })).toBeInTheDocument();
     expect(screen.getByRole("status", { name: /nada musiknya tersendat/i })).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: "Halaman berikutnya" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Lanjut ke halaman surat" })).toBeInTheDocument();
   });
 });

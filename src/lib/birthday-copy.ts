@@ -15,7 +15,6 @@ export function parseBirthdayCopy(value: unknown): BirthdayCopy | null {
     value.cakeInstruction,
     value.letterTitle,
     letter.greeting,
-    letter.signOff,
   ];
 
   if (!textFields.every((field) => typeof field === "string")) return null;
@@ -33,7 +32,6 @@ export function parseBirthdayCopy(value: unknown): BirthdayCopy | null {
     letter: {
       greeting: letter.greeting as string,
       paragraphs: [...letter.paragraphs] as string[],
-      signOff: letter.signOff as string,
     },
   };
 }
@@ -53,7 +51,6 @@ export function normalizeBirthdayCopy(copy: BirthdayCopy, paragraphsText: string
         .split(/\n\s*\n/)
         .map((paragraph) => paragraph.trim())
         .filter(Boolean),
-      signOff: copy.letter.signOff.trim(),
     },
   };
 }

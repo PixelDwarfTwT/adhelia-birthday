@@ -13,7 +13,10 @@ import { PasscodeGate } from "./passcode-gate";
 import { CakeSection } from "./sections/cake-section";
 import { LetterSection } from "./sections/letter-section";
 
-const pages = ["Kue", "Surat"] as const;
+const pages = [
+  { label: "Kue", eyebrow: "Momen pertama" },
+  { label: "Surat", eyebrow: "Untuk dibaca perlahan" },
+] as const;
 
 function subscribeToAccess(onChange: () => void) {
   window.addEventListener("storage", onChange);
@@ -100,9 +103,10 @@ export function ExperienceShell() {
     const reducedMotion = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
     if (reducedMotion) {
       setExperienceStarted(true);
-    } else {
-      window.setTimeout(() => setExperienceStarted(true), 700);
+      return;
     }
+
+    window.setTimeout(() => setExperienceStarted(true), 680);
   }
 
   function moveToPage(nextIndex: number) {
@@ -119,8 +123,8 @@ export function ExperienceShell() {
     setIsTurningPage(true);
     turnTimeoutsRef.current.forEach((timeoutId) => window.clearTimeout(timeoutId));
     turnTimeoutsRef.current = [
-      window.setTimeout(() => setPageIndex(safeIndex), 330),
-      window.setTimeout(() => setIsTurningPage(false), 720),
+      window.setTimeout(() => setPageIndex(safeIndex), 300),
+      window.setTimeout(() => setIsTurningPage(false), 650),
     ];
   }
 
@@ -130,6 +134,9 @@ export function ExperienceShell() {
 
   if (!hasAccess) return <PasscodeGate onUnlock={unlock} />;
 
+  const page = pages[pageIndex];
+  const isLetterPage = pageIndex === pages.length - 1;
+
   return (
     <>
       <AudioPlayer ref={audioPlayerRef} track={birthdayContent.audio.primary} />
@@ -138,13 +145,22 @@ export function ExperienceShell() {
       ) : (
         <main className="scrapbook scrapbook--paged" aria-labelledby="scrapbook-title">
           <header className="scrapbook__topbar">
-            <h1 className="book-brand" id="scrapbook-title" ref={titleRef} tabIndex={-1}>
-              <span>Happy Birthday {copy.recipientName}</span>
-            </h1>
+            <div className="scrapbook__title-group">
+              <p className="scrapbook__eyebrow">A small birthday book</p>
+              <h1 className="book-brand" id="scrapbook-title" ref={titleRef} tabIndex={-1}>
+                <span>For {copy.recipientName}</span>
+              </h1>
+            </div>
+            <p className="scrapbook__page-mark" aria-label={`Halaman ${pageIndex + 1} dari ${pages.length}`}>
+              <span>{String(pageIndex + 1).padStart(2, "0")}</span>
+              <i aria-hidden="true">/</i>
+              <span>{String(pages.length).padStart(2, "0")}</span>
+            </p>
           </header>
+
           <div className="page-stage">
             <div
-              aria-label={`${pages[pageIndex]}, halaman ${pageIndex + 1} dari ${pages.length}`}
+              aria-label={`${page.label}, halaman ${pageIndex + 1} dari ${pages.length}`}
               className={`page-scene page-scene--${pageDirection}${isTurningPage ? " page-scene--turning" : ""}`}
               ref={pageRef}
               tabIndex={-1}
@@ -152,27 +168,28 @@ export function ExperienceShell() {
               {renderPage()}
             </div>
           </div>
-          <nav className="page-controls" aria-label="Navigasi halaman">
+
+          <nav className="page-controls" aria-label="Navigasi hadiah ulang tahun">
             <button
-              aria-label={pageIndex === 0 ? "Kembali ke sampul" : "Halaman sebelumnya"}
+              aria-label={pageIndex === 0 ? "Kembali ke amplop" : "Kembali ke halaman kue"}
               className="page-controls__button page-controls__button--back"
               onClick={() => pageIndex === 0 ? setExperienceStarted(false) : moveToPage(pageIndex - 1)}
               type="button"
             >
               <ArrowLeft aria-hidden="true" />
-              <span>{pageIndex === 0 ? "Sampul" : "Kembali"}</span>
+              <span>{pageIndex === 0 ? "Amplop" : "Kembali"}</span>
             </button>
             <p aria-live="polite" className="page-controls__status">
-              <strong>{pages[pageIndex]}</strong>
-              <span>{String(pageIndex + 1).padStart(2, "0")} / {String(pages.length).padStart(2, "0")}</span>
+              <span>{page.eyebrow}</span>
+              <strong>{page.label}</strong>
             </p>
             <button
-              aria-label={pageIndex === pages.length - 1 ? "Ulangi dari halaman kue" : "Halaman berikutnya"}
+              aria-label={isLetterPage ? "Buka kembali halaman kue" : "Lanjut ke halaman surat"}
               className="page-controls__button page-controls__button--next"
               onClick={() => moveToPage(pageIndex + 1)}
               type="button"
             >
-              <span>{pageIndex === pages.length - 1 ? "Ulangi" : "Lanjut"}</span>
+              <span>{isLetterPage ? "Ulangi" : "Baca surat"}</span>
               <ArrowRight aria-hidden="true" />
             </button>
           </nav>

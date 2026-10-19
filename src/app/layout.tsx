@@ -25,7 +25,7 @@ const handwritten = localFont({
 
 export const metadata: Metadata = {
   title: "Selamat Ulang Tahun, Adhelia!",
-  description: "Scrapbook ulang tahun kecil yang dibuat dengan penuh perhatian untuk Adhelia.",
+  description: "Sebuah ucapan ulang tahun kecil untuk Adhelia, dengan amplop, kue, musik, dan surat.",
   robots: {
     index: false,
     follow: false,
