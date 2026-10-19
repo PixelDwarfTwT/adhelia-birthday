@@ -1935,6 +1935,18 @@ body {
     #fffaf0;
 }
 
+/* Once the letter opens, use the full sheet instead of leaving an empty grid column. */
+.letter-section--open {
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: auto minmax(0, 1fr);
+}
+
+.letter-section--open .letter-paper {
+  grid-column: 1 / -1;
+  justify-self: center;
+  width: min(100%, 64rem);
+}
+
 .letter-section__intro {
   max-width: 25rem;
 }
@@ -2008,8 +2020,13 @@ body {
 
 .page-controls__button--next {
   border-color: var(--blue-accent);
+  color: #fff;
   background: var(--blue-accent);
   box-shadow: 0 7px 16px rgb(20 107 138 / 18%);
+}
+
+.page-controls__button--next:hover {
+  color: #fff;
 }
 
 .page-controls__status span {

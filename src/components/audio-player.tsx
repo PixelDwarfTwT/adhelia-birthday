@@ -7,7 +7,7 @@ import {
   useRef,
   useState,
 } from "react";
-import { Pause, Play, Volume2, VolumeX } from "lucide-react";
+import { Music2, Pause, Play, Volume2, VolumeX } from "lucide-react";
 
 export interface AudioPlayerHandle {
   startFromGesture(): Promise<boolean>;
@@ -42,12 +42,10 @@ export const AudioPlayer = forwardRef<AudioPlayerHandle, AudioPlayerProps>(funct
 
     setStarted(true);
     setError("");
-    audio.setAttribute("src", track);
     audio.muted = muted;
     audio.volume = 1;
 
     try {
-      audio.load();
       await audio.play();
       setPlaying(true);
       return true;
@@ -56,7 +54,7 @@ export const AudioPlayer = forwardRef<AudioPlayerHandle, AudioPlayerProps>(funct
       setError("Nada musiknya tersendat. Coba putar lagi, atau lanjutkan tanpa musik.");
       return false;
     }
-  }, [muted, track]);
+  }, [muted]);
 
   useImperativeHandle(ref, () => ({ startFromGesture }), [startFromGesture]);
 
@@ -100,9 +98,13 @@ export const AudioPlayer = forwardRef<AudioPlayerHandle, AudioPlayerProps>(funct
       <audio
         aria-hidden="true"
         ref={audioRef}
-        preload="none"
+        preload="metadata"
+        src={track}
+        loop
         onLoadedMetadata={(event) => setDuration(Number.isFinite(event.currentTarget.duration) ? event.currentTarget.duration : 0)}
         onTimeUpdate={(event) => setCurrentTime(event.currentTarget.currentTime)}
+        onPlay={() => setPlaying(true)}
+        onPause={() => setPlaying(false)}
         onEnded={() => setPlaying(false)}
         onError={() => {
           setPlaying(false);
@@ -115,7 +117,7 @@ export const AudioPlayer = forwardRef<AudioPlayerHandle, AudioPlayerProps>(funct
           aria-label={error ? `Kontrol musik. ${error}` : "Kontrol musik ulang tahun"}
         >
           <div className="audio-player__identity">
-            <span aria-hidden="true" className="audio-player__star">???</span>
+            <span aria-hidden="true" className="audio-player__star"><Music2 /></span>
             <div>
               <strong>{error ? "Musik perlu diputar lagi" : "Musik ulang tahun"}</strong>
               <span>{error ? "Ketuk tombol putar untuk mencoba" : "Untuk menemani perjalanan ini"}</span>

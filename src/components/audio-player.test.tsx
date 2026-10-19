@@ -10,12 +10,13 @@ describe("AudioPlayer", () => {
     vi.spyOn(HTMLMediaElement.prototype, "load").mockImplementation(() => undefined);
   });
 
-  it("doesNotLoadOrPlayBeforeOpening", () => {
+  it("preparesButDoesNotPlayBeforeOpening", () => {
     render(<AudioPlayer track="/assets/metal.mp3" />);
     const audio = document.querySelector("audio");
 
     expect(audio).not.toBeNull();
-    expect(audio?.getAttribute("src")).toBeNull();
+    expect(audio?.getAttribute("src")).toBe("/assets/metal.mp3");
+    expect(audio?.loop).toBe(true);
     expect(HTMLMediaElement.prototype.play).not.toHaveBeenCalled();
   });
 
@@ -33,18 +34,16 @@ describe("AudioPlayer", () => {
     expect(HTMLMediaElement.prototype.play).toHaveBeenCalledTimes(1);
   });
 
-  it("doesNotReloadTheTrackAfterTheOpeningGesture", async () => {
+  it("keepsTheTrackReadyAfterTheOpeningGesture", async () => {
     const player = createRef<AudioPlayerHandle>();
     render(<AudioPlayer ref={player} track="/assets/metal.mp3" />);
     const audio = document.querySelector("audio")!;
-    const setAttribute = vi.spyOn(audio, "setAttribute");
-
     await act(async () => {
       await player.current!.startFromGesture();
     });
 
-    const sourceWrites = setAttribute.mock.calls.filter(([name]) => name.toLowerCase() === "src");
-    expect(sourceWrites).toHaveLength(1);
+    expect(audio.getAttribute("src")).toBe("/assets/metal.mp3");
+    expect(HTMLMediaElement.prototype.play).toHaveBeenCalledTimes(1);
   });
 
   it("togglesMuteAndPlayPause", async () => {
