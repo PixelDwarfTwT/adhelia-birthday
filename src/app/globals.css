@@ -2716,7 +2716,7 @@ body {
 }
 
 .audio-player__lyrics--open {
-  max-height: 12rem;
+  max-height: min(19rem, 45vh);
   visibility: visible;
   opacity: 1;
   transform: translateY(0);
@@ -2745,8 +2745,13 @@ body {
 
 .audio-player__lyrics-lines {
   display: grid;
+  max-height: min(15rem, 36vh);
   gap: .25rem;
   margin-top: .35rem;
+  padding-right: .35rem;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-color: #9cc6d2 transparent;
   color: #58727d;
   font-family: var(--font-handwritten), cursive;
   font-size: 1.1rem;
@@ -2757,6 +2762,10 @@ body {
   margin: 0;
 }
 
+.audio-player__lyrics-break {
+  min-height: .5rem;
+}
+
 @media (max-width: 700px) {
   .audio-player__lyrics-toggle {
     width: 2.55rem;
@@ -2764,7 +2773,7 @@ body {
   }
 
   .audio-player__lyrics--open {
-    max-height: 10rem;
+    max-height: min(15rem, 42vh);
   }
 }
 
