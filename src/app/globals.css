@@ -2359,3 +2359,213 @@ body {
     animation: none;
   }
 }
+
+/* Motion layer: pointer physics lives on wrappers so the scene entrances and page turns keep ownership of their transforms. */
+.gate-screen {
+  perspective: 1200px;
+}
+
+.gate-card__motion {
+  width: min(100%, 29rem);
+  transform-style: preserve-3d;
+}
+
+.gate-card--error {
+  animation: gate-card-error-shake 420ms cubic-bezier(.36, .07, .19, .97) both;
+}
+
+@keyframes gate-card-error-shake {
+  0%, 100% { translate: 0 0; }
+  18% { translate: -.45rem 0; }
+  36% { translate: .4rem 0; }
+  54% { translate: -.28rem 0; }
+  72% { translate: .16rem 0; }
+}
+
+.cake-section {
+  isolation: isolate;
+}
+
+.cake-section__halo {
+  position: absolute;
+  z-index: 0;
+  top: 12%;
+  right: 8%;
+  width: min(44%, 27rem);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgb(255 255 255 / 72%) 0 18%, rgb(190 220 228 / 32%) 44%, transparent 72%);
+  filter: blur(7px);
+  pointer-events: none;
+}
+
+.cake-section__copy-motion {
+  position: relative;
+  z-index: 2;
+  grid-column: 1;
+  min-width: 0;
+  transform-style: preserve-3d;
+}
+
+.cake-section__copy-motion .cake-section__copy {
+  height: 100%;
+}
+
+.birthday-cake-motion {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  width: 100%;
+  min-width: 0;
+  align-items: center;
+  justify-items: center;
+  grid-column: 2;
+  transform-style: preserve-3d;
+}
+
+.birthday-cake-motion .birthday-cake {
+  width: min(88%, 31rem);
+  justify-self: center;
+}
+
+.letter-section__intro-motion {
+  position: relative;
+  z-index: 2;
+  min-width: 0;
+  grid-column: 1;
+  align-self: center;
+  transform-style: preserve-3d;
+}
+
+.letter-section__closed-motion {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  min-width: 0;
+  width: 100%;
+  align-content: center;
+  grid-column: 2;
+  transform-style: preserve-3d;
+}
+
+.letter-section__closed-motion .letter-section__closed {
+  width: 100%;
+  grid-column: 1;
+}
+
+.letter-paper-motion {
+  position: relative;
+  z-index: 2;
+  display: block;
+  min-width: 0;
+  width: min(100%, 64rem);
+  grid-column: 1;
+  grid-row: 2;
+  align-self: stretch;
+  justify-self: center;
+  transform-style: preserve-3d;
+}
+
+.letter-paper-motion .letter-paper {
+  width: 100%;
+  max-height: 100%;
+  grid-column: auto;
+  grid-row: auto;
+}
+
+.letter-paper {
+  background:
+    radial-gradient(circle at var(--paper-sheen-x, 50%) -10%, rgb(255 255 255 / 78%), transparent 24%),
+    linear-gradient(90deg, transparent 0 1.7rem, rgb(174 106 98 / 22%) 1.7rem calc(1.7rem + 1px), transparent calc(1.7rem + 1px)),
+    repeating-linear-gradient(0deg, #fffdf5 0 2rem, #e9e1d1 2.03rem 2.07rem);
+}
+
+.letter-section--open .letter-section__intro-motion {
+  grid-column: 1;
+  grid-row: 1;
+  justify-self: center;
+  width: 100%;
+}
+
+.letter-section--open .letter-section__closed-motion {
+  position: absolute;
+  top: 30%;
+  right: 0;
+  left: 0;
+  width: 100%;
+  pointer-events: none;
+}
+
+.letter-section--open .letter-section__closed-motion .letter-section__closed {
+  position: relative;
+  inset: auto;
+  width: min(70%, 29rem);
+  margin-inline: auto;
+  transform: none;
+}
+
+.letter-section--open .letter-paper-motion {
+  grid-column: 1;
+  grid-row: 2;
+}
+
+@media (max-width: 700px) {
+  .cake-section__halo {
+    top: 37%;
+    right: 8%;
+    width: 84%;
+  }
+
+  .cake-section__copy-motion {
+    grid-column: 1;
+    width: 100%;
+  }
+
+  .birthday-cake-motion {
+    grid-column: 1;
+    align-self: center;
+    height: 100%;
+  }
+
+  .letter-section__intro-motion {
+    grid-column: 1;
+    grid-row: 1;
+    width: 100%;
+  }
+
+  .letter-section__closed-motion {
+    grid-column: 1;
+    grid-row: 2;
+    align-self: stretch;
+  }
+
+  .letter-paper-motion,
+  .letter-section--open .letter-paper-motion {
+    grid-column: 1;
+    grid-row: 2;
+    width: min(100%, 34rem);
+  }
+
+  .letter-section--open .letter-section__closed-motion {
+    top: 24%;
+  }
+
+  .letter-section--open .letter-section__closed-motion .letter-section__closed {
+    width: min(80vw, 24rem);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gate-card__motion,
+  .cake-section__copy-motion,
+  .birthday-cake-motion,
+  .letter-section__intro-motion,
+  .letter-section__closed-motion,
+  .letter-paper-motion {
+    transform: none !important;
+  }
+
+  .gate-card--error {
+    animation: none;
+  }
+}
