@@ -1,6 +1,5 @@
 {
   "images": [
-    { "path": "/assets/photo.jpg", "alt": "Adhelia holding a birthday cake" },
     { "path": "/assets/cake-illustration.png", "alt": "Hand-painted birthday cake illustration with three candles" }
   ],
   "audio": [
