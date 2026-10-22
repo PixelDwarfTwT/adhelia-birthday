@@ -88,6 +88,8 @@ describe("AudioPlayer", () => {
     fireEvent.timeUpdate(audio);
 
     expect(screen.getByRole("slider", { name: "Posisi musik" })).toHaveValue("30");
+    fireEvent.click(screen.getByRole("button", { name: "Lihat lirik" }));
+    expect(screen.getByText("In the cold November rain")).toHaveAttribute("data-active", "true");
   });
 
   it("showsRetryAfterPlaybackFailure", async () => {

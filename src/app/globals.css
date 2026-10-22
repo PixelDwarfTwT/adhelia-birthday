@@ -2783,3 +2783,169 @@ body {
     transition: none;
   }
 }
+/* Focused lyric sheet: the words belong to the music, not to a rounded control box. */
+.audio-player.audio-player--lyrics-open {
+  width: min(25rem, calc(100vw - 2rem));
+  border-radius: .8rem;
+  padding: .5rem .6rem .65rem;
+  background: rgb(255 253 247 / 97%);
+}
+
+.audio-player.audio-player--lyrics-open .audio-player__lyrics {
+  padding-inline: .2rem;
+}
+
+.audio-player__lyrics-lines p {
+  padding: .16rem .45rem;
+  border-radius: 0;
+  transition: color var(--motion-fast) ease, background-color var(--motion-fast) ease, transform var(--motion-fast) var(--ease-out-back);
+}
+
+.audio-player__lyrics-lines p[data-active="true"] {
+  color: var(--blue-ink);
+  background: rgb(190 220 228 / 34%);
+  transform: translateX(.15rem);
+}
+
+@media (max-width: 700px) {
+  .audio-player.audio-player--lyrics-open {
+    width: min(25rem, calc(100vw - 1.1rem));
+    right: .55rem;
+    left: auto;
+  }
+
+  .audio-player.audio-player--lyrics-open .audio-player__identity div {
+    display: grid;
+  }
+
+  .audio-player.audio-player--lyrics-open .audio-player__identity {
+    flex: 1 1 auto;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .audio-player__lyrics-lines p {
+    transition: none;
+  }
+}
+
+.audio-player__lyrics,
+.audio-player__lyrics-heading,
+.audio-player__lyrics-lines {
+  min-width: 0;
+  max-width: 100%;
+}
+
+.audio-player__lyrics-lines {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.audio-player__lyrics-lines p {
+  min-width: 0;
+  max-width: 100%;
+  overflow-wrap: anywhere;
+  white-space: normal;
+}
+
+/* Final responsive polish for the opening scene and the letter page. */
+.letter-section--open .letter-section__intro h2 {
+  max-width: none;
+  font-size: clamp(1.65rem, 3vw, 2.75rem);
+  line-height: 1;
+}
+
+.letter-section--open .letter-section__intro-note {
+  margin-top: .35rem;
+  font-size: .78rem;
+}
+
+.letter-section--open .letter-paper-motion {
+  width: min(100%, 72rem);
+}
+
+.letter-section--open .letter-paper {
+  width: 100%;
+  max-width: none;
+}
+
+@media (max-width: 700px) {
+  .opening-screen {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas: "copy" "stage";
+    justify-items: center;
+    align-items: center;
+    align-content: center;
+    width: 100%;
+    min-width: 0;
+    padding-inline: max(.8rem, env(safe-area-inset-left)) max(.8rem, env(safe-area-inset-right));
+    text-align: center;
+  }
+
+  .opening-screen__copy,
+  .opening-screen__copy-motion,
+  .opening-screen__stage {
+    width: min(100%, 32rem);
+    min-width: 0;
+    margin-inline: auto;
+    text-align: center;
+  }
+
+  .opening-screen__copy {
+    display: grid;
+    justify-items: center;
+    margin-left: auto;
+  }
+
+  .opening-screen__copy-motion {
+    display: grid;
+    justify-items: center;
+  }
+
+  .opening-screen__copy .eyebrow,
+  .opening-screen__copy h1,
+  .opening-screen__copy .opening-screen__note,
+  .opening-screen__copy .opening-screen__scribble {
+    margin-inline: auto;
+    text-align: center;
+  }
+
+  .opening-screen__copy h1 {
+    max-width: 12ch;
+  }
+
+  .opening-screen__note {
+    max-width: 28rem;
+  }
+
+  .opening-screen__scribble {
+    justify-self: center;
+  }
+
+  .opening-screen__stage {
+    justify-self: center;
+    justify-items: center;
+    transform: none;
+  }
+
+  .opening-screen__stage-label {
+    left: 50%;
+    transform: translateX(-50%) rotate(-3deg);
+    white-space: nowrap;
+  }
+
+  .letter-section--open .letter-section__intro h2 {
+    max-width: 16ch;
+    font-size: clamp(1.45rem, 6vw, 2.2rem);
+  }
+
+  .letter-section--open .letter-paper-motion {
+    width: min(100%, 38rem);
+  }
+
+  .letter-section--open .letter-paper {
+    width: 100%;
+    padding: 1rem .9rem 1rem 2.2rem;
+    font-size: clamp(.95rem, 3.8vw, 1.08rem);
+  }
+}
