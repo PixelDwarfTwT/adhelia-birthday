@@ -82,14 +82,14 @@ describe("AudioPlayer", () => {
     render(<AudioPlayer ref={player} track="/assets/metal.mp3" />);
     await act(async () => { await player.current!.startFromGesture(); });
     const audio = document.querySelector("audio")!;
-    Object.defineProperty(audio, "duration", { configurable: true, value: 120 });
-    Object.defineProperty(audio, "currentTime", { configurable: true, writable: true, value: 30 });
+    Object.defineProperty(audio, "duration", { configurable: true, value: 340 });
+    Object.defineProperty(audio, "currentTime", { configurable: true, writable: true, value: 120 });
     fireEvent.loadedMetadata(audio);
     fireEvent.timeUpdate(audio);
 
-    expect(screen.getByRole("slider", { name: "Posisi musik" })).toHaveValue("30");
+    expect(screen.getByRole("slider", { name: "Posisi musik" })).toHaveValue("120");
     fireEvent.click(screen.getByRole("button", { name: "Lihat lirik" }));
-    expect(screen.getByText("In the cold November rain")).toHaveAttribute("data-active", "true");
+    expect(screen.getAllByText("Ooh, everybody needs some time on their own").find((line) => line.getAttribute("data-active") === "true")).toBeDefined();
   });
 
   it("showsRetryAfterPlaybackFailure", async () => {
