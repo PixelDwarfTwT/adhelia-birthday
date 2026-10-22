@@ -2611,7 +2611,24 @@ body {
   }
 
   .cake-section__copy-motion .cake-section__copy {
+    display: grid;
     height: auto;
+    width: 100%;
+    margin-inline: auto;
+    justify-items: center;
+    text-align: center;
+  }
+
+  .cake-section__copy h2 {
+    margin-inline: auto;
+    text-align: center;
+  }
+
+  .cake-section__copy .page-kicker,
+  .cake-section__copy > p:not(.page-kicker),
+  .cake-section__copy .cake-section__wish {
+    margin-inline: auto;
+    text-align: center;
   }
 
   .birthday-cake-motion {
