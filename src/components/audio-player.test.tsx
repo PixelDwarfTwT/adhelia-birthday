@@ -89,7 +89,21 @@ describe("AudioPlayer", () => {
 
     expect(screen.getByRole("slider", { name: "Posisi musik" })).toHaveValue("120");
     fireEvent.click(screen.getByRole("button", { name: "Lihat lirik" }));
-    expect(screen.getAllByText("Ooh, everybody needs some time on their own").find((line) => line.getAttribute("data-active") === "true")).toBeDefined();
+    expect(screen.getAllByRole("button", { name: "Mulai dari Ooh, everybody needs some time on their own" }).find((line) => line.getAttribute("data-active") === "true")).toBeDefined();
+  });
+
+  it("seeksWhenALyricLineIsSelected", async () => {
+    const player = createRef<AudioPlayerHandle>();
+    render(<AudioPlayer ref={player} track="/assets/metal.mp3" />);
+    await act(async () => { await player.current!.startFromGesture(); });
+    const audio = document.querySelector("audio")!;
+    Object.defineProperty(audio, "currentTime", { configurable: true, writable: true, value: 0 });
+    fireEvent.click(screen.getByRole("button", { name: "Lihat lirik" }));
+
+    fireEvent.click(screen.getByRole("button", { name: "Mulai dari I know it's hard to keep an open heart" }));
+
+    expect(audio.currentTime).toBe(136);
+    expect(screen.getByRole("button", { name: "Mulai dari I know it's hard to keep an open heart" })).toHaveAttribute("data-active", "true");
   });
 
   it("showsRetryAfterPlaybackFailure", async () => {
@@ -103,4 +117,21 @@ describe("AudioPlayer", () => {
     expect(await screen.findByRole("button", { name: "Jeda musik" })).toBeInTheDocument();
   });
 
+  it("appliesALyricsOffsetToProgressAndSeeking", async () => {
+    const player = createRef<AudioPlayerHandle>();
+    render(<AudioPlayer ref={player} track="/assets/metal.mp3" lyricsOffset={4} />);
+    await act(async () => { await player.current!.startFromGesture(); });
+    const audio = document.querySelector("audio")!;
+    Object.defineProperty(audio, "duration", { configurable: true, value: 340 });
+    Object.defineProperty(audio, "currentTime", { configurable: true, writable: true, value: 123 });
+    fireEvent.loadedMetadata(audio);
+    fireEvent.timeUpdate(audio);
+
+    expect(screen.getByRole("slider", { name: "Posisi musik" })).toHaveValue("123");
+    fireEvent.click(screen.getByRole("button", { name: "Lihat lirik" }));
+    expect(screen.getAllByRole("button", { name: "Mulai dari Ooh, everybody needs some time on their own" }).find((line) => line.getAttribute("data-active") === "true")).toBeDefined();
+
+    fireEvent.click(screen.getByRole("button", { name: "Mulai dari I know it's hard to keep an open heart" }));
+    expect(audio.currentTime).toBe(140);
+  });
 });

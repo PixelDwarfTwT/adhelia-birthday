@@ -2775,8 +2775,47 @@ body {
   line-height: 1.25;
 }
 
-.audio-player__lyrics-lines p {
-  margin: 0;
+.audio-player__lyrics-line {
+  display: grid;
+  min-width: 0;
+  grid-template-columns: 2.1rem minmax(0, 1fr);
+  gap: .45rem;
+  align-items: baseline;
+  width: 100%;
+  padding: .16rem .45rem;
+  border: 0;
+  border-radius: 0;
+  color: inherit;
+  background: transparent;
+  cursor: pointer;
+  font: inherit;
+  text-align: left;
+  transition: color var(--motion-fast) ease, background-color var(--motion-fast) ease, transform var(--motion-fast) var(--ease-out-back);
+}
+
+.audio-player__lyrics-line:hover {
+  color: var(--blue-ink);
+  background: rgb(190 220 228 / 18%);
+  transform: translateX(.1rem);
+}
+
+.audio-player__lyrics-line-time {
+  color: #91a8af;
+  font-family: var(--font-sans), sans-serif;
+  font-size: .58rem;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: .04em;
+}
+
+.audio-player__lyrics-line[data-active="true"] {
+  color: var(--blue-ink);
+  background: rgb(190 220 228 / 34%);
+  transform: translateX(.15rem);
+}
+
+.audio-player__lyrics-line[data-active="true"] .audio-player__lyrics-line-time {
+  color: var(--blue-accent);
+  font-weight: 700;
 }
 
 .audio-player__lyrics-break {
@@ -2812,18 +2851,6 @@ body {
   padding-inline: .2rem;
 }
 
-.audio-player__lyrics-lines p {
-  padding: .16rem .45rem;
-  border-radius: 0;
-  transition: color var(--motion-fast) ease, background-color var(--motion-fast) ease, transform var(--motion-fast) var(--ease-out-back);
-}
-
-.audio-player__lyrics-lines p[data-active="true"] {
-  color: var(--blue-ink);
-  background: rgb(190 220 228 / 34%);
-  transform: translateX(.15rem);
-}
-
 @media (max-width: 700px) {
   .audio-player.audio-player--lyrics-open {
     width: min(25rem, calc(100vw - 1.1rem));
@@ -2841,7 +2868,7 @@ body {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .audio-player__lyrics-lines p {
+  .audio-player__lyrics-line {
     transition: none;
   }
 }
@@ -2857,8 +2884,7 @@ body {
   grid-template-columns: minmax(0, 1fr);
 }
 
-.audio-player__lyrics-lines p {
-  min-width: 0;
+.audio-player__lyrics-line {
   max-width: 100%;
   overflow-wrap: anywhere;
   white-space: normal;

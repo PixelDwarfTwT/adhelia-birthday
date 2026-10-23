@@ -16,6 +16,7 @@ export interface AudioPlayerHandle {
 
 interface AudioPlayerProps {
   track: string;
+  lyricsOffset?: number;
 }
 
 const lyricLines = [
@@ -71,6 +72,7 @@ function formatTime(seconds: number) {
 }
 
 function getActiveLyricIndex(seconds: number) {
+  // Blank entries are intentional stanza gaps; keep the last sung line active through them.
   return lyricLines.reduce(
     (activeIndex, line, index) => (line.text && line.time <= seconds ? index : activeIndex),
     -1,
@@ -78,7 +80,7 @@ function getActiveLyricIndex(seconds: number) {
 }
 
 export const AudioPlayer = forwardRef<AudioPlayerHandle, AudioPlayerProps>(function AudioPlayer(
-  { track },
+  { track, lyricsOffset = 0 },
   ref,
 ) {
   const audioRef = useRef<HTMLAudioElement>(null);
@@ -90,7 +92,13 @@ export const AudioPlayer = forwardRef<AudioPlayerHandle, AudioPlayerProps>(funct
   const [error, setError] = useState("");
   const [lyricsOpen, setLyricsOpen] = useState(false);
   const [activeLyricIndex, setActiveLyricIndex] = useState(-1);
-  const lyricRefs = useRef<Array<HTMLParagraphElement | null>>([]);
+  const lyricRefs = useRef<Array<HTMLButtonElement | null>>([]);
+
+  const syncLyrics = useCallback((audioSeconds: number) => {
+    const nextTime = Number.isFinite(audioSeconds) ? Math.max(0, audioSeconds) : 0;
+    setCurrentTime(nextTime);
+    setActiveLyricIndex(getActiveLyricIndex(nextTime - lyricsOffset));
+  }, [lyricsOffset]);
 
   const startFromGesture = useCallback(async () => {
     const audio = audioRef.current;
@@ -147,12 +155,14 @@ export const AudioPlayer = forwardRef<AudioPlayerHandle, AudioPlayerProps>(funct
     setMuted(nextMuted);
   }
 
-  function seek(value: string) {
-    const nextTime = Number(value);
+  function seekAudio(nextTime: number) {
     if (!Number.isFinite(nextTime)) return;
     if (audioRef.current) audioRef.current.currentTime = nextTime;
-    setCurrentTime(nextTime);
-    setActiveLyricIndex(getActiveLyricIndex(nextTime));
+    syncLyrics(nextTime);
+  }
+
+  function seekLyric(nextTime: number) {
+    seekAudio(nextTime + lyricsOffset);
   }
 
   return (
@@ -163,11 +173,12 @@ export const AudioPlayer = forwardRef<AudioPlayerHandle, AudioPlayerProps>(funct
         preload="metadata"
         src={track}
         loop
-        onLoadedMetadata={(event) => setDuration(Number.isFinite(event.currentTarget.duration) ? event.currentTarget.duration : 0)}
+        onLoadedMetadata={(event) => {
+          const nextDuration = Number.isFinite(event.currentTarget.duration) ? event.currentTarget.duration : 0;
+          setDuration(nextDuration);
+        }}
         onTimeUpdate={(event) => {
-          const nextTime = event.currentTarget.currentTime;
-          setCurrentTime(nextTime);
-          setActiveLyricIndex(getActiveLyricIndex(nextTime));
+          syncLyrics(event.currentTarget.currentTime);
         }}
         onPlay={() => setPlaying(true)}
         onPause={() => setPlaying(false)}
@@ -215,7 +226,7 @@ export const AudioPlayer = forwardRef<AudioPlayerHandle, AudioPlayerProps>(funct
                 max={duration || 1}
                 step="1"
                 value={Math.min(currentTime, duration || 0)}
-                onChange={(event) => seek(event.currentTarget.value)}
+                onChange={(event) => seekAudio(Number(event.currentTarget.value))}
               />
               <span>{formatTime(duration)}</span>
             </div>
@@ -223,20 +234,29 @@ export const AudioPlayer = forwardRef<AudioPlayerHandle, AudioPlayerProps>(funct
           <div className={`audio-player__lyrics${lyricsOpen ? " audio-player__lyrics--open" : ""}`} id="birthday-lyrics" aria-hidden={!lyricsOpen}>
             <div className="audio-player__lyrics-heading">
               <span>Lirik untuk menemani</span>
-              <small>scroll untuk membaca</small>
+              <small>{activeLyricIndex >= 0 ? "sedang dimainkan" : "ketuk baris untuk mulai"}</small>
             </div>
             <div className="audio-player__lyrics-lines">
               {lyricLines.map((line, index) => (
-                <p
-                  className={`${line.text ? "" : "audio-player__lyrics-break"}${index === activeLyricIndex ? " audio-player__lyrics-line--active" : ""}`}
-                  key={`${index}-${line.time}`}
-                  ref={(element) => {
-                    lyricRefs.current[index] = element;
-                  }}
-                  data-active={index === activeLyricIndex ? "true" : undefined}
-                >
-                  {line.text || " "}
-                </p>
+                line.text ? (
+                  <button
+                    aria-current={index === activeLyricIndex ? "true" : undefined}
+                    aria-label={`Mulai dari ${line.text}`}
+                    className="audio-player__lyrics-line"
+                    data-active={index === activeLyricIndex ? "true" : undefined}
+                    key={`${index}-${line.time}`}
+                    onClick={() => seekLyric(line.time)}
+                    ref={(element) => {
+                      lyricRefs.current[index] = element;
+                    }}
+                    type="button"
+                  >
+                    <span className="audio-player__lyrics-line-time">{formatTime(line.time)}</span>
+                    <span>{line.text}</span>
+                  </button>
+                ) : (
+                  <span aria-hidden="true" className="audio-player__lyrics-break" key={`${index}-${line.time}`} />
+                )
               ))}
             </div>
           </div>
