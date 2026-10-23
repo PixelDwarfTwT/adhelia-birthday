@@ -2766,8 +2766,9 @@ body {
   gap: .25rem;
   margin-top: .35rem;
   padding-right: .35rem;
-  overflow-y: auto;
+  overflow-y: hidden;
   overscroll-behavior: contain;
+  scroll-behavior: smooth;
   scrollbar-color: #9cc6d2 transparent;
   color: #58727d;
   font-family: var(--font-handwritten), cursive;

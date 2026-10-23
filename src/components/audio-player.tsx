@@ -93,6 +93,7 @@ export const AudioPlayer = forwardRef<AudioPlayerHandle, AudioPlayerProps>(funct
   const [lyricsOpen, setLyricsOpen] = useState(false);
   const [activeLyricIndex, setActiveLyricIndex] = useState(-1);
   const lyricRefs = useRef<Array<HTMLButtonElement | null>>([]);
+  const lyricLinesRef = useRef<HTMLDivElement>(null);
 
   const syncLyrics = useCallback((audioSeconds: number) => {
     const nextTime = Number.isFinite(audioSeconds) ? Math.max(0, audioSeconds) : 0;
@@ -124,7 +125,13 @@ export const AudioPlayer = forwardRef<AudioPlayerHandle, AudioPlayerProps>(funct
 
   useEffect(() => {
     if (!lyricsOpen || activeLyricIndex < 0) return;
-    lyricRefs.current[activeLyricIndex]?.scrollIntoView?.({ block: "center", behavior: "smooth" });
+    const container = lyricLinesRef.current;
+    const activeLine = lyricRefs.current[activeLyricIndex];
+    if (!container || !activeLine) return;
+
+    const targetTop = activeLine.offsetTop - (container.clientHeight - activeLine.offsetHeight) / 2;
+    const behavior = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth";
+    container.scrollTo?.({ top: Math.max(0, targetTop), behavior });
   }, [activeLyricIndex, lyricsOpen]);
 
   async function togglePlayback() {
@@ -236,7 +243,7 @@ export const AudioPlayer = forwardRef<AudioPlayerHandle, AudioPlayerProps>(funct
               <span>Lirik untuk menemani</span>
               <small>{activeLyricIndex >= 0 ? "sedang dimainkan" : "ketuk baris untuk mulai"}</small>
             </div>
-            <div className="audio-player__lyrics-lines">
+            <div className="audio-player__lyrics-lines" ref={lyricLinesRef}>
               {lyricLines.map((line, index) => (
                 line.text ? (
                   <button
