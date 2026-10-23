@@ -7,6 +7,7 @@ const nextConfig: NextConfig = {
   basePath: basePath || undefined,
   trailingSlash: true,
   images: { unoptimized: true },
+  experimental: { agentUpgrade: "security" },
   env: { NEXT_PUBLIC_BASE_PATH: basePath },
   turbopack: { root: process.cwd() },
   devIndicators: false,
