@@ -83,13 +83,13 @@ describe("AudioPlayer", () => {
     await act(async () => { await player.current!.startFromGesture(); });
     const audio = document.querySelector("audio")!;
     Object.defineProperty(audio, "duration", { configurable: true, value: 340 });
-    Object.defineProperty(audio, "currentTime", { configurable: true, writable: true, value: 120 });
+    Object.defineProperty(audio, "currentTime", { configurable: true, writable: true, value: 123 });
     fireEvent.loadedMetadata(audio);
     fireEvent.timeUpdate(audio);
 
-    expect(screen.getByRole("slider", { name: "Posisi musik" })).toHaveValue("120");
+    expect(screen.getByRole("slider", { name: "Posisi musik" })).toHaveValue("123");
     fireEvent.click(screen.getByRole("button", { name: "Lihat lirik" }));
-    expect(screen.getAllByRole("button", { name: "Mulai dari Ooh, everybody needs some time on their own" }).find((line) => line.getAttribute("data-active") === "true")).toBeDefined();
+    expect(screen.getAllByRole("button", { name: "Mulai dari Don't ya think that you need somebody?" }).find((line) => line.getAttribute("data-active") === "true")).toBeDefined();
   });
 
   it("keepsLyricsMovingBetweenMediaTimeupdateEvents", async () => {
@@ -110,14 +110,14 @@ describe("AudioPlayer", () => {
 
     const audio = document.querySelector("audio")!;
     Object.defineProperty(audio, "paused", { configurable: true, value: false });
-    Object.defineProperty(audio, "currentTime", { configurable: true, writable: true, value: 136 });
+    Object.defineProperty(audio, "currentTime", { configurable: true, writable: true, value: 17 });
     fireEvent.click(screen.getByRole("button", { name: "Lihat lirik" }));
 
     const frame = callbacks.values().next().value as FrameRequestCallback | undefined;
     expect(requestFrame).toHaveBeenCalled();
     expect(frame).toBeDefined();
 
-    audio.currentTime = 136;
+    audio.currentTime = 17;
     await act(async () => { frame?.(performance.now()); });
 
     expect(screen.getByRole("button", { name: "Mulai dari I know it's hard to keep an open heart" })).toHaveAttribute("data-active", "true");
@@ -133,7 +133,7 @@ describe("AudioPlayer", () => {
 
     fireEvent.click(screen.getByRole("button", { name: "Mulai dari I know it's hard to keep an open heart" }));
 
-    expect(audio.currentTime).toBe(136);
+    expect(audio.currentTime).toBe(17);
     expect(screen.getByRole("button", { name: "Mulai dari I know it's hard to keep an open heart" })).toHaveAttribute("data-active", "true");
   });
 
@@ -154,15 +154,15 @@ describe("AudioPlayer", () => {
     await act(async () => { await player.current!.startFromGesture(); });
     const audio = document.querySelector("audio")!;
     Object.defineProperty(audio, "duration", { configurable: true, value: 340 });
-    Object.defineProperty(audio, "currentTime", { configurable: true, writable: true, value: 123 });
+    Object.defineProperty(audio, "currentTime", { configurable: true, writable: true, value: 4 });
     fireEvent.loadedMetadata(audio);
     fireEvent.timeUpdate(audio);
 
-    expect(screen.getByRole("slider", { name: "Posisi musik" })).toHaveValue("123");
+    expect(screen.getByRole("slider", { name: "Posisi musik" })).toHaveValue("4");
     fireEvent.click(screen.getByRole("button", { name: "Lihat lirik" }));
     expect(screen.getAllByRole("button", { name: "Mulai dari Ooh, everybody needs some time on their own" }).find((line) => line.getAttribute("data-active") === "true")).toBeDefined();
 
     fireEvent.click(screen.getByRole("button", { name: "Mulai dari I know it's hard to keep an open heart" }));
-    expect(audio.currentTime).toBe(140);
+    expect(audio.currentTime).toBe(21);
   });
 });
