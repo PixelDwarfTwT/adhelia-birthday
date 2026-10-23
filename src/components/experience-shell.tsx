@@ -148,7 +148,7 @@ export function ExperienceShell() {
             <div className="scrapbook__title-group">
               <p className="scrapbook__eyebrow">A small birthday book</p>
               <h1 className="book-brand" id="scrapbook-title" ref={titleRef} tabIndex={-1}>
-                <span>For {copy.recipientName}</span>
+                <span>Happy Birthday</span>
               </h1>
             </div>
             <p className="scrapbook__page-mark" aria-label={`Halaman ${pageIndex + 1} dari ${pages.length}`}>

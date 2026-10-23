@@ -3,7 +3,7 @@ import { assetPath } from "@/lib/asset-path";
 
 export const birthdayContent: BirthdayContent = {
   recipientName: "Adhelia",
-  openingCopy: "Selamat Ulang Tahun",
+  openingCopy: "Happy Birthday",
   passcodePrompt: "Berapa umur Adhelia sekarang?",
   // SHA-256 for "19"
   passcodeHash: "9400f1b21cb527d7fa3d3eabba93557a18ebe7a2ca4e471cfe5e4c5b4ca7f767",
@@ -14,10 +14,9 @@ export const birthdayContent: BirthdayContent = {
   letterTitle: "Sepucuk surat untukmu.",
   audio: {
     primary: assetPath("/assets/metal.mp3"),
-    alternate: assetPath("/assets/happy.mp3"),
   },
   letter: {
-    greeting: "Untuk Adhelia,",
+    greeting: "Adhelia,",
     paragraphs: [],
   },
 };

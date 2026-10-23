@@ -30,12 +30,12 @@ describe("birthday book journey", () => {
     fireEvent.change(screen.getByLabelText("Jawaban"), { target: { value: "20" } });
     fireEvent.click(screen.getByRole("button", { name: "Buka amplop" }));
     expect(await screen.findByRole("alert")).toHaveTextContent(/belum tepat/i);
-    expect(screen.queryByRole("heading", { name: /Selamat Ulang Tahun/ })).not.toBeInTheDocument();
+    expect(screen.queryByRole("heading", { name: /Happy Birthday/ })).not.toBeInTheDocument();
 
     fireEvent.change(screen.getByLabelText("Jawaban"), { target: { value: "19" } });
     fireEvent.click(screen.getByRole("button", { name: "Buka amplop" }));
 
-    expect(await screen.findByRole("heading", { name: /Selamat Ulang Tahun/ })).toBeInTheDocument();
+    expect(await screen.findByRole("heading", { name: /Happy Birthday/ })).toBeInTheDocument();
     expect(window.localStorage.getItem("adhelia-birthday-access")).toBe("unlocked");
   });
 

@@ -21,6 +21,6 @@ describe("assetPath", () => {
   it("keeps root-relative paths during local development", () => {
     delete process.env.NEXT_PUBLIC_BASE_PATH;
 
-    expect(assetPath("/assets/photo.jpg")).toBe("/assets/photo.jpg");
+    expect(assetPath("/assets/cake-illustration.png")).toBe("/assets/cake-illustration.png");
   });
 });

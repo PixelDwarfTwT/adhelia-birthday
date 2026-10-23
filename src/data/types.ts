@@ -16,6 +16,5 @@ export interface BirthdayContent extends BirthdayCopy {
   passcodeHash: string;
   audio: {
     primary: string;
-    alternate: string;
   };
 }

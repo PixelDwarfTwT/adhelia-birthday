@@ -147,7 +147,6 @@ export function LetterSection({ copy = defaultBirthdayCopy }: { copy?: BirthdayC
         <div className="letter-section__closed-motion" ref={closedMotionRef}>
           <div className={`letter-section__closed${isOpening ? " letter-section__closed--opening" : ""}`}>
             <div className="letter-envelope" aria-hidden="true">
-              <span>Untuk {copy.recipientName}</span>
               <i aria-hidden="true" />
             </div>
             {!isOpening && (
