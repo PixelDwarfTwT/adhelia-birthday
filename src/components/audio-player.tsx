@@ -94,11 +94,28 @@ export const AudioPlayer = forwardRef<AudioPlayerHandle, AudioPlayerProps>(funct
   const [activeLyricIndex, setActiveLyricIndex] = useState(-1);
   const lyricRefs = useRef<Array<HTMLButtonElement | null>>([]);
   const lyricLinesRef = useRef<HTMLDivElement>(null);
+  const lastPaintedTimeRef = useRef<number | null>(null);
 
-  const syncLyrics = useCallback((audioSeconds: number) => {
+  const syncLyrics = useCallback((audioSeconds: number, forceProgress = false) => {
     const nextTime = Number.isFinite(audioSeconds) ? Math.max(0, audioSeconds) : 0;
-    setCurrentTime(nextTime);
-    setActiveLyricIndex(getActiveLyricIndex(nextTime - lyricsOffset));
+    const lastPaintedTime = lastPaintedTimeRef.current;
+
+    // AudioEvent timeupdate fires only a few times per second. Keep the progress
+    // display lightweight, but let the lyric clock below check the active line
+    // every frame so a line does not wait for the next coarse media event.
+    if (
+      forceProgress ||
+      lastPaintedTime === null ||
+      Math.abs(nextTime - lastPaintedTime) >= 0.08
+    ) {
+      lastPaintedTimeRef.current = nextTime;
+      setCurrentTime(nextTime);
+    }
+
+    const nextLyricIndex = getActiveLyricIndex(nextTime - lyricsOffset);
+    setActiveLyricIndex((currentIndex) => (
+      currentIndex === nextLyricIndex ? currentIndex : nextLyricIndex
+    ));
   }, [lyricsOffset]);
 
   const startFromGesture = useCallback(async () => {
@@ -109,6 +126,7 @@ export const AudioPlayer = forwardRef<AudioPlayerHandle, AudioPlayerProps>(funct
     setError("");
     audio.muted = muted;
     audio.volume = 1;
+    syncLyrics(audio.currentTime, true);
 
     try {
       await audio.play();
@@ -119,9 +137,25 @@ export const AudioPlayer = forwardRef<AudioPlayerHandle, AudioPlayerProps>(funct
       setError("Nada musiknya tersendat. Coba putar lagi, atau lanjutkan tanpa musik.");
       return false;
     }
-  }, [muted]);
+  }, [muted, syncLyrics]);
 
   useImperativeHandle(ref, () => ({ startFromGesture }), [startFromGesture]);
+
+  useEffect(() => {
+    if (!playing) return;
+
+    let frameId = 0;
+    const tick = () => {
+      const audio = audioRef.current;
+      if (!audio || audio.paused || audio.ended) return;
+
+      syncLyrics(audio.currentTime);
+      frameId = window.requestAnimationFrame(tick);
+    };
+
+    frameId = window.requestAnimationFrame(tick);
+    return () => window.cancelAnimationFrame(frameId);
+  }, [playing, syncLyrics]);
 
   useEffect(() => {
     if (!lyricsOpen || activeLyricIndex < 0) return;
@@ -165,7 +199,7 @@ export const AudioPlayer = forwardRef<AudioPlayerHandle, AudioPlayerProps>(funct
   function seekAudio(nextTime: number) {
     if (!Number.isFinite(nextTime)) return;
     if (audioRef.current) audioRef.current.currentTime = nextTime;
-    syncLyrics(nextTime);
+    syncLyrics(nextTime, true);
   }
 
   function seekLyric(nextTime: number) {
@@ -188,8 +222,14 @@ export const AudioPlayer = forwardRef<AudioPlayerHandle, AudioPlayerProps>(funct
           syncLyrics(event.currentTarget.currentTime);
         }}
         onPlay={() => setPlaying(true)}
-        onPause={() => setPlaying(false)}
-        onEnded={() => setPlaying(false)}
+        onPause={(event) => {
+          syncLyrics(event.currentTarget.currentTime, true);
+          setPlaying(false);
+        }}
+        onEnded={(event) => {
+          syncLyrics(event.currentTarget.currentTime, true);
+          setPlaying(false);
+        }}
         onError={() => {
           setPlaying(false);
           setError("Nada musiknya tersendat. Kamu bisa mencoba lagi atau lanjut tanpa musik.");

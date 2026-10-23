@@ -92,6 +92,37 @@ describe("AudioPlayer", () => {
     expect(screen.getAllByRole("button", { name: "Mulai dari Ooh, everybody needs some time on their own" }).find((line) => line.getAttribute("data-active") === "true")).toBeDefined();
   });
 
+  it("keepsLyricsMovingBetweenMediaTimeupdateEvents", async () => {
+    const callbacks = new Map<number, FrameRequestCallback>();
+    let nextFrameId = 0;
+    const requestFrame = vi.spyOn(window, "requestAnimationFrame").mockImplementation((callback) => {
+      const id = ++nextFrameId;
+      callbacks.set(id, callback);
+      return id;
+    });
+    vi.spyOn(window, "cancelAnimationFrame").mockImplementation((id) => {
+      callbacks.delete(id);
+    });
+
+    const player = createRef<AudioPlayerHandle>();
+    render(<AudioPlayer ref={player} track="/assets/metal.mp3" />);
+    await act(async () => { await player.current!.startFromGesture(); });
+
+    const audio = document.querySelector("audio")!;
+    Object.defineProperty(audio, "paused", { configurable: true, value: false });
+    Object.defineProperty(audio, "currentTime", { configurable: true, writable: true, value: 136 });
+    fireEvent.click(screen.getByRole("button", { name: "Lihat lirik" }));
+
+    const frame = callbacks.values().next().value as FrameRequestCallback | undefined;
+    expect(requestFrame).toHaveBeenCalled();
+    expect(frame).toBeDefined();
+
+    audio.currentTime = 136;
+    await act(async () => { frame?.(performance.now()); });
+
+    expect(screen.getByRole("button", { name: "Mulai dari I know it's hard to keep an open heart" })).toHaveAttribute("data-active", "true");
+  });
+
   it("seeksWhenALyricLineIsSelected", async () => {
     const player = createRef<AudioPlayerHandle>();
     render(<AudioPlayer ref={player} track="/assets/metal.mp3" />);
