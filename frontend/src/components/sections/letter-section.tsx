@@ -137,9 +137,7 @@ export function LetterSection({ copy = defaultBirthdayCopy }: { copy?: BirthdayC
     >
       <div className="letter-section__intro-motion" ref={introMotionRef}>
         <div className="letter-section__intro">
-          <p className="page-kicker">Sebuah catatan kecil</p>
           <h2 id="letter-title">{copy.letterTitle}</h2>
-          <p className="letter-section__intro-note">Buka saat kamu ingin membacanya perlahan.</p>
         </div>
       </div>
 
