@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { defaultBirthdayCopy } from "@/data/content";
 import type { BirthdayCopy } from "@/data/types";
+import { FloralCorners } from "./floral-corners";
 
 interface OpeningSceneProps {
   onOpen(): void;
@@ -154,6 +155,7 @@ export function OpeningScene({ onOpen, copy = defaultBirthdayCopy }: OpeningScen
 
   return (
     <main className={`opening-screen${isOpening ? " opening-screen--closing" : ""}`} aria-labelledby="opening-title" ref={rootRef}>
+      <FloralCorners variant="opening" />
       <div className="opening-screen__wash" aria-hidden="true" ref={washRef} />
       <div className="opening-screen__stars" aria-hidden="true" ref={starsRef}><span>*</span><span>+</span><span>*</span></div>
 

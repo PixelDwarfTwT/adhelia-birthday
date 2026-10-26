@@ -2246,17 +2246,32 @@ body {
   }
 }
 
-.letter-section__florals {
+.floral-corners {
   position: absolute;
-  z-index: 1;
-  inset: .35rem;
   overflow: hidden;
-  opacity: .34;
   pointer-events: none;
   transition: opacity var(--motion-standard) ease;
 }
 
-.letter-section__floral {
+.floral-corners--gate {
+  z-index: 0;
+  inset: 0;
+  opacity: .38;
+}
+
+.floral-corners--opening {
+  z-index: 0;
+  inset: 0;
+  opacity: .36;
+}
+
+.floral-corners--story {
+  z-index: 1;
+  inset: .35rem;
+  opacity: .24;
+}
+
+.floral-corners__flower {
   position: absolute;
   display: block;
   width: clamp(7.5rem, 15vw, 13rem);
@@ -2266,15 +2281,27 @@ body {
   background-size: contain;
 }
 
-.letter-section__floral--top-left { top: -.35rem; left: -.45rem; transform: rotate(-4deg); }
-.letter-section__floral--top-right { top: -.35rem; right: -.45rem; transform: scaleX(-1) rotate(-4deg); }
-.letter-section__floral--bottom-left { bottom: -.35rem; left: -.45rem; transform: scaleY(-1) rotate(-4deg); }
-.letter-section__floral--bottom-right { right: -.45rem; bottom: -.35rem; transform: scale(-1) rotate(-4deg); }
+.floral-corners--opening .floral-corners__flower {
+  width: clamp(6.5rem, 13vw, 11rem);
+}
+
+.floral-corners--story .floral-corners__flower {
+  width: clamp(6rem, 12vw, 9.5rem);
+}
+
+.floral-corners__flower--top-left { top: -.35rem; left: -.45rem; transform: rotate(-4deg); }
+.floral-corners__flower--top-right { top: -.35rem; right: -.45rem; transform: scaleX(-1) rotate(-4deg); }
+.floral-corners__flower--bottom-left { bottom: -.35rem; left: -.45rem; transform: scaleY(-1) rotate(-4deg); }
+.floral-corners__flower--bottom-right { right: -.45rem; bottom: -.35rem; transform: scale(-1) rotate(-4deg); }
+.opening-screen__copy,
+.opening-screen__stage,
+.gate-card__motion { position: relative; z-index: 1; }
 .letter-section--open .letter-section__florals { opacity: .18; }
 
 @media (max-width: 700px) {
-  .letter-section__florals { inset: .2rem; opacity: .25; }
-  .letter-section__floral { width: clamp(6rem, 22vw, 8rem); }
+  .floral-corners--story { inset: .2rem; opacity: .25; }
+  .floral-corners--opening .floral-corners__flower { width: clamp(5.5rem, 22vw, 8rem); }
+  .floral-corners--story .floral-corners__flower { width: clamp(5.5rem, 22vw, 8rem); }
 }
 
 @media (max-width: 700px) and (max-height: 680px) {

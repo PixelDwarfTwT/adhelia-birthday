@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState, type FormEvent } from "react";
 import { birthdayContent } from "@/data/content";
 import { verifyPasscode } from "@/lib/access-code";
+import { FloralCorners } from "./floral-corners";
 
 interface PasscodeGateProps {
   onUnlock(): void;
@@ -133,6 +134,7 @@ export function PasscodeGate({ onUnlock }: PasscodeGateProps) {
 
   return (
     <main className="gate-screen" aria-labelledby="gate-title" ref={rootRef}>
+      <FloralCorners variant="gate" />
       <div className="gate-stars" aria-hidden="true">
         <span>&#x2726;</span><span>&#x2727;</span><span>&#x2726;</span><span>&#x2727;</span>
       </div>

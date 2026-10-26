@@ -5,6 +5,7 @@ import { useEffect, useRef, useState } from "react";
 import { assetPath } from "@/lib/asset-path";
 import { defaultBirthdayCopy } from "@/data/content";
 import type { BirthdayCopy } from "@/data/types";
+import { FloralCorners } from "../floral-corners";
 
 export function CakeSection({ copy = defaultBirthdayCopy }: { copy?: BirthdayCopy }) {
   const [candlesOut, setCandlesOut] = useState(false);
@@ -104,6 +105,7 @@ export function CakeSection({ copy = defaultBirthdayCopy }: { copy?: BirthdayCop
 
   return (
     <section className={`story-page cake-section${candlesOut ? " cake-section--wished" : ""}`} aria-labelledby="cake-title" tabIndex={-1} ref={rootRef}>
+      <FloralCorners variant="story" />
       <div className="cake-section__halo" aria-hidden="true" ref={haloRef} />
       <div className="cake-section__copy-motion" ref={copyMotionRef}>
         <div className="cake-section__copy">

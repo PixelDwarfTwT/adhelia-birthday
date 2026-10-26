@@ -27,6 +27,7 @@ describe("birthday book journey", () => {
     render(<ExperienceShell />);
 
     expect(await screen.findByText("Berapa umur Adhelia sekarang?")).toBeInTheDocument();
+    expect(document.querySelector(".gate-screen .floral-corners")).toHaveAttribute("aria-hidden", "true");
     fireEvent.change(screen.getByLabelText("Jawaban"), { target: { value: "20" } });
     fireEvent.click(screen.getByRole("button", { name: "Buka amplop" }));
     expect(await screen.findByRole("alert")).toHaveTextContent(/belum tepat/i);
@@ -42,10 +43,18 @@ describe("birthday book journey", () => {
   it("shows only the cake and letter pages", async () => {
     window.localStorage.setItem("adhelia-birthday-access", "unlocked");
     render(<ExperienceShell />);
+
+    const openingFlorals = document.querySelector(".opening-screen .floral-corners");
+    expect(openingFlorals).toHaveAttribute("aria-hidden", "true");
+    expect(openingFlorals?.children).toHaveLength(4);
+
     await openBook();
 
     expect(screen.getByRole("navigation", { name: "Navigasi hadiah ulang tahun" })).toBeInTheDocument();
     expect(document.querySelectorAll(".story-page")).toHaveLength(1);
+    const cakeFlorals = document.querySelector(".cake-section .floral-corners");
+    expect(cakeFlorals).toHaveAttribute("aria-hidden", "true");
+    expect(cakeFlorals?.children).toHaveLength(4);
     expect(screen.getByLabelText("Halaman 1 dari 2")).toBeInTheDocument();
     expect(screen.getByRole("heading", { name: "Buat satu permohonan kecil." })).toBeInTheDocument();
     expect(screen.queryByText("Sebuah kado kecil.")).not.toBeInTheDocument();
