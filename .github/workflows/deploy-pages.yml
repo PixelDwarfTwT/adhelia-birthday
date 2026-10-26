@@ -1,0 +1,61 @@
+name: Deploy GitHub Pages
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Install frontend dependencies
+        run: npm ci
+        working-directory: frontend
+
+      - name: Build static export
+        run: |
+          cp .env.example .env.production
+          npm run build
+        working-directory: frontend
+        env:
+          GITHUB_PAGES: "true"
+
+      - name: Check out Pages branch
+        uses: actions/checkout@v4
+        with:
+          ref: gh-pages
+          path: publish
+          fetch-depth: 1
+
+      - name: Publish export to Pages branch
+        run: |
+          rsync -a --delete --exclude='.git' frontend/out/ publish/
+          touch publish/.nojekyll
+          git -C publish config user.name "github-actions[bot]"
+          git -C publish config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git -C publish add -A
+          if git -C publish diff --cached --quiet; then
+            echo "No static site changes to publish."
+            exit 0
+          fi
+          git -C publish commit -m "deploy: publish ${GITHUB_SHA}"
+          git -C publish push origin HEAD:gh-pages

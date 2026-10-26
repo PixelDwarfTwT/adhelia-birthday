@@ -60,10 +60,10 @@
 - Build with `GITHUB_PAGES=true` from `frontend/` after copying the public example config to the production environment file.
 - Sync the export into a separate checkout of `gh-pages`, retain `.nojekyll`, and push only when generated files changed.
 
-- [ ] **Step 1: Add the Pages workflow** with Node 22, `npm ci` in `frontend/`, `GITHUB_PAGES=true npm run build`, and `contents: write` permission.
-- [ ] **Step 2: Add the publish step** that checks out `gh-pages` separately, replaces its site files with `frontend/out/`, restores `.nojekyll`, and skips empty commits.
-- [ ] **Step 3: Build locally from `frontend/` with the Pages environment** and confirm the static export has the expected routes, asset paths, and removed birthday labels.
-- [ ] **Step 4: Check the workflow diff and repository state**; commit the workflow separately from the relocation.
+- [x] **Step 1: Add the Pages workflow** with Node 22, `npm ci` in `frontend/`, `GITHUB_PAGES=true npm run build`, and `contents: write` permission.
+- [x] **Step 2: Add the publish step** that checks out `gh-pages` separately, replaces its site files with `frontend/out/`, restores `.nojekyll`, and skips empty commits.
+- [x] **Step 3: Build locally from `frontend/` with the Pages environment** and confirm the static export has the expected routes, asset paths, and removed birthday labels.
+- [x] **Step 4: Check the workflow diff and repository state**; commit the workflow separately from the relocation.
 
 ### Task 3: Publish and confirm
 
