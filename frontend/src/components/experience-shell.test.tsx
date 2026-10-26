@@ -26,7 +26,7 @@ describe("birthday book journey", () => {
   it("keeps the birthday book behind the passcode gate", async () => {
     render(<ExperienceShell />);
 
-    expect(await screen.findByText("Berapa umur Adhelia sekarang?")).toBeInTheDocument();
+    expect(await screen.findByText("Berapa umur Adhelia sekarang?(hanya angka)")).toBeInTheDocument();
     expect(document.querySelector(".gate-screen .floral-corners")).toHaveAttribute("aria-hidden", "true");
     fireEvent.change(screen.getByLabelText("Jawaban"), { target: { value: "20" } });
     fireEvent.click(screen.getByRole("button", { name: "Buka amplop" }));
