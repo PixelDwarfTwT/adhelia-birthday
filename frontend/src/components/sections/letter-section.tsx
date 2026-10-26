@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { defaultBirthdayCopy } from "@/data/content";
 import type { BirthdayCopy } from "@/data/types";
+import { assetPath } from "@/lib/asset-path";
 
 export function LetterSection({ copy = defaultBirthdayCopy }: { copy?: BirthdayCopy }) {
   const [letterOpen, setLetterOpen] = useState(false);
@@ -135,6 +136,15 @@ export function LetterSection({ copy = defaultBirthdayCopy }: { copy?: BirthdayC
       tabIndex={-1}
       ref={rootRef}
     >
+      <div aria-hidden="true" className="letter-section__florals">
+        {(["top-left", "top-right", "bottom-left", "bottom-right"] as const).map((corner) => (
+          <span
+            className={`letter-section__floral letter-section__floral--${corner}`}
+            key={corner}
+            style={{ backgroundImage: `url("${assetPath("/assets/hydrangea-carnation-corner.webp")}")` }}
+          />
+        ))}
+      </div>
       <div className="letter-section__intro-motion" ref={introMotionRef}>
         <div className="letter-section__intro">
           <h2 id="letter-title">{copy.letterTitle}</h2>

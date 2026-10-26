@@ -2246,6 +2246,37 @@ body {
   }
 }
 
+.letter-section__florals {
+  position: absolute;
+  z-index: 1;
+  inset: .35rem;
+  overflow: hidden;
+  opacity: .34;
+  pointer-events: none;
+  transition: opacity var(--motion-standard) ease;
+}
+
+.letter-section__floral {
+  position: absolute;
+  display: block;
+  width: clamp(7.5rem, 15vw, 13rem);
+  aspect-ratio: 1;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+
+.letter-section__floral--top-left { top: -.35rem; left: -.45rem; transform: rotate(-4deg); }
+.letter-section__floral--top-right { top: -.35rem; right: -.45rem; transform: scaleX(-1) rotate(-4deg); }
+.letter-section__floral--bottom-left { bottom: -.35rem; left: -.45rem; transform: scaleY(-1) rotate(-4deg); }
+.letter-section__floral--bottom-right { right: -.45rem; bottom: -.35rem; transform: scale(-1) rotate(-4deg); }
+.letter-section--open .letter-section__florals { opacity: .18; }
+
+@media (max-width: 700px) {
+  .letter-section__florals { inset: .2rem; opacity: .25; }
+  .letter-section__floral { width: clamp(6rem, 22vw, 8rem); }
+}
+
 @media (max-width: 700px) and (max-height: 680px) {
   .opening-screen {
     gap: .55rem;
