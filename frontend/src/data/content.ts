@@ -4,7 +4,7 @@ import { assetPath } from "@/lib/asset-path";
 export const birthdayContent: BirthdayContent = {
   recipientName: "Adhelia",
   openingCopy: "Happy Birthday",
-  passcodePrompt: "Berapa umur Adhelia sekarang?",
+  passcodePrompt: "Berapa umur Adhelia sekarang?(hanya angka)",
   // SHA-256 for "19"
   passcodeHash: "9400f1b21cb527d7fa3d3eabba93557a18ebe7a2ca4e471cfe5e4c5b4ca7f767",
   introduction:
