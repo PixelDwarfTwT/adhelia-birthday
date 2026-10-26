@@ -73,6 +73,6 @@
 **Interfaces:**
 - The `main` branch contains the new layout and workflow; `gh-pages` contains only the generated static site.
 
-- [ ] **Step 1: Push the commits to `main`** to trigger the Pages workflow.
-- [ ] **Step 2: Confirm the Pages workflow succeeds** and `gh-pages` points to the generated export with the requested labels absent.
-- [ ] **Step 3: Confirm the repository is clean** and report the new layout, test/build results, and published URL.
+- [x] **Step 1: Push the commits to `main`** to trigger the Pages workflow.
+- [x] **Step 2: Confirm the Pages workflow succeeds** and `gh-pages` points to the generated export with the requested labels absent.
+- [x] **Step 3: Confirm the repository is clean** and report the new layout, test/build results, and published URL.
