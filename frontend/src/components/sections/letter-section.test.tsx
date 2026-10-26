@@ -9,6 +9,7 @@ describe("personal letter page", () => {
 
     expect(florals).toHaveAttribute("aria-hidden", "true");
     expect(florals?.children).toHaveLength(4);
+    expect(florals?.firstElementChild?.getAttribute("style")).toContain("hydrangea-carnation-frame.png");
   });
 
   it("rendersFriendlyLetterFallbackWithoutInventingCopy", () => {
