@@ -1862,18 +1862,9 @@ body {
   gap: .18rem;
 }
 
-.scrapbook__eyebrow {
-  margin: 0;
-  color: #5f7d87;
-  font-size: .62rem;
-  font-weight: 800;
-  letter-spacing: .14em;
-  text-transform: uppercase;
-}
-
 .book-brand {
   color: var(--blue-ink);
-  font-size: clamp(1.2rem, 2.6vw, 1.75rem);
+  font-size: clamp(1.45rem, 2.8vw, 2rem);
 }
 
 .book-brand span {
@@ -2145,12 +2136,8 @@ body {
     padding-inline: .25rem;
   }
 
-  .scrapbook__eyebrow {
-    font-size: .55rem;
-  }
-
   .book-brand {
-    font-size: .82rem;
+    font-size: .95rem;
   }
 
   .book-brand span {
@@ -2593,11 +2580,26 @@ body {
     text-align: center;
   }
 
+  .cake-section__copy h2::after {
+    display: block;
+    width: 3.6rem;
+    height: .18rem;
+    margin: .85rem auto 0;
+    border-radius: 999px;
+    background: #78abc0;
+    content: "";
+    opacity: .8;
+  }
+
   .cake-section__copy .page-kicker,
   .cake-section__copy > p:not(.page-kicker),
   .cake-section__copy .cake-section__wish {
     margin-inline: auto;
     text-align: center;
+  }
+
+  .cake-section__copy > p:not(.page-kicker) {
+    width: min(100%, 25rem);
   }
 
   .birthday-cake-motion {

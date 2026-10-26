@@ -146,7 +146,6 @@ export function ExperienceShell() {
         <main className="scrapbook scrapbook--paged" aria-labelledby="scrapbook-title">
           <header className="scrapbook__topbar">
             <div className="scrapbook__title-group">
-              <p className="scrapbook__eyebrow">A small birthday book</p>
               <h1 className="book-brand" id="scrapbook-title" ref={titleRef} tabIndex={-1}>
                 <span>Happy Birthday</span>
               </h1>

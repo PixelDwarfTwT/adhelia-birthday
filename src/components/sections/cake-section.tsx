@@ -107,7 +107,6 @@ export function CakeSection({ copy = defaultBirthdayCopy }: { copy?: BirthdayCop
       <div className="cake-section__halo" aria-hidden="true" ref={haloRef} />
       <div className="cake-section__copy-motion" ref={copyMotionRef}>
         <div className="cake-section__copy">
-          <p className="page-kicker">Sebelum membaca suratnya</p>
           <h2 id="cake-title">{copy.cakeTitle}</h2>
           <p>{copy.cakeInstruction}</p>
           <button
