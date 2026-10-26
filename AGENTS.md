@@ -1,9 +1,6 @@
-<!-- BEGIN:nextjs-agent-rules -->
+# Repository guidance
 
-## This is NOT the Next.js you know
-
-This version has breaking changes — APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` (resolved from this file's directory; in monorepos the `next` package may not be visible from the repo root) before writing any code. Heed deprecation notices.
-
-This block is written and re-added by `next dev` — verify at `node_modules/next/dist/server/lib/generate-agent-files.js`. Removing it from a diff only re-creates the uncommitted change; committing it with your work keeps the tree clean.
-
-<!-- END:nextjs-agent-rules -->
+- The Next.js application and its npm commands live in `frontend/`.
+- Supabase migrations and setup notes live in `backend/`; Supabase is the managed backend, so do not add a separate API server without a separate design.
+- Before changing Next.js code or configuration, read the relevant guide under `frontend/node_modules/next/dist/docs/`. This project uses Next.js 16, whose conventions may differ from earlier versions.
+- Never commit `.env.local`, Supabase service-role keys, or other secrets. The `NEXT_PUBLIC_` Supabase publishable key is browser-visible by design.
