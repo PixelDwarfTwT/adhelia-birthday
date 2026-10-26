@@ -2289,10 +2289,10 @@ body {
   width: clamp(6rem, 12vw, 9.5rem);
 }
 
-.floral-corners__flower--top-left { top: -.35rem; left: -.45rem; transform: rotate(-4deg); }
-.floral-corners__flower--top-right { top: -.35rem; right: -.45rem; transform: scaleX(-1) rotate(-4deg); }
-.floral-corners__flower--bottom-left { bottom: -.35rem; left: -.45rem; transform: scaleY(-1) rotate(-4deg); }
-.floral-corners__flower--bottom-right { right: -.45rem; bottom: -.35rem; transform: scale(-1) rotate(-4deg); }
+.floral-corners__flower--top-left { top: -.35rem; left: -.45rem; transform: scaleY(-1) rotate(-4deg); }
+.floral-corners__flower--top-right { top: -.35rem; right: -.45rem; transform: scale(-1) rotate(-4deg); }
+.floral-corners__flower--bottom-left { bottom: -.35rem; left: -.45rem; transform: rotate(-4deg); }
+.floral-corners__flower--bottom-right { right: -.45rem; bottom: -.35rem; transform: scaleX(-1) rotate(-4deg); }
 .opening-screen__copy,
 .opening-screen__stage,
 .gate-card__motion { position: relative; z-index: 1; }
