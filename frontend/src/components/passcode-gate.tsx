@@ -118,7 +118,7 @@ export function PasscodeGate({ onUnlock }: PasscodeGateProps) {
       const passcodeCandidate = normalizedAnswer === "sembilan belas" ? "19" : normalizedAnswer;
       const matches = await verifyPasscode(passcodeCandidate, birthdayContent.passcodeHash, subtle);
       if (!matches) {
-        setMessage(subtle ? "Belum tepat. Coba masukkan umur Adhelia sekarang." : "Gerbang kecil ini tidak dapat memeriksa passcode di browser ini. Coba buka dengan browser yang mendukung Web Crypto.");
+        setMessage(subtle ? "Belum tepat. Coba masukkan umurmu sekarang." : "Gerbang kecil ini tidak dapat memeriksa passcode di browser ini. Coba buka dengan browser yang mendukung Web Crypto.");
         triggerErrorShake();
         return;
       }
@@ -140,8 +140,6 @@ export function PasscodeGate({ onUnlock }: PasscodeGateProps) {
       </div>
       <div className="gate-card__motion" ref={cardMotionRef}>
         <section className={`gate-card${isShaking ? " gate-card--error" : ""}`}>
-          <p className="eyebrow">Kejutan ulang tahun kecil</p>
-          <span className="gate-card__seal" aria-hidden="true">&#x2726;</span>
           <h1 id="gate-title">{birthdayContent.passcodePrompt}</h1>
           <form className="gate-form" onSubmit={handleSubmit}>
             <label htmlFor="passcode-answer">Jawaban</label>
@@ -160,7 +158,6 @@ export function PasscodeGate({ onUnlock }: PasscodeGateProps) {
             </button>
           </form>
           {message && <p className="gate-message" id="gate-message" role="alert">{message}</p>}
-          <p className="gate-card__footnote">Satu kunci kecil untuk kejutan kecil.</p>
         </section>
       </div>
     </main>
