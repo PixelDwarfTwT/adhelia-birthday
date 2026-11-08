@@ -14,8 +14,8 @@ import { CakeSection } from "./sections/cake-section";
 import { LetterSection } from "./sections/letter-section";
 
 const pages = [
-  { label: "Kue", eyebrow: "Momen pertama" },
-  { label: "Surat", eyebrow: "Untuk dibaca perlahan" },
+  { label: "Kue" },
+  { label: "Surat" },
 ] as const;
 
 function subscribeToAccess(onChange: () => void) {
@@ -191,10 +191,6 @@ export function ExperienceShell() {
               <ArrowLeft aria-hidden="true" />
               <span>{pageIndex === 0 ? "Amplop" : "Kembali"}</span>
             </button>
-            <p aria-live="polite" className="page-controls__status">
-              <span>{page.eyebrow} · Halaman {pageIndex + 1} dari {pages.length}</span>
-              <strong>{page.label}</strong>
-            </p>
             <button
               aria-label={isLetterPage ? "Buka kembali halaman kue" : "Lanjut ke halaman surat"}
               className="page-controls__button page-controls__button--next"
