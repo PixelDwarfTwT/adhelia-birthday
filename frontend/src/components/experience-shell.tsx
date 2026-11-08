@@ -119,7 +119,7 @@ export function ExperienceShell() {
     }
 
     if (openTimeoutRef.current !== null) window.clearTimeout(openTimeoutRef.current);
-    openTimeoutRef.current = window.setTimeout(() => setExperienceStarted(true), 680);
+    openTimeoutRef.current = window.setTimeout(() => setExperienceStarted(true), 900);
   }
 
   function moveToPage(nextIndex: number) {

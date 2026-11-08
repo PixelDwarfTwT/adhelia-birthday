@@ -30,6 +30,8 @@ export function OpeningScene({ onOpen, copy = defaultBirthdayCopy }: OpeningScen
   }, []);
 
   useEffect(() => {
+    if (isOpening) return;
+
     const root = rootRef.current;
     const copyMotion = copyMotionRef.current;
     const balloonsMotion = balloonsMotionRef.current;
@@ -147,8 +149,13 @@ export function OpeningScene({ onOpen, copy = defaultBirthdayCopy }: OpeningScen
       activeEnvelopeMotion.style.willChange = "auto";
       activeWash.style.willChange = "auto";
       activeStars.style.willChange = "auto";
+      activeCopyMotion.style.transform = "";
+      activeBalloonsMotion.style.transform = "";
+      activeEnvelopeMotion.style.transform = "";
+      activeWash.style.transform = "";
+      activeStars.style.transform = "";
     };
-  }, []);
+  }, [isOpening]);
 
   function open() {
     if (isOpening) return;
@@ -199,6 +206,7 @@ export function OpeningScene({ onOpen, copy = defaultBirthdayCopy }: OpeningScen
             <div className={`envelope ${isOpening ? "envelope--opening" : ""}`} aria-hidden="true">
               <div className="envelope__letter"><i aria-hidden="true" /></div>
               <div className="envelope__back" />
+              <div className="envelope__front" />
               <div className="envelope__flap" />
               <div className="envelope__seal"><span aria-hidden="true" /></div>
             </div>

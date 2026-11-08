@@ -11,7 +11,7 @@ export function LetterSection({ copy = defaultBirthdayCopy }: { copy?: BirthdayC
   const openingTimeoutRef = useRef<number | null>(null);
   const rootRef = useRef<HTMLElement>(null);
   const introMotionRef = useRef<HTMLDivElement>(null);
-  const closedMotionRef = useRef<HTMLDivElement>(null);
+  const envelopeMotionRef = useRef<HTMLDivElement>(null);
   const paperMotionRef = useRef<HTMLDivElement>(null);
   const paperRef = useRef<HTMLElement>(null);
   const triggerRef = useRef<HTMLButtonElement>(null);
@@ -32,15 +32,15 @@ export function LetterSection({ copy = defaultBirthdayCopy }: { copy?: BirthdayC
   useEffect(() => {
     const root = rootRef.current;
     const introMotion = introMotionRef.current;
-    const closedMotion = closedMotionRef.current;
+    const envelopeMotion = envelopeMotionRef.current;
     const reducedMotion = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
     const coarsePointer = window.matchMedia?.("(pointer: coarse)").matches;
 
-    if (!root || !introMotion || !closedMotion || reducedMotion || coarsePointer || typeof window.requestAnimationFrame !== "function") return;
+    if (letterOpen || !root || !introMotion || !envelopeMotion || reducedMotion || coarsePointer || typeof window.requestAnimationFrame !== "function") return;
 
     const activeRoot = root;
     const activeIntroMotion = introMotion;
-    const activeClosedMotion = closedMotion;
+    const activeEnvelopeMotion = envelopeMotion;
     const activePaperMotion = paperMotionRef.current;
     const activePaper = paperRef.current;
     const target = { x: 0, y: 0 };
@@ -87,7 +87,7 @@ export function LetterSection({ copy = defaultBirthdayCopy }: { copy?: BirthdayC
       const bob = Math.sin(elapsed * 0.65) * 1.3;
       const lean = position.x * 2.2 + velocity.x * 0.55 + wheelVelocity * 0.25;
       activeIntroMotion.style.transform = `translate3d(${-position.x * 14}px, ${-position.y * 7 + bob}px, 0) rotate(${lean * -0.4}deg)`;
-      activeClosedMotion.style.transform = `translate3d(${position.x * 30}px, ${position.y * 15 + bob}px, 0) rotate(${lean}deg) rotateY(${position.x * 6}deg)`;
+      activeEnvelopeMotion.style.transform = `translate3d(${position.x * 30}px, ${position.y * 15 + bob}px, 0) rotate(${lean}deg) rotateY(${position.x * 6}deg)`;
       if (activePaperMotion) {
         activePaperMotion.style.transform = `translate3d(${position.x * 12}px, ${position.y * 5}px, 0) rotate(${position.x * -0.6}deg)`;
       }
@@ -99,7 +99,7 @@ export function LetterSection({ copy = defaultBirthdayCopy }: { copy?: BirthdayC
     }
 
     activeIntroMotion.style.willChange = "transform";
-    activeClosedMotion.style.willChange = "transform";
+    activeEnvelopeMotion.style.willChange = "transform";
     activeRoot.addEventListener("pointermove", updateTarget);
     activeRoot.addEventListener("pointerleave", resetTarget);
     activeRoot.addEventListener("wheel", kickFromWheel, { passive: true });
@@ -111,9 +111,9 @@ export function LetterSection({ copy = defaultBirthdayCopy }: { copy?: BirthdayC
       activeRoot.removeEventListener("pointerleave", resetTarget);
       activeRoot.removeEventListener("wheel", kickFromWheel);
       activeIntroMotion.style.willChange = "auto";
-      activeClosedMotion.style.willChange = "auto";
+      activeEnvelopeMotion.style.willChange = "auto";
       activeIntroMotion.style.transform = "";
-      activeClosedMotion.style.transform = "";
+      activeEnvelopeMotion.style.transform = "";
       if (activePaperMotion) activePaperMotion.style.transform = "";
       if (activePaper) activePaper.style.removeProperty("--paper-sheen-x");
     };
@@ -159,10 +159,12 @@ export function LetterSection({ copy = defaultBirthdayCopy }: { copy?: BirthdayC
       </div>
 
       {(!letterOpen || isOpening) && (
-        <div className="letter-section__closed-motion" ref={closedMotionRef}>
+        <div className="letter-section__closed-motion">
           <div className={`letter-section__closed${isOpening ? " letter-section__closed--opening" : ""}`}>
-            <div className="letter-envelope" aria-hidden="true">
-              <i aria-hidden="true" />
+            <div className="letter-envelope-motion" ref={envelopeMotionRef}>
+              <div className="letter-envelope" aria-hidden="true">
+                <i aria-hidden="true" />
+              </div>
             </div>
             {!isOpening && (
               <button
