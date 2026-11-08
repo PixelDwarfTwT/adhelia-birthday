@@ -114,9 +114,7 @@ export function PasscodeGate({ onUnlock }: PasscodeGateProps) {
 
     try {
       const subtle = typeof globalThis.crypto === "undefined" ? undefined : globalThis.crypto.subtle;
-      const normalizedAnswer = answer.trim().toLocaleLowerCase("id-ID");
-      const passcodeCandidate = normalizedAnswer === "sembilan belas" ? "19" : normalizedAnswer;
-      const matches = await verifyPasscode(passcodeCandidate, birthdayContent.passcodeHash, subtle);
+      const matches = await verifyPasscode(answer, birthdayContent.passcodeHash, subtle);
       if (!matches) {
         setMessage(subtle ? "Belum tepat. Coba masukkan umurmu sekarang." : "Gerbang kecil ini tidak dapat memeriksa passcode di browser ini. Coba buka dengan browser yang mendukung Web Crypto.");
         triggerErrorShake();
@@ -141,16 +139,20 @@ export function PasscodeGate({ onUnlock }: PasscodeGateProps) {
       <div className="gate-card__motion" ref={cardMotionRef}>
         <section className={`gate-card${isShaking ? " gate-card--error" : ""}`}>
           <h1 id="gate-title">{birthdayContent.passcodePrompt}</h1>
+          <p className="gate-card__hint" id="gate-hint">(angka saja)</p>
           <form className="gate-form" onSubmit={handleSubmit}>
             <label htmlFor="passcode-answer">Jawaban</label>
             <input
               autoComplete="off"
               autoCapitalize="none"
               id="passcode-answer"
+              inputMode="numeric"
               name="answer"
+              pattern="[0-9]*"
+              type="text"
               value={answer}
-              onChange={(event) => setAnswer(event.currentTarget.value)}
-              aria-describedby={message ? "gate-message" : undefined}
+              onChange={(event) => setAnswer(event.currentTarget.value.replace(/\D/g, ""))}
+              aria-describedby={message ? "gate-hint gate-message" : "gate-hint"}
               required
             />
             <button className="button button--primary" disabled={isChecking} type="submit">

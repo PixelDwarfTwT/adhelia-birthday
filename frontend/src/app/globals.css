@@ -116,6 +116,7 @@ button:focus-visible, a:focus-visible, input:focus-visible {
   font-size: clamp(2.5rem, 9vw, 3.7rem);
   line-height: .98;
 }
+.gate-card__hint { margin: -.35rem 0 1rem; color: #64748b; font-size: .9rem; text-align: center; }
 .gate-form { display: grid; gap: .65rem; text-align: left; }
 .gate-form label { color: #334155; font-size: .9rem; font-weight: 700; }
 .gate-form input {
@@ -264,7 +265,7 @@ button:focus-visible, a:focus-visible, input:focus-visible {
 .opening-screen__note { margin: .65rem 0 1.5rem; color: #475569; }
 .envelope { position: relative; width: min(82vw, 23rem); height: 13rem; margin: 1rem auto 1.75rem; perspective: 700px; transform: rotate(-1.5deg); transform-style: preserve-3d; }
 .envelope__back, .envelope__letter, .envelope__flap, .envelope__seal { backface-visibility: hidden; }
-.envelope__back { position: absolute; inset: 0; overflow: hidden; border: 1px solid rgb(255 255 255 / 72%); border-radius: .8rem 1.6rem .7rem 1.25rem; background: linear-gradient(145deg, #0e7490, #0369a1 65%, #155e75); box-shadow: 0 1.25rem 2.75rem rgb(15 23 42 / 20%), 7px 8px 0 rgb(228 217 190 / 72%); }
+.envelope__back { position: absolute; z-index: 2; inset: 0; overflow: hidden; border: 1px solid rgb(255 255 255 / 72%); border-radius: .8rem 1.6rem .7rem 1.25rem; background: linear-gradient(145deg, #0e7490, #0369a1 65%, #155e75); box-shadow: 0 1.25rem 2.75rem rgb(15 23 42 / 20%), 7px 8px 0 rgb(228 217 190 / 72%); }
 .envelope__back::before {
   position: absolute;
   inset: 0;
@@ -274,6 +275,7 @@ button:focus-visible, a:focus-visible, input:focus-visible {
 }
 .envelope__letter {
   position: absolute;
+  z-index: 1;
   inset: .5rem .65rem 1rem;
   display: flex;
   align-items: flex-start;
@@ -288,11 +290,17 @@ button:focus-visible, a:focus-visible, input:focus-visible {
   box-shadow: 0 5px 12px rgb(15 23 42 / 8%);
 }
 .envelope__letter i { color: #d4a300; font-style: normal; }
-.envelope__flap { position: absolute; top: 0; left: 0; width: 100%; height: 58%; background: #7dd3fc; clip-path: polygon(0 0, 100% 0, 50% 100%); transform-origin: top center; transition: transform .4s ease; }
-.envelope__seal { position: absolute; top: 5rem; left: 50%; display: grid; width: 3.2rem; height: 3.2rem; place-items: center; transform: translateX(-50%); border: 2px solid rgb(255 255 255 / 78%); border-radius: 50%; color: #fff8d8; background: radial-gradient(circle at 35% 28%, #f8d978, #b88327 78%); box-shadow: 0 3px 12px rgb(15 23 42 / 20%), 0 0 0 5px rgb(253 224 71 / 16%); transition: opacity .2s ease, transform .35s cubic-bezier(.2, .8, .25, 1); }
+.envelope__flap { position: absolute; z-index: 4; top: 0; left: 0; width: 100%; height: 58%; background: #7dd3fc; clip-path: polygon(0 0, 100% 0, 50% 100%); transform-origin: top center; transition: transform .4s ease; }
+.envelope__seal { position: absolute; z-index: 5; top: 5rem; left: 50%; display: grid; width: 3.2rem; height: 3.2rem; place-items: center; transform: translateX(-50%); border: 2px solid rgb(255 255 255 / 78%); border-radius: 50%; color: #fff8d8; background: radial-gradient(circle at 35% 28%, #f8d978, #b88327 78%); box-shadow: 0 3px 12px rgb(15 23 42 / 20%), 0 0 0 5px rgb(253 224 71 / 16%); transition: opacity .2s ease, transform .35s cubic-bezier(.2, .8, .25, 1); }
 .envelope--opening .envelope__flap { transform: rotateX(180deg); }
-.envelope--opening .envelope__letter { transform: translateY(-3rem); box-shadow: 0 12px 22px rgb(15 23 42 / 12%); }
+.envelope--opening .envelope__letter { z-index: 3; animation: envelope-letter-emerge .62s cubic-bezier(.2, .8, .25, 1) both; box-shadow: 0 12px 22px rgb(15 23 42 / 12%); }
+.envelope--opening .envelope__flap { z-index: 4; }
 .envelope--opening .envelope__seal { opacity: 0; transform: translate(-50%, -.4rem) scale(.75); }
+@keyframes envelope-letter-emerge {
+  0% { clip-path: inset(0 0 86% 0); transform: translateY(1rem) scale(.96); }
+  48% { clip-path: inset(0 0 42% 0); transform: translateY(-2.6rem) scale(1.01); }
+  100% { clip-path: inset(0); transform: translateY(-4rem) scale(1); }
+}
 .opening-screen__button { min-width: 13rem; }
 .opening-screen h1 em { color: #0369a1; font-weight: 600; font-style: italic; }
 .opening-screen__note { max-width: 32rem; line-height: 1.65; }
@@ -414,7 +422,7 @@ button:focus-visible, a:focus-visible, input:focus-visible {
 .letter-envelope::before { position: absolute; inset: 0; content: ""; background: linear-gradient(145deg, transparent 49.6%, rgb(255 255 255 / 36%) 50%), linear-gradient(35deg, transparent 49.6%, rgb(2 132 199 / 18%) 50%); clip-path: polygon(0 0, 50% 62%, 100% 0, 100% 100%, 0 100%); }
 .letter-envelope i { position: relative; z-index: 1; }
 .letter-envelope i { color: #d4a300; font-style: normal; }
-.letter-reveal__button { min-width: 10rem; }
+.letter-reveal__button { position: relative; z-index: 5; width: min(100%, 14rem); min-width: 10rem; pointer-events: auto; touch-action: manipulation; }
 .letter-paper__empty { display: grid; justify-items: center; gap: .35rem; padding: 1rem; border: 1px dashed #e7d7b4; border-radius: .7rem; background: rgb(255 253 250 / 62%); text-align: center; }
 .letter-paper__empty > span { color: #e879a9; font-family: var(--font-sans), sans-serif; font-size: 1.8rem; }
 .letter-paper__empty p { margin: 0; color: #475569; font-family: var(--font-sans), sans-serif; font-size: .95rem; line-height: 1.5; }
@@ -1954,7 +1962,7 @@ body {
 
 .letter-section__closed-motion {
   position: relative;
-  z-index: 2;
+  z-index: 5;
   display: grid;
   min-width: 0;
   width: 100%;
