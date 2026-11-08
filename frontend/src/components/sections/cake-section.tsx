@@ -132,7 +132,7 @@ export function CakeSection({ copy = defaultBirthdayCopy }: { copy?: BirthdayCop
             fill
             priority
             sizes="(max-width: 700px) 76vw, 42vw"
-            src={assetPath("/assets/cake-illustration.png")}
+            src={assetPath("/assets/cake-illustration.webp")}
           />
           <span className="birthday-cake__flame birthday-cake__flame--one" aria-hidden="true" />
           <span className="birthday-cake__flame birthday-cake__flame--two" aria-hidden="true" />

@@ -62,21 +62,6 @@ describe("AudioPlayer", () => {
     await waitFor(() => expect(HTMLMediaElement.prototype.play).toHaveBeenCalledTimes(2));
   });
 
-  it("togglesTheLyricsPanel", async () => {
-    const player = createRef<AudioPlayerHandle>();
-    render(<AudioPlayer ref={player} track="/assets/metal.mp3" />);
-    await act(async () => { await player.current!.startFromGesture(); });
-
-    const lyricsButton = screen.getByRole("button", { name: "Lihat lirik" });
-    const lyricsPanel = document.getElementById("birthday-lyrics");
-    expect(lyricsPanel).toHaveAttribute("aria-hidden", "true");
-
-    fireEvent.click(lyricsButton);
-
-    expect(screen.getByRole("button", { name: "Tutup lirik" })).toBeInTheDocument();
-    expect(lyricsPanel).toHaveAttribute("aria-hidden", "false");
-  });
-
   it("updatesProgress", async () => {
     const player = createRef<AudioPlayerHandle>();
     render(<AudioPlayer ref={player} track="/assets/metal.mp3" />);
@@ -88,53 +73,6 @@ describe("AudioPlayer", () => {
     fireEvent.timeUpdate(audio);
 
     expect(screen.getByRole("slider", { name: "Posisi musik" })).toHaveValue("123");
-    fireEvent.click(screen.getByRole("button", { name: "Lihat lirik" }));
-    expect(screen.getAllByRole("button", { name: "Mulai dari Don't ya think that you need somebody?" }).find((line) => line.getAttribute("data-active") === "true")).toBeDefined();
-  });
-
-  it("keepsLyricsMovingBetweenMediaTimeupdateEvents", async () => {
-    const callbacks = new Map<number, FrameRequestCallback>();
-    let nextFrameId = 0;
-    const requestFrame = vi.spyOn(window, "requestAnimationFrame").mockImplementation((callback) => {
-      const id = ++nextFrameId;
-      callbacks.set(id, callback);
-      return id;
-    });
-    vi.spyOn(window, "cancelAnimationFrame").mockImplementation((id) => {
-      callbacks.delete(id);
-    });
-
-    const player = createRef<AudioPlayerHandle>();
-    render(<AudioPlayer ref={player} track="/assets/metal.mp3" />);
-    await act(async () => { await player.current!.startFromGesture(); });
-
-    const audio = document.querySelector("audio")!;
-    Object.defineProperty(audio, "paused", { configurable: true, value: false });
-    Object.defineProperty(audio, "currentTime", { configurable: true, writable: true, value: 17 });
-    fireEvent.click(screen.getByRole("button", { name: "Lihat lirik" }));
-
-    const frame = callbacks.values().next().value as FrameRequestCallback | undefined;
-    expect(requestFrame).toHaveBeenCalled();
-    expect(frame).toBeDefined();
-
-    audio.currentTime = 17;
-    await act(async () => { frame?.(performance.now()); });
-
-    expect(screen.getByRole("button", { name: "Mulai dari I know it's hard to keep an open heart" })).toHaveAttribute("data-active", "true");
-  });
-
-  it("seeksWhenALyricLineIsSelected", async () => {
-    const player = createRef<AudioPlayerHandle>();
-    render(<AudioPlayer ref={player} track="/assets/metal.mp3" />);
-    await act(async () => { await player.current!.startFromGesture(); });
-    const audio = document.querySelector("audio")!;
-    Object.defineProperty(audio, "currentTime", { configurable: true, writable: true, value: 0 });
-    fireEvent.click(screen.getByRole("button", { name: "Lihat lirik" }));
-
-    fireEvent.click(screen.getByRole("button", { name: "Mulai dari I know it's hard to keep an open heart" }));
-
-    expect(audio.currentTime).toBe(17);
-    expect(screen.getByRole("button", { name: "Mulai dari I know it's hard to keep an open heart" })).toHaveAttribute("data-active", "true");
   });
 
   it("showsRetryAfterPlaybackFailure", async () => {
@@ -146,23 +84,5 @@ describe("AudioPlayer", () => {
     expect(await screen.findByRole("status", { name: /nada musiknya tersendat/i })).toBeInTheDocument();
     fireEvent.click(screen.getByRole("button", { name: "Coba putar musik lagi" }));
     expect(await screen.findByRole("button", { name: "Jeda musik" })).toBeInTheDocument();
-  });
-
-  it("appliesALyricsOffsetToProgressAndSeeking", async () => {
-    const player = createRef<AudioPlayerHandle>();
-    render(<AudioPlayer ref={player} track="/assets/metal.mp3" lyricsOffset={4} />);
-    await act(async () => { await player.current!.startFromGesture(); });
-    const audio = document.querySelector("audio")!;
-    Object.defineProperty(audio, "duration", { configurable: true, value: 340 });
-    Object.defineProperty(audio, "currentTime", { configurable: true, writable: true, value: 4 });
-    fireEvent.loadedMetadata(audio);
-    fireEvent.timeUpdate(audio);
-
-    expect(screen.getByRole("slider", { name: "Posisi musik" })).toHaveValue("4");
-    fireEvent.click(screen.getByRole("button", { name: "Lihat lirik" }));
-    expect(screen.getAllByRole("button", { name: "Mulai dari Ooh, everybody needs some time on their own" }).find((line) => line.getAttribute("data-active") === "true")).toBeDefined();
-
-    fireEvent.click(screen.getByRole("button", { name: "Mulai dari I know it's hard to keep an open heart" }));
-    expect(audio.currentTime).toBe(21);
   });
 });

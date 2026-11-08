@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
+import { assetPath } from "@/lib/asset-path";
 import "./globals.css";
 
 const display = localFont({
@@ -26,6 +27,9 @@ const handwritten = localFont({
 export const metadata: Metadata = {
   title: "Happy Birthday, Adhelia!",
   description: "Sebuah ucapan ulang tahun kecil untuk Adhelia, dengan amplop, kue, musik, dan surat.",
+  icons: {
+    icon: assetPath("/favicon.svg"),
+  },
   robots: {
     index: false,
     follow: false,

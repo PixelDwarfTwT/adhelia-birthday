@@ -9,7 +9,7 @@ describe("personal letter page", () => {
 
     expect(florals).toHaveAttribute("aria-hidden", "true");
     expect(florals?.children).toHaveLength(4);
-    expect(florals?.firstElementChild?.getAttribute("style")).toContain("hydrangea-carnation-frame.png");
+    expect(florals?.firstElementChild?.getAttribute("style")).toContain("hydrangea-carnation-frame.webp");
   });
 
   it("rendersFriendlyLetterFallbackWithoutInventingCopy", () => {
@@ -17,9 +17,14 @@ describe("personal letter page", () => {
 
     fireEvent.click(screen.getByRole("button", { name: "Buka surat" }));
 
+    expect(screen.getByRole("article", { name: "Surat ulang tahun untuk Adhelia" })).toHaveFocus();
     expect(screen.getByText("Adhelia,")).toBeInTheDocument();
     expect(screen.getByText("Surat ini sedang menunggu kata-kata yang ingin kamu sampaikan.")).toBeInTheDocument();
     expect(screen.queryByText(/Aku ingat ketika/)).not.toBeInTheDocument();
     expect(screen.queryByText(/Tulis namamu/)).not.toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole("button", { name: "Lipat kembali" }));
+
+    expect(screen.getByRole("button", { name: "Buka surat" })).toHaveFocus();
   });
 });

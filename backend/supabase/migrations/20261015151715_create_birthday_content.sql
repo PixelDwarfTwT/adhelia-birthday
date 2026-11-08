@@ -18,7 +18,7 @@ grant usage on schema public to anon, authenticated;
 grant select (id, content, published_at) on table public.birthday_content to anon;
 
 -- Authenticated visitors can read the published row; RLS hides the draft row.
--- Admins can read/write both rows through the app_metadata role claim.
+-- Admins are listed in public.admin_users and can read/write both rows.
 grant select on table public.birthday_content to authenticated;
 grant insert (id, content, published_at, updated_at) on table public.birthday_content to authenticated;
 grant update (id, content, published_at, updated_at) on table public.birthday_content to authenticated;

@@ -14,7 +14,7 @@ export function FloralCorners({ variant, className = "" }: FloralCornersProps) {
         <span
           className={`floral-corners__flower floral-corners__flower--${corner}`}
           key={corner}
-          style={{ backgroundImage: `url("${assetPath("/assets/hydrangea-carnation-frame.png")}")` }}
+          style={{ backgroundImage: `url("${assetPath("/assets/hydrangea-carnation-frame.webp")}")` }}
         />
       ))}
     </div>

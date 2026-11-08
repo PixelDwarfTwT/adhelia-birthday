@@ -86,7 +86,7 @@ export default function AdminPage() {
   }, []);
 
   if (state.status === "loading") {
-    return <AdminNotice title="Membuka meja admin"><p>Memeriksa sesi dan akses bukuâ€¦</p></AdminNotice>;
+    return <AdminNotice title="Membuka meja admin"><p>Memeriksa sesi dan akses buku…</p></AdminNotice>;
   }
 
   if (state.status === "unconfigured") {

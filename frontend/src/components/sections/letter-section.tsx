@@ -14,6 +14,20 @@ export function LetterSection({ copy = defaultBirthdayCopy }: { copy?: BirthdayC
   const closedMotionRef = useRef<HTMLDivElement>(null);
   const paperMotionRef = useRef<HTMLDivElement>(null);
   const paperRef = useRef<HTMLElement>(null);
+  const triggerRef = useRef<HTMLButtonElement>(null);
+  const restoreFocusRef = useRef(false);
+
+  useEffect(() => {
+    if (letterOpen) {
+      paperRef.current?.focus({ preventScroll: true });
+      return;
+    }
+
+    if (restoreFocusRef.current) {
+      restoreFocusRef.current = false;
+      triggerRef.current?.focus({ preventScroll: true });
+    }
+  }, [letterOpen]);
 
   useEffect(() => {
     const root = rootRef.current;
@@ -125,6 +139,7 @@ export function LetterSection({ copy = defaultBirthdayCopy }: { copy?: BirthdayC
   }
 
   function closeLetter() {
+    restoreFocusRef.current = true;
     setLetterOpen(false);
     setIsOpening(false);
   }
@@ -154,6 +169,7 @@ export function LetterSection({ copy = defaultBirthdayCopy }: { copy?: BirthdayC
                 aria-expanded={letterOpen}
                 className="button button--outline letter-reveal__button"
                 onClick={openLetter}
+                ref={triggerRef}
                 type="button"
               >
                 Buka surat
@@ -165,7 +181,7 @@ export function LetterSection({ copy = defaultBirthdayCopy }: { copy?: BirthdayC
 
       {letterOpen && (
         <div className="letter-paper-motion" ref={paperMotionRef}>
-          <article className="letter-paper letter-paper--opening" aria-label={`Surat ulang tahun untuk ${copy.recipientName}`} ref={paperRef}>
+          <article className="letter-paper letter-paper--opening" aria-label={`Surat ulang tahun untuk ${copy.recipientName}`} ref={paperRef} tabIndex={-1}>
             <span aria-hidden="true" className="letter-paper__tape" />
             <p className="letter-paper__greeting">{copy.letter.greeting}</p>
             {copy.letter.paragraphs.length > 0 ? (

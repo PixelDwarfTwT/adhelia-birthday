@@ -48,10 +48,13 @@ export function ExperienceShell() {
   const pageRef = useRef<HTMLDivElement>(null);
   const audioPlayerRef = useRef<AudioPlayerHandle>(null);
   const turnTimeoutsRef = useRef<number[]>([]);
+  const openTimeoutRef = useRef<number | null>(null);
+  const previousPageIndexRef = useRef(pageIndex);
 
   useEffect(() => {
     return () => {
       turnTimeoutsRef.current.forEach((timeoutId) => window.clearTimeout(timeoutId));
+      if (openTimeoutRef.current !== null) window.clearTimeout(openTimeoutRef.current);
     };
   }, []);
 
@@ -60,10 +63,19 @@ export function ExperienceShell() {
   }, [experienceStarted]);
 
   useEffect(() => {
-    if (experienceStarted && pageIndex > 0) pageRef.current?.focus({ preventScroll: true });
+    if (!experienceStarted) {
+      previousPageIndexRef.current = pageIndex;
+      return;
+    }
+    if (previousPageIndexRef.current === pageIndex) return;
+
+    previousPageIndexRef.current = pageIndex;
+    pageRef.current?.focus({ preventScroll: true });
   }, [experienceStarted, pageIndex]);
 
   useEffect(() => {
+    if (!hasAccess) return;
+
     const supabase = createSupabaseBrowserClient();
     if (!supabase) return;
 
@@ -86,7 +98,7 @@ export function ExperienceShell() {
     return () => {
       active = false;
     };
-  }, []);
+  }, [hasAccess]);
 
   function unlock() {
     setSessionAccess(true);
@@ -106,7 +118,8 @@ export function ExperienceShell() {
       return;
     }
 
-    window.setTimeout(() => setExperienceStarted(true), 680);
+    if (openTimeoutRef.current !== null) window.clearTimeout(openTimeoutRef.current);
+    openTimeoutRef.current = window.setTimeout(() => setExperienceStarted(true), 680);
   }
 
   function moveToPage(nextIndex: number) {
@@ -179,7 +192,7 @@ export function ExperienceShell() {
               <span>{pageIndex === 0 ? "Amplop" : "Kembali"}</span>
             </button>
             <p aria-live="polite" className="page-controls__status">
-              <span>{page.eyebrow}</span>
+              <span>{page.eyebrow} · Halaman {pageIndex + 1} dari {pages.length}</span>
               <strong>{page.label}</strong>
             </p>
             <button

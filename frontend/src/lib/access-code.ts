@@ -1,5 +1,8 @@
 const ACCESS_KEY = "adhelia-birthday-access";
 
+// Soft gate for a static site: the expected hash and published copy are visible
+// in the browser bundle/network. Use Supabase RLS or server-side auth if the
+// content must be confidential.
 function toHex(buffer: ArrayBuffer): string {
   return Array.from(new Uint8Array(buffer), (byte) => byte.toString(16).padStart(2, "0")).join("");
 }

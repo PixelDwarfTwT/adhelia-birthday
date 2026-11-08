@@ -16,11 +16,18 @@ export function OpeningScene({ onOpen, copy = defaultBirthdayCopy }: OpeningScen
   const [isOpening, setIsOpening] = useState(false);
   const [poppedBalloons, setPoppedBalloons] = useState<string[]>([]);
   const rootRef = useRef<HTMLElement>(null);
+  const titleRef = useRef<HTMLHeadingElement>(null);
   const copyMotionRef = useRef<HTMLDivElement>(null);
   const balloonsMotionRef = useRef<HTMLDivElement>(null);
   const envelopeMotionRef = useRef<HTMLDivElement>(null);
   const washRef = useRef<HTMLDivElement>(null);
   const starsRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    // Move focus out of the unmounted passcode gate (or the book) so keyboard
+    // and screen-reader users land on the new screen.
+    titleRef.current?.focus({ preventScroll: true });
+  }, []);
 
   useEffect(() => {
     const root = rootRef.current;
@@ -161,7 +168,7 @@ export function OpeningScene({ onOpen, copy = defaultBirthdayCopy }: OpeningScen
 
       <div className="opening-screen__copy">
         <div className="opening-screen__copy-motion" ref={copyMotionRef}>
-          <h1 id="opening-title">{copy.openingCopy}, <em>{copy.recipientName}.</em></h1>
+          <h1 id="opening-title" ref={titleRef} tabIndex={-1}>{copy.openingCopy}, <em>{copy.recipientName}.</em></h1>
           <p className="opening-screen__note">{copy.introduction}</p>
         </div>
       </div>

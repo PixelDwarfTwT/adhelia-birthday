@@ -32,6 +32,13 @@ jobs:
         run: npm ci
         working-directory: frontend
 
+      - name: Run checks
+        run: |
+          npm run lint
+          npm run typecheck
+          npm test
+        working-directory: frontend
+
       - name: Build static export
         run: |
           cp .env.example .env.production

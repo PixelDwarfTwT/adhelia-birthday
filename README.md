@@ -22,10 +22,16 @@ npm run typecheck
 npm run lint
 ```
 
+The GitHub Pages workflow runs the same checks before building.
+
+## Assets
+
+Before publishing this repository, verify the rights for the illustrations, fonts, and background track. See `frontend/public/assets/README.md`; in particular, replace `metal.mp3` unless you have permission to distribute that recording.
+
 Copy `frontend/.env.example` to `frontend/.env.local` for local Supabase access. Never put a service-role key in a `NEXT_PUBLIC_` variable.
 
 ## GitHub Pages
 
-Pushes to `main` trigger `.github/workflows/deploy-pages.yml`. It builds the static site from `frontend/` and updates the `gh-pages` publishing branch.
+Pushes to `main` trigger `.github/workflows/deploy-pages.yml`. It runs lint, typecheck, and tests, builds the static site from `frontend/`, and updates the `gh-pages` publishing branch.
 
 Site: <https://pixeldwarftwt.github.io/adhelia-birthday/>

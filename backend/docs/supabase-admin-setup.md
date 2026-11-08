@@ -12,9 +12,9 @@ Nilai pada .env.example sudah menunjuk ke proyek Adhelia dan memakai publishable
 
 ## 2. Skema dan akses
 
-Tabel birthday_content menyimpan salinan draft dan terbit. Migration `backend/supabase/migrations/20261015151715_create_birthday_content.sql` sudah diterapkan pada proyek Adhelia.
+Tabel `birthday_content` menyimpan salinan draft dan terbit. Migration `20261015151715_create_birthday_content.sql` membuat tabel tersebut, sedangkan `20261105090000_create_admin_users_and_birthday_trigger.sql` membuat `public.admin_users`, mengaktifkan RLS-nya, dan menambahkan trigger `updated_at`.
 
-Pengunjung anonim hanya dapat membaca salinan terbit. Draft, simpan, dan publikasi dibatasi oleh RLS melalui keanggotaan di public.admin_users. Proyek ini sudah memiliki satu keanggotaan admin.
+Pengunjung anonim hanya dapat membaca salinan terbit. Draft, simpan, dan publikasi dibatasi oleh RLS melalui keanggotaan di `public.admin_users`. Tabel keanggotaan sengaja tidak dapat dibaca atau diubah dari browser; tambahkan admin lewat SQL Editor.
 
 Untuk menambahkan admin lain, buat akunnya di Authentication > Users, salin UUID akun tersebut, lalu jalankan query berikut di SQL Editor:
 
@@ -22,7 +22,7 @@ insert into public.admin_users (user_id)
 values ('<UUID-akun-auth>')
 on conflict (user_id) do nothing;
 
-Keanggotaan admin diperiksa oleh public.is_admin(). Jangan memakai user_metadata sebagai otorisasi.
+Keanggotaan admin diperiksa oleh `public.is_admin()`. Jangan memakai `user_metadata` sebagai otorisasi.
 
 ## 3. Jalankan panel lokal
 
